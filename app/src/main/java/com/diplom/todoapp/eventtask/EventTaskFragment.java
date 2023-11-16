@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.databinding.FragmentEventTaskBinding;
 
@@ -33,6 +34,7 @@ public class EventTaskFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentEventTaskBinding.inflate(inflater);
         initMenus();
+        initRecyclerView();
         return binding.getRoot();
     }
 
@@ -46,6 +48,15 @@ public class EventTaskFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+
+
+
+
+
+
+
+
 
     private void initMenus(){
         binding.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -79,5 +90,8 @@ public class EventTaskFragment extends Fragment {
                 popupMenu.show();
             }
         });
+    }
+    private void initRecyclerView(){
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 }
