@@ -1,4 +1,4 @@
-package com.diplom.todoapp.eventtask.eventtaskrecyclerview.model;
+package com.diplom.todoapp.eventtask.eventtaskrecyclerview.models;
 
 import androidx.annotation.NonNull;
 

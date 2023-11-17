@@ -1,4 +1,4 @@
-package com.diplom.todoapp.eventtask.eventtaskrecyclerview.model;
+package com.diplom.todoapp.eventtask.eventtaskrecyclerview.models;
 
 import androidx.annotation.NonNull;
 
@@ -7,6 +7,7 @@ import java.util.Date;
 public class DateTask extends AbstractTask{
     public String place;
     public Date dateEnd;
+
     private void setTask(@NonNull String title,@NonNull String place,
                   @NonNull String describe, boolean allDayFlag,
                   @NonNull Date dateStart, @NonNull Date dateEnd,
