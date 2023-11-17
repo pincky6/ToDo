@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.diplom.todoapp.databinding.ItemDateTaskBinding;
 import com.diplom.todoapp.databinding.ItemTaskBinding;
