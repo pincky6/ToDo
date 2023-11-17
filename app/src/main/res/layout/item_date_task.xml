@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="@id/date">
 
         <View
-            android:id="@+id/view"
+            android:id="@+id/leftSide"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="5" />
@@ -61,7 +61,7 @@
         </LinearLayout>
 
         <View
-            android:id="@+id/view2"
+            android:id="@+id/rightSide"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="5" />
