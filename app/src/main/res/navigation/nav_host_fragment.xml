@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/eventTaskFragment"
-        android:name="com.diplom.todoapp.eventtask.EventTaskFragment"
+        android:name="com.diplom.todoapp.eventtask.TaskFragment"
         android:label="EventTaskFragment"
         tools:layout="@layout/fragment_event_task" />
 </navigation>
