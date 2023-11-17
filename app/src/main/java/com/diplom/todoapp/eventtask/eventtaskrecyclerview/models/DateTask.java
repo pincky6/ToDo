@@ -8,7 +8,7 @@ public class DateTask extends AbstractTask{
     public String place;
     public Date dateEnd;
 
-    private void setTask(@NonNull Date createDate, @NonNull String title,@NonNull String place,
+    public void setTask(@NonNull Date createDate, @NonNull String title,@NonNull String place,
                   @NonNull String describe, boolean allDayFlag,
                   @NonNull Date dateStart, @NonNull Date dateEnd,
                   @NonNull Date dateBeforeStart, @NonNull Priority priority){
