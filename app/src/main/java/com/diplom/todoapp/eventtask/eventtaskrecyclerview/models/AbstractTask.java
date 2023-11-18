@@ -12,10 +12,21 @@ public abstract class AbstractTask {
     public Date dateStart;
     public Date dateBeforeStart;
     public Priority priority;
+    public  AbstractTask(@NonNull Date createDate, @NonNull String title, @NonNull String describe,
+                        boolean allDayFlag, @NonNull Date dateStart,
+                        @NonNull Date dateBeforeStart, @NonNull Priority priority){
+        this.createDate = safeDateAfterInit(dateStart, createDate, this.createDate);
+        this.title = title;
+        this.describe = describe;
+        this.allDayFlag = allDayFlag;
+        this.dateStart = dateStart;
+        this.dateBeforeStart = safeDateAfterInit(dateStart, dateBeforeStart, this.dateBeforeStart);
+        this.priority = priority;
+    }
     public void setTask(@NonNull Date createDate, @NonNull String title, @NonNull String describe,
                         boolean allDayFlag, @NonNull Date dateStart,
                         @NonNull Date dateBeforeStart, @NonNull Priority priority){
-        safeDateAfterInit(dateStart, createDate, this.createDate);
+        this.createDate = safeDateAfterInit(dateStart, createDate, this.createDate);
         this.title = title;
         this.describe = describe;
         this.allDayFlag = allDayFlag;
@@ -23,9 +34,10 @@ public abstract class AbstractTask {
         safeDateAfterInit(dateStart, dateBeforeStart, this.dateBeforeStart);
         this.priority = priority;
     }
-    protected void safeDateAfterInit(Date dateStart, Date initDate, Date destinationDate){
-        if(dateStart.equals(initDate) || dateStart.after(initDate))
-            destinationDate = initDate;
+    protected Date safeDateAfterInit(Date dateStart, Date initDate, Date destinationDate){
+        if(dateStart.equals(initDate) ||
+                dateStart.after(initDate))
+            return initDate;
         else
             throw new IllegalArgumentException("wrong date input");
     }

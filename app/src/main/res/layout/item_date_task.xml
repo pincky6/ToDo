@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
+        android:background="@drawable/border"
         app:layout_constraintTop_toTopOf="@id/date">
 
         <View
@@ -33,7 +34,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/border_content">
 
             <TextView
                 android:id="@+id/title"

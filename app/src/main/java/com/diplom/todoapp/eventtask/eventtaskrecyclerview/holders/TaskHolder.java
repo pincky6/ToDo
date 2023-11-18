@@ -20,6 +20,7 @@ public class TaskHolder extends AbstractTaskHolder {
         if(!(abstractTask instanceof Task)) throw new IllegalArgumentException("wrong type of argument in task holder");
         Task task = (Task) abstractTask;
 
+        binding.title.setText(task.title);
         binding.date.setText(task.createDate.toString());
         binding.dateStart.setText(task.dateStart.toString());
         binding.describe.setText(task.describe);

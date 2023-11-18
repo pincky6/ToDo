@@ -8,12 +8,22 @@ public class DateTask extends AbstractTask{
     public String place;
     public Date dateEnd;
 
+    public  DateTask(@NonNull Date createDate, @NonNull String title,@NonNull String place,
+                     @NonNull String describe, boolean allDayFlag,
+                     @NonNull Date dateStart, @NonNull Date dateEnd,
+                     @NonNull Date dateBeforeStart, @NonNull Priority priority){
+        super(createDate, title, describe,
+                allDayFlag, dateStart, dateBeforeStart,
+                priority);
+        this.place = place;
+        this.dateEnd = super.safeDateAfterInit(dateStart, dateEnd, this.dateEnd);
+    }
     public void setTask(@NonNull Date createDate, @NonNull String title,@NonNull String place,
                   @NonNull String describe, boolean allDayFlag,
                   @NonNull Date dateStart, @NonNull Date dateEnd,
                   @NonNull Date dateBeforeStart, @NonNull Priority priority){
         super.setTask(createDate, title, describe, allDayFlag, dateStart, dateBeforeStart, priority);
         this.place = place;
-        super.safeDateAfterInit(dateStart, dateEnd, this.dateEnd);
+        this.dateEnd = super.safeDateAfterInit(dateStart, dateEnd, this.dateEnd);
     }
 }

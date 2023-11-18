@@ -19,6 +19,7 @@ public class DateTaskHolder extends AbstractTaskHolder {
         if(!(abstractTask instanceof DateTask)) throw new IllegalArgumentException("wrong type of argument in date task holder");
         DateTask dateTask = (DateTask) abstractTask;
 
+        binding.title.setText(dateTask.title);
         binding.date.setText(dateTask.createDate.toString());
         binding.dateStart.setText(dateTask.dateStart.toString());
         binding.dateEnd.setText(dateTask.dateEnd.toString());

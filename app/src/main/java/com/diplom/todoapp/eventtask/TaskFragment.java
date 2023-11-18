@@ -21,12 +21,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.databinding.FragmentEventTaskBinding;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskAdapter;
 
-public class EventTaskFragment extends Fragment {
+public class TaskFragment extends Fragment {
     private FragmentEventTaskBinding binding = null;
+    private TaskViewModel taskViewModel;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        taskViewModel = new TaskViewModel();
     }
 
     @Nullable
@@ -93,5 +96,6 @@ public class EventTaskFragment extends Fragment {
     }
     private void initRecyclerView(){
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.setAdapter(new TaskAdapter(taskViewModel.taskList));
     }
 }
