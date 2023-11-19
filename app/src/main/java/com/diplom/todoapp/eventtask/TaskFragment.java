@@ -1,13 +1,12 @@
 package com.diplom.todoapp.eventtask;
 
-import static androidx.navigation.fragment.FragmentKt.findNavController;
+
+import static androidx.navigation.ViewKt.findNavController;
 
 import com.diplom.todoapp.R;
 
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +80,9 @@ public class TaskFragment extends Fragment {
                             public boolean onMenuItemClick(MenuItem item) {
                                 int id = item.getItemId();
                                 if(id == R.id.add_new_event){
-                                    Toast.makeText(getContext(), "Event", Toast.LENGTH_SHORT).show();
+                                    findNavController(getView()).navigate(
+                                            TaskFragmentDirections.actionEventTaskFragmentToTaskDetailFragment()
+                                    );
                                     return true;
                                 } else if (id == R.id.add_new_task) {
                                     Toast.makeText(getContext(), "Task", Toast.LENGTH_SHORT).show();
