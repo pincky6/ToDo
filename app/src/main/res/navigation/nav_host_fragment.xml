@@ -10,5 +10,28 @@
         android:id="@+id/eventTaskFragment"
         android:name="com.diplom.todoapp.eventtask.TaskFragment"
         android:label="EventTaskFragment"
-        tools:layout="@layout/fragment_event_task" />
+        tools:layout="@layout/fragment_event_task" >
+        <action
+            android:id="@+id/action_eventTaskFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
+        <action
+            android:id="@+id/action_eventTaskFragment_to_dateTaskDetailFragment"
+            app:destination="@id/dateTaskDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskDetailFragment"
+        android:name="com.diplom.todoapp.dialogs.fragments.TaskDetailFragment"
+        android:label="TaskDetailFragment" >
+        <action
+            android:id="@+id/action_taskDetailFragment_to_eventTaskFragment"
+            app:destination="@id/eventTaskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dateTaskDetailFragment"
+        android:name="com.diplom.todoapp.dialogs.fragments.DateTaskDetailFragment"
+        android:label="DateTaskDetailFragment" >
+        <action
+            android:id="@+id/action_dateTaskDetailFragment_to_eventTaskFragment"
+            app:destination="@id/eventTaskFragment" />
+    </fragment>
 </navigation>
