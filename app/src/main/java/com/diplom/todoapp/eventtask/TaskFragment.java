@@ -17,10 +17,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.databinding.FragmentEventTaskBinding;
+import com.diplom.todoapp.dialogs.fragments.DateTaskDetailFragment;
+import com.diplom.todoapp.dialogs.fragments.TaskDetailFragment;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskAdapter;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 
 public class TaskFragment extends Fragment {
     private FragmentEventTaskBinding binding = null;
@@ -37,6 +42,7 @@ public class TaskFragment extends Fragment {
         binding = FragmentEventTaskBinding.inflate(inflater);
         initMenus();
         initRecyclerView();
+        initFragmentResults();
         return binding.getRoot();
     }
 
@@ -79,13 +85,15 @@ public class TaskFragment extends Fragment {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
                                 int id = item.getItemId();
-                                if(id == R.id.add_new_event){
+                                if(id == R.id.add_new_task){
                                     findNavController(getView()).navigate(
                                             TaskFragmentDirections.actionEventTaskFragmentToTaskDetailFragment()
                                     );
                                     return true;
-                                } else if (id == R.id.add_new_task) {
-                                    Toast.makeText(getContext(), "Task", Toast.LENGTH_SHORT).show();
+                                } else if (id == R.id.add_new_event) {
+                                    findNavController(getView()).navigate(
+                                            TaskFragmentDirections.actionEventTaskFragmentToDateTaskDetailFragment()
+                                    );
                                     return true;
                                 }
                                 return false;
@@ -98,5 +106,21 @@ public class TaskFragment extends Fragment {
     private void initRecyclerView(){
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(new TaskAdapter(taskViewModel.taskList));
+    }
+    private void initFragmentResults(){
+        getParentFragmentManager().setFragmentResultListener(TaskDetailFragment.TASK_KEY, getViewLifecycleOwner(), new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                Task task = (Task) result.get(requestKey);
+                taskViewModel.taskList.add(task);
+            }
+        });
+        getParentFragmentManager().setFragmentResultListener(DateTaskDetailFragment.DATE_TASK_KEY, getViewLifecycleOwner(), new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                DateTask task = (DateTask) result.get(requestKey);
+                taskViewModel.taskList.add(task);
+            }
+        });
     }
 }
