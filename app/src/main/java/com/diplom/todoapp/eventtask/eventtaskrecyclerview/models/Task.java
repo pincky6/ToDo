@@ -6,10 +6,9 @@ import java.util.Date;
 
 public class Task extends AbstractTask {
     public  Task(@NonNull Date createDate, @NonNull String title, @NonNull String describe,
-                         boolean allDayFlag, @NonNull Date dateStart,
-                         @NonNull Date dateBeforeStart, @NonNull Priority priority, @NonNull Reminders reminders){
+                         boolean allDayFlag, @NonNull Date dateStart, @NonNull Priority priority, @NonNull Reminders reminders){
         super(createDate, title, describe,
-              allDayFlag, dateStart, dateBeforeStart,
+              allDayFlag, dateStart,
               priority, reminders);
     }
 }
