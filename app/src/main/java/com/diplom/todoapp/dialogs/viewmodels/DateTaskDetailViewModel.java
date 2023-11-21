@@ -4,6 +4,7 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
+import com.diplom.todoapp.EditorsUtil;
 import com.diplom.todoapp.R;
 import com.diplom.todoapp.databinding.FragmentDateTaskDetailBinding;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
@@ -22,7 +23,7 @@ public class DateTaskDetailViewModel {
     }
 
     public void setTask(@NonNull FragmentDateTaskDetailBinding binding) throws IOException {
-        if(checkEditors(binding.dateTaskTitle, binding.dateTaskDescribe,
+        if(EditorsUtil.checkEditors(binding.dateTaskTitle, binding.dateTaskDescribe,
                         binding.dateTaskPlace, binding.dateTaskEditTextDate,
                         binding.dateTaskEditTextTime, binding.dateTaskEditTextDate2,
                         binding.dateTaskEditTextTime2)){
@@ -73,13 +74,5 @@ public class DateTaskDetailViewModel {
                 return Reminders.DONT_REMIND;
         }
         return Reminders.DONT_REMIND;
-    }
-    private <Editor extends EditText> boolean checkEditors(Editor... editors){
-        for (Editor editor: editors){
-            if(editor.getText().toString().isEmpty()){
-                return true;
-            }
-        }
-        return false;
     }
 }

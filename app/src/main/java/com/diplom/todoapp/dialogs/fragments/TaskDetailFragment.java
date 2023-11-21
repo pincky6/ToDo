@@ -2,33 +2,20 @@ package com.diplom.todoapp.dialogs.fragments;
 
 import static androidx.navigation.ViewKt.findNavController;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
-import com.diplom.todoapp.R;
+import com.diplom.todoapp.EditorsUtil;
 import com.diplom.todoapp.databinding.FragmentTaskDetailBinding;
 import com.diplom.todoapp.dialogs.viewmodels.TaskDetailViewModel;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-
 public class TaskDetailFragment extends AbstractTaskDetailFragment {
     private TaskDetailViewModel taskDetailViewModel;
     public FragmentTaskDetailBinding binding = null;
@@ -42,7 +29,7 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentTaskDetailBinding.inflate(inflater, container, false);
-        initTextWatchers(binding.taskTitle, binding.taskDescribe,
+        EditorsUtil.initTextWatchers(binding.taskTitle, binding.taskDescribe,
                         binding.taskEditTextDate, binding.taskEditTextTime);
         initSpinners(binding.taskReminder, binding.taskPriority);
         initToolbar(binding.toolbar);
@@ -72,7 +59,7 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
                     return;
                 }
                 catch (IOException e){
-                    setErrorBackground(binding.taskTitle, binding.taskDescribe,
+                    EditorsUtil.setErrorBackground(binding.taskTitle, binding.taskDescribe,
                                         binding.taskEditTextDate, binding.taskEditTextTime);
                     return;
                 }

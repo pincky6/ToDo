@@ -102,30 +102,4 @@ public abstract class AbstractTaskDetailFragment extends Fragment {
             });
         }
     }
-
-    protected <Editor extends EditText> void initTextWatchers(Editor... editors){
-        for(Editor editor: editors)
-            editor.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(!editor.getText().toString().isEmpty()){
-                    editor.setBackgroundResource(R.drawable.normal_background);
-                    editor.setError(null);
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-    }
-        protected  <Editor extends EditText> void setErrorBackground(Editor... editors){
-        for(Editor editor: editors){
-            if(editor.getText().toString().isEmpty()){
-                editor.setBackgroundResource(R.drawable.error_background);
-                editor.setError("Empty");
-            }
-        }
-    }
 }

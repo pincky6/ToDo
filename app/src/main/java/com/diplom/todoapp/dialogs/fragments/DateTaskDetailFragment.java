@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.diplom.todoapp.EditorsUtil;
 import com.diplom.todoapp.R;
 import com.diplom.todoapp.databinding.FragmentDateTaskDetailBinding;
 import com.diplom.todoapp.dialogs.viewmodels.DateTaskDetailViewModel;
@@ -44,7 +45,7 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentDateTaskDetailBinding.inflate(inflater, container, false);
-        initTextWatchers(binding.dateTaskTitle, binding.dateTaskDescribe,
+        EditorsUtil.initTextWatchers(binding.dateTaskTitle, binding.dateTaskDescribe,
                 binding.dateTaskPlace, binding.dateTaskEditTextDate,
                 binding.dateTaskEditTextTime, binding.dateTaskEditTextDate2,
                 binding.dateTaskEditTextTime2);
@@ -78,7 +79,7 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
                     return;
                 }
                 catch (IOException e){
-                    setErrorBackground(binding.dateTaskTitle, binding.dateTaskDescribe,
+                    EditorsUtil.setErrorBackground(binding.dateTaskTitle, binding.dateTaskDescribe,
                             binding.dateTaskPlace, binding.dateTaskEditTextDate,
                             binding.dateTaskEditTextTime, binding.dateTaskEditTextDate2,
                             binding.dateTaskEditTextTime2);

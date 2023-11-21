@@ -4,6 +4,7 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
+import com.diplom.todoapp.EditorsUtil;
 import com.diplom.todoapp.databinding.FragmentTaskDetailBinding;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Priority;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Reminders;
@@ -21,7 +22,7 @@ public class TaskDetailViewModel {
     }
 
     public void setTask(@NonNull FragmentTaskDetailBinding binding) throws IOException {
-        if(checkEditors(binding.taskTitle, binding.taskDescribe,
+        if(EditorsUtil.checkEditors(binding.taskTitle, binding.taskDescribe,
                         binding.taskEditTextTime, binding.taskEditTextDate)){
             throw new IOException();
         }
@@ -67,14 +68,5 @@ public class TaskDetailViewModel {
                 return Reminders.DONT_REMIND;
         }
         return Reminders.DONT_REMIND;
-    }
-
-    private <Editor extends EditText> boolean checkEditors(Editor... editors){
-        for (Editor editor: editors){
-            if(editor.getText().toString().isEmpty()){
-                return true;
-            }
-        }
-        return false;
     }
 }
