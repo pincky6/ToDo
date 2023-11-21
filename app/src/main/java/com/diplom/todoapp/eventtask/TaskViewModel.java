@@ -47,6 +47,14 @@ public class TaskViewModel extends ViewModel {
         firebase.addTask(abstractTask.id, abstractTask);
         taskList.add(abstractTask);
     }
+    public void remove(String id){
+        for(AbstractTask abstractTask: taskList){
+            if(abstractTask.id == id) {
+                taskList.remove(abstractTask);
+                return;
+            }
+        }
+    }
     public boolean isEmpty(){
         return taskList.isEmpty();
     }

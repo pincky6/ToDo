@@ -220,4 +220,7 @@ public class FirebaseRepository {
             }
         });
     }
+    public void removeTask(String id){
+        database.child(id).removeValue();
+    }
 }

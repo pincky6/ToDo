@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.diplom.todoapp.eventtask.RemoveListener;
 import com.diplom.todoapp.eventtask.TaskListener;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.AbstractTaskHolder;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskHolderFactory;
@@ -17,9 +18,11 @@ import java.util.ArrayList;
 public class TaskAdapter extends RecyclerView.Adapter<AbstractTaskHolder> {
     private ArrayList<AbstractTask> taskList;
     private TaskListener listener;
-    public TaskAdapter(ArrayList<AbstractTask> taskList, TaskListener listener){
+    private RemoveListener removeListener;
+    public TaskAdapter(ArrayList<AbstractTask> taskList, TaskListener listener, RemoveListener removeListener){
         this.taskList = taskList;
         this.listener = listener;
+        this.removeListener = removeListener;
     }
     @Override
     public int getItemViewType(int position) {
@@ -39,7 +42,7 @@ public class TaskAdapter extends RecyclerView.Adapter<AbstractTaskHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull AbstractTaskHolder holder, int position) {
-        holder.bind(taskList.get(position), listener);
+        holder.bind(taskList.get(position), listener, removeListener);
     }
 
     @Override

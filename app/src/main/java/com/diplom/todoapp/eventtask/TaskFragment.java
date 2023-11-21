@@ -124,17 +124,24 @@ public class TaskFragment extends Fragment {
         taskViewModel = new TaskViewModel();
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(new TaskAdapter(taskViewModel.taskList, (AbstractTask task) -> {
-            if(task.id.split("-")[0].equals("Task")){
+            if (task.id.split("-")[0].equals("Task")) {
                 findNavController(getView()).navigate(
                         TaskFragmentDirections.actionEventTaskFragmentToTaskDetailFragment(task.id)
                 );
-            }
-            else{
+            } else {
                 findNavController(getView()).navigate(
                         TaskFragmentDirections.actionEventTaskFragmentToDateTaskDetailFragment(task.id)
                 );
             }
-        }));
+        },
+                new RemoveListener() {
+                    @Override
+                    public void remove(String id) {
+                        firebase.removeTask(id);
+                        taskViewModel.remove(id);
+                        binding.recyclerView.getAdapter().notifyDataSetChanged();
+                    }
+                }));
         if(taskViewModel.isEmpty())
             taskViewModel.loadFirebase(binding.recyclerView);
     }
