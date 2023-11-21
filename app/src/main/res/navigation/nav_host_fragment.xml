@@ -33,7 +33,11 @@
     <fragment
         android:id="@+id/taskDetailFragment"
         android:name="com.diplom.todoapp.dialogs.fragments.TaskDetailFragment"
-        android:label="TaskDetailFragment" >
+        android:label="TaskDetailFragment"
+        tools:layout="@layout/fragment_task_detail">
+        <argument
+            android:name="taskID"
+            app:argType="java.lang.String" />
         <action
             android:id="@+id/action_taskDetailFragment_to_eventTaskFragment"
             app:destination="@id/eventTaskFragment" />
@@ -41,7 +45,11 @@
     <fragment
         android:id="@+id/dateTaskDetailFragment"
         android:name="com.diplom.todoapp.dialogs.fragments.DateTaskDetailFragment"
-        android:label="DateTaskDetailFragment" >
+        android:label="DateTaskDetailFragment"
+        tools:layout="@layout/fragment_date_task_detail">
+        <argument
+            android:name="dateTaskID"
+            app:argType="java.lang.String" />
         <action
             android:id="@+id/action_dateTaskDetailFragment_to_eventTaskFragment"
             app:destination="@id/eventTaskFragment" />
