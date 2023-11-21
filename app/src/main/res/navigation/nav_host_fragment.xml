@@ -4,8 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
 
     android:id="@+id/nav_host_fragment"
-    app:startDestination="@id/eventTaskFragment">
+    app:startDestination="@id/loginFragment">
 
+<!--    <TextView-->
+<!--        android:id="@+id/textView2"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="binding.emailTextEdit.getText().toString(),&#xA;                                                    binding.passwordEditText.getText().toString()" />-->
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="binding.emailTextEdit.getText().toString(),&#xA;                                                    binding.passwordEditText.getText().toString()" />-->
     <fragment
         android:id="@+id/eventTaskFragment"
         android:name="com.diplom.todoapp.eventtask.TaskFragment"
@@ -17,6 +26,9 @@
         <action
             android:id="@+id/action_eventTaskFragment_to_dateTaskDetailFragment"
             app:destination="@id/dateTaskDetailFragment" />
+        <action
+            android:id="@+id/action_eventTaskFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/taskDetailFragment"
@@ -33,5 +45,26 @@
         <action
             android:id="@+id/action_dateTaskDetailFragment_to_eventTaskFragment"
             app:destination="@id/eventTaskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.diplom.todoapp.login.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_eventTaskManager"
+            app:destination="@id/eventTaskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.diplom.todoapp.login.RegisterFragment"
+        android:label="RegisterFragment"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 </navigation>
