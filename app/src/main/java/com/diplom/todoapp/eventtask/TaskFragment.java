@@ -22,18 +22,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.databinding.FragmentEventTaskBinding;
 import com.diplom.todoapp.dialogs.fragments.DateTaskDetailFragment;
+import com.diplom.todoapp.dialogs.fragments.DateTaskDetailFragmentDirections;
 import com.diplom.todoapp.dialogs.fragments.TaskDetailFragment;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
+import com.diplom.todoapp.firebase.FirebaseRepository;
+import com.google.android.material.appbar.MaterialToolbar;
 
 public class TaskFragment extends Fragment {
     private FragmentEventTaskBinding binding = null;
     private TaskViewModel taskViewModel;
+    private FirebaseRepository firebase;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         taskViewModel = new TaskViewModel();
+        firebase = FirebaseRepository.getInstance();
     }
 
     @Nullable
@@ -67,6 +72,18 @@ public class TaskFragment extends Fragment {
 
 
     private void initMenus(){
+
+        binding.toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);
+         binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    firebase.signOut();
+                    findNavController(getView()).navigate(
+                            TaskFragmentDirections.actionEventTaskFragmentToLoginFragment()
+                    );
+                }
+            });
+
         binding.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
