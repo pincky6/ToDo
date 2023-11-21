@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.diplom.todoapp.EditorsUtil;
 import com.diplom.todoapp.databinding.FragmentTaskDetailBinding;
+import com.diplom.todoapp.dialogs.viewmodels.DateTaskDetailViewModel;
 import com.diplom.todoapp.dialogs.viewmodels.TaskDetailViewModel;
 
 import java.io.IOException;
@@ -29,6 +30,15 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentTaskDetailBinding.inflate(inflater, container, false);
+        Bundle args = getArguments();
+        String id = (String) args.get("taskID");
+        if(id == null || id.isEmpty()) {
+            taskDetailViewModel = new TaskDetailViewModel();
+        }
+        else {
+            String key = (String) args.get("taskID");
+            taskDetailViewModel = new TaskDetailViewModel(binding, key);
+        }
         EditorsUtil.initTextWatchers(binding.taskTitle, binding.taskDescribe,
                         binding.taskEditTextDate, binding.taskEditTextTime);
         initSpinners(binding.taskReminder, binding.taskPriority);

@@ -1,8 +1,13 @@
 package com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders;
 
+import android.util.Log;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 
+import com.diplom.todoapp.PriorityUtil;
 import com.diplom.todoapp.databinding.ItemDateTaskBinding;
+import com.diplom.todoapp.eventtask.TaskListener;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 
@@ -15,7 +20,7 @@ public class DateTaskHolder extends AbstractTaskHolder {
         this.binding = binding;
     }
     @Override
-    public void bind(AbstractTask abstractTask){
+    public void bind(AbstractTask abstractTask, TaskListener listener){
         if(!(abstractTask instanceof DateTask)) throw new IllegalArgumentException("wrong type of argument in date task holder");
         DateTask dateTask = (DateTask) abstractTask;
 
@@ -25,8 +30,15 @@ public class DateTaskHolder extends AbstractTaskHolder {
         binding.dateEnd.setText(dateTask.dateEnd.toString());
         binding.describe.setText(dateTask.describe);
 
-        int color = getPriorityColor(dateTask.priority.ordinal());
+        int color = PriorityUtil.getPriorityColor(PriorityUtil.getPriorityEnum(dateTask.priority));
         binding.leftSide.setBackgroundColor(color);
         binding.rightSide.setBackgroundColor(color);
+        Log.d("DateTask", dateTask.id);
+        binding.getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.taskNavigation(dateTask);
+            }
+        });
     }
 }

@@ -25,6 +25,7 @@ import com.diplom.todoapp.dialogs.fragments.DateTaskDetailFragment;
 import com.diplom.todoapp.dialogs.fragments.DateTaskDetailFragmentDirections;
 import com.diplom.todoapp.dialogs.fragments.TaskDetailFragment;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskAdapter;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.firebase.FirebaseRepository;
@@ -37,7 +38,6 @@ public class TaskFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        taskViewModel = new TaskViewModel();
         firebase = FirebaseRepository.getInstance();
     }
 
@@ -104,12 +104,12 @@ public class TaskFragment extends Fragment {
                                 int id = item.getItemId();
                                 if(id == R.id.add_new_task){
                                     findNavController(getView()).navigate(
-                                            TaskFragmentDirections.actionEventTaskFragmentToTaskDetailFragment()
+                                            TaskFragmentDirections.actionEventTaskFragmentToTaskDetailFragment("")
                                     );
                                     return true;
                                 } else if (id == R.id.add_new_event) {
                                     findNavController(getView()).navigate(
-                                            TaskFragmentDirections.actionEventTaskFragmentToDateTaskDetailFragment()
+                                            TaskFragmentDirections.actionEventTaskFragmentToDateTaskDetailFragment("")
                                     );
                                     return true;
                                 }
@@ -121,22 +121,40 @@ public class TaskFragment extends Fragment {
         });
     }
     private void initRecyclerView(){
+        taskViewModel = new TaskViewModel();
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerView.setAdapter(new TaskAdapter(taskViewModel.taskList));
+        binding.recyclerView.setAdapter(new TaskAdapter(taskViewModel.taskList, (AbstractTask task) -> {
+            if(task.id.split("-")[0].equals("Task")){
+                findNavController(getView()).navigate(
+                        TaskFragmentDirections.actionEventTaskFragmentToTaskDetailFragment(task.id)
+                );
+            }
+            else{
+                findNavController(getView()).navigate(
+                        TaskFragmentDirections.actionEventTaskFragmentToDateTaskDetailFragment(task.id)
+                );
+            }
+        }));
+        if(taskViewModel.isEmpty())
+            taskViewModel.loadFirebase(binding.recyclerView);
     }
     private void initFragmentResults(){
         getParentFragmentManager().setFragmentResultListener(TaskDetailFragment.TASK_KEY, getViewLifecycleOwner(), new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                 Task task = (Task) result.get(requestKey);
-                taskViewModel.taskList.add(task);
+                assert task != null;
+                firebase.addTask(task.id, task);
+                //binding.recyclerView.getAdapter().notifyDataSetChanged();
             }
         });
         getParentFragmentManager().setFragmentResultListener(DateTaskDetailFragment.DATE_TASK_KEY, getViewLifecycleOwner(), new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                DateTask task = (DateTask) result.get(requestKey);
-                taskViewModel.taskList.add(task);
+                DateTask dateTask = (DateTask) result.get(requestKey);
+                assert dateTask != null;
+                firebase.addTask(dateTask.id, dateTask);
+               // binding.recyclerView.getAdapter().notifyDataSetChanged();
             }
         });
     }

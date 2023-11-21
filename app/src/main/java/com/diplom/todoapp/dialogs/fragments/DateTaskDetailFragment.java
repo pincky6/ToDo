@@ -39,12 +39,20 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dateTaskDetailViewModel = new DateTaskDetailViewModel();
     }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentDateTaskDetailBinding.inflate(inflater, container, false);
+        Bundle args = getArguments();
+        String dateTaskId = (String)args.get("dateTaskID");
+        if(dateTaskId == null || dateTaskId.isEmpty()) {
+            dateTaskDetailViewModel = new DateTaskDetailViewModel();
+        }
+        else {
+            String key = (String) args.get("dateTaskID");
+            dateTaskDetailViewModel = new DateTaskDetailViewModel(binding, key);
+        }
         EditorsUtil.initTextWatchers(binding.dateTaskTitle, binding.dateTaskDescribe,
                 binding.dateTaskPlace, binding.dateTaskEditTextDate,
                 binding.dateTaskEditTextTime, binding.dateTaskEditTextDate2,
