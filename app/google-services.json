@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "127158108417",
+    "firebase_url": "https://testdatabase-687dd-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "testdatabase-687dd",
+    "storage_bucket": "testdatabase-687dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127158108417:android:e4ec750a89158e78ad5b00",
+        "android_client_info": {
+          "package_name": "com.diplom.todoapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ2gLhsOXqEbaxXbRhf2hGOuZKXy3F8l0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127158108417:android:645ede873b434687ad5b00",
+        "android_client_info": {
+          "package_name": "com.test.firebaseconnection"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ2gLhsOXqEbaxXbRhf2hGOuZKXy3F8l0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
