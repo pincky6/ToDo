@@ -39,6 +39,7 @@ public class TaskFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firebase = FirebaseRepository.getInstance();
+        taskViewModel = new TaskViewModel();
     }
 
     @Nullable
@@ -74,73 +75,57 @@ public class TaskFragment extends Fragment {
     private void initMenus(){
 
         binding.toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);
-         binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    firebase.signOut();
-                    findNavController(getView()).navigate(
-                            TaskFragmentDirections.actionEventTaskFragmentToLoginFragment()
-                    );
-                }
-            });
+         binding.toolbar.setNavigationOnClickListener(v -> {
+             firebase.signOut();
+             findNavController(getView()).navigate(
+                     TaskFragmentDirections.showLoginFragment()
+             );
+         });
 
-        binding.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if(item.getItemId() == R.id.action_settings){
-                    Toast.makeText(getContext(), "smthj", Toast.LENGTH_SHORT).show();
+        binding.toolbar.setOnMenuItemClickListener(item -> {
+            if(item.getItemId() == R.id.action_settings){
+                Toast.makeText(getContext(), "smthj", Toast.LENGTH_SHORT).show();
+            }
+            return false;
+        });
+        binding.fab.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(getContext(), v);
+            popupMenu.inflate(R.menu.popup_menu);
+            popupMenu.setOnMenuItemClickListener(item -> {
+                int id = item.getItemId();
+                if(id == R.id.add_new_task){
+                    findNavController(getView()).navigate(
+                            TaskFragmentDirections.showTaskDetailFragment("")
+                    );
+                    return true;
+                } else if (id == R.id.add_new_event) {
+                    findNavController(getView()).navigate(
+                            TaskFragmentDirections.showDateTaskDetailFragment("")
+                    );
+                    return true;
                 }
                 return false;
-            }
-        });
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(getContext(), v);
-                popupMenu.inflate(R.menu.popup_menu);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem item) {
-                                int id = item.getItemId();
-                                if(id == R.id.add_new_task){
-                                    findNavController(getView()).navigate(
-                                            TaskFragmentDirections.actionEventTaskFragmentToTaskDetailFragment("")
-                                    );
-                                    return true;
-                                } else if (id == R.id.add_new_event) {
-                                    findNavController(getView()).navigate(
-                                            TaskFragmentDirections.actionEventTaskFragmentToDateTaskDetailFragment("")
-                                    );
-                                    return true;
-                                }
-                                return false;
-                            }
-                        });
-                popupMenu.show();
-            }
+            });
+            popupMenu.show();
         });
     }
     private void initRecyclerView(){
-        taskViewModel = new TaskViewModel();
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(new TaskAdapter(taskViewModel.taskList, (AbstractTask task) -> {
             if (task.id.split("-")[0].equals("Task")) {
-                findNavController(getView()).navigate(
-                        TaskFragmentDirections.actionEventTaskFragmentToTaskDetailFragment(task.id)
+                findNavController(binding.getRoot()).navigate(
+                        TaskFragmentDirections.showTaskDetailFragment(task.id)
                 );
             } else {
-                findNavController(getView()).navigate(
-                        TaskFragmentDirections.actionEventTaskFragmentToDateTaskDetailFragment(task.id)
+                findNavController(binding.getRoot()).navigate(
+                        TaskFragmentDirections.showDateTaskDetailFragment(task.id)
                 );
             }
         },
-                new RemoveListener() {
-                    @Override
-                    public void remove(String id) {
-                        firebase.removeTask(id);
-                        taskViewModel.remove(id);
-                        binding.recyclerView.getAdapter().notifyDataSetChanged();
-                    }
+                id -> {
+                    firebase.removeTask(id);
+                    taskViewModel.remove(id);
+                    binding.recyclerView.getAdapter().notifyDataSetChanged();
                 }));
         if(taskViewModel.isEmpty())
             taskViewModel.loadFirebase(binding.recyclerView);
@@ -151,18 +136,15 @@ public class TaskFragment extends Fragment {
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                 Task task = (Task) result.get(requestKey);
                 assert task != null;
-                firebase.addTask(task.id, task);
+                firebase.addTask(task);
                 //binding.recyclerView.getAdapter().notifyDataSetChanged();
             }
         });
-        getParentFragmentManager().setFragmentResultListener(DateTaskDetailFragment.DATE_TASK_KEY, getViewLifecycleOwner(), new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                DateTask dateTask = (DateTask) result.get(requestKey);
-                assert dateTask != null;
-                firebase.addTask(dateTask.id, dateTask);
-               // binding.recyclerView.getAdapter().notifyDataSetChanged();
-            }
+        getParentFragmentManager().setFragmentResultListener(DateTaskDetailFragment.DATE_TASK_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
+            DateTask dateTask = (DateTask) result.get(requestKey);
+            assert dateTask != null;
+            firebase.addTask(dateTask);
+           // binding.recyclerView.getAdapter().notifyDataSetChanged();
         });
     }
 }

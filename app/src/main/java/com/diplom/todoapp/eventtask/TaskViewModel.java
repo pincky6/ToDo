@@ -44,7 +44,7 @@ public class TaskViewModel extends ViewModel {
         firebase.readAllTasks(taskList, recyclerView);
     }
     public void add(AbstractTask abstractTask){
-        firebase.addTask(abstractTask.id, abstractTask);
+        firebase.addTask(abstractTask);
         taskList.add(abstractTask);
     }
     public void remove(String id){
