@@ -21,13 +21,13 @@
         android:label="EventTaskFragment"
         tools:layout="@layout/fragment_event_task" >
         <action
-            android:id="@+id/action_eventTaskFragment_to_taskDetailFragment"
+            android:id="@+id/showTaskDetailFragment"
             app:destination="@id/taskDetailFragment" />
         <action
-            android:id="@+id/action_eventTaskFragment_to_dateTaskDetailFragment"
+            android:id="@+id/showDateTaskDetailFragment"
             app:destination="@id/dateTaskDetailFragment" />
         <action
-            android:id="@+id/action_eventTaskFragment_to_loginFragment"
+            android:id="@+id/showLoginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
     <fragment
@@ -39,19 +39,21 @@
             android:name="taskID"
             app:argType="java.lang.String" />
         <action
-            android:id="@+id/action_taskDetailFragment_to_eventTaskFragment"
+            android:id="@+id/showEventTaskFragment"
             app:destination="@id/eventTaskFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/dateTaskDetailFragment"
         android:name="com.diplom.todoapp.dialogs.fragments.DateTaskDetailFragment"
         android:label="DateTaskDetailFragment"
         tools:layout="@layout/fragment_date_task_detail">
+
         <argument
             android:name="dateTaskID"
             app:argType="java.lang.String" />
         <action
-            android:id="@+id/action_dateTaskDetailFragment_to_eventTaskFragment"
+            android:id="@+id/showEventTaskFragment"
             app:destination="@id/eventTaskFragment" />
     </fragment>
     <fragment
@@ -60,10 +62,10 @@
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/action_loginFragment_to_registerFragment"
+            android:id="@+id/showRegisterFragment"
             app:destination="@id/registerFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_eventTaskManager"
+            android:id="@+id/showEventTaskFragment"
             app:destination="@id/eventTaskFragment" />
     </fragment>
     <fragment
@@ -72,7 +74,7 @@
         android:label="RegisterFragment"
         tools:layout="@layout/fragment_register">
         <action
-            android:id="@+id/action_registerFragment_to_loginFragment"
+            android:id="@+id/showLoginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
 </navigation>
