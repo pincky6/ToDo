@@ -11,10 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.diplom.todoapp.EditorsUtil;
+import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.R;
 import com.diplom.todoapp.databinding.FragmentRegisterBinding;
-import com.diplom.todoapp.dialogs.fragments.DateTaskDetailFragmentDirections;
 import com.diplom.todoapp.firebase.FirebaseRepository;
 
 public class RegisterFragment extends Fragment {
@@ -64,7 +63,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 findNavController(getView()).navigate(
-                        RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+                        RegisterFragmentDirections.showLoginFragment()
                 );
             }
         });

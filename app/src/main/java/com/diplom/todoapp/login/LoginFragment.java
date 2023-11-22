@@ -3,23 +3,17 @@ package com.diplom.todoapp.login;
 import static androidx.navigation.ViewKt.findNavController;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.diplom.todoapp.EditorsUtil;
-import com.diplom.todoapp.R;
+import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.databinding.FragmentLoginBinding;
-import com.diplom.todoapp.dialogs.fragments.DateTaskDetailFragmentDirections;
 import com.diplom.todoapp.firebase.FirebaseRepository;
-import com.google.android.material.appbar.MaterialToolbar;
 
 public class LoginFragment extends Fragment {
     private FirebaseRepository firebase = null;
@@ -36,7 +30,7 @@ public class LoginFragment extends Fragment {
         if(firebase.checkUserExist() && firebase.isVerified()){
             firebase.initDatabase();
             findNavController(getView()).navigate(
-                    LoginFragmentDirections.actionLoginFragmentToEventTaskManager()
+                    LoginFragmentDirections.showEventTaskFragment()
             );
         }
     }
@@ -77,7 +71,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 findNavController(binding.getRoot()).navigate(
-                        LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+                        LoginFragmentDirections.showRegisterFragment()
                 );
             }
         });
