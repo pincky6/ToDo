@@ -5,8 +5,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.diplom.todoapp.eventtask.RemoveListener;
-import com.diplom.todoapp.eventtask.TaskListener;
+import com.diplom.todoapp.eventtask.listeners.RemoveListener;
+import com.diplom.todoapp.eventtask.listeners.TaskListener;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.AbstractTaskHolder;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskHolderFactory;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskType;
@@ -19,7 +19,9 @@ public class TaskAdapter extends RecyclerView.Adapter<AbstractTaskHolder> {
     private ArrayList<AbstractTask> taskList;
     private TaskListener listener;
     private RemoveListener removeListener;
-    public TaskAdapter(ArrayList<AbstractTask> taskList, TaskListener listener, RemoveListener removeListener){
+    public TaskAdapter(ArrayList<AbstractTask> taskList,
+                       TaskListener listener,
+                       RemoveListener removeListener){
         this.taskList = taskList;
         this.listener = listener;
         this.removeListener = removeListener;
