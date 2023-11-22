@@ -76,7 +76,7 @@ public class FirebaseRepository {
                     {
                         initDatabase();
                         findNavController(binding.getRoot()).navigate(
-                                LoginFragmentDirections.actionLoginFragmentToEventTaskManager()
+                                LoginFragmentDirections.showEventTaskFragment()
                         );
                     }
                 }
@@ -106,7 +106,7 @@ public class FirebaseRepository {
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             findNavController(binding.getRoot()).navigate(
-                                    LoginFragmentDirections.actionLoginFragmentToEventTaskManager()
+                                    LoginFragmentDirections.showEventTaskFragment()
                             );
                         }
                         else
@@ -135,7 +135,7 @@ public class FirebaseRepository {
                 if(task.isSuccessful()){
                     Toast.makeText(binding.getRoot().getContext(), "You register", Toast.LENGTH_SHORT).show();
                     findNavController(binding.getRoot()).navigate(
-                            RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+                            RegisterFragmentDirections.showLoginFragment()
                     );
                 }
                 else
@@ -145,21 +145,16 @@ public class FirebaseRepository {
                             Toast.LENGTH_LONG).show();
                 }
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(binding.getRoot().getContext(),
-                        e.getMessage(),
-                        Toast.LENGTH_LONG).show();
-            }
-        });
+        }).addOnFailureListener(e -> Toast.makeText(binding.getRoot().getContext(),
+                e.getMessage(),
+                Toast.LENGTH_LONG).show());
     }
 
     public String generateKey(){
         return database.push().getKey();
     }
-    public void addTask(String key, AbstractTask object){
-        database.child(key + "-" + object.id ).setValue(object);
+    public void addTask(AbstractTask object){
+        database.child( object.id ).setValue(object);
     }
     public void getTaskFromKey(String key, OnDataReceivedListener dataReceivedListener){
         database.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
