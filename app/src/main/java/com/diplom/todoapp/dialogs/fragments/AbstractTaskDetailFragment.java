@@ -17,8 +17,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
 
 import com.diplom.todoapp.R;
+import com.diplom.todoapp.databinding.FragmentDateTaskDetailBinding;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -43,38 +45,27 @@ public abstract class AbstractTaskDetailFragment extends Fragment {
                         priorities);
         taskPriority.setAdapter(prioritiyAdapter);
     }
-    protected void initToolbar(MaterialToolbar toolbar){
+    protected void initToolbar(MaterialToolbar toolbar, View parentView, NavDirections direction){
         toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                findNavController(getView()).navigate(
-                        DateTaskDetailFragmentDirections.actionDateTaskDetailFragmentToEventTaskFragment()
-                );
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> findNavController(parentView).navigate(
+                direction
+        ));
     }
     protected void showDatePickerDialog(EditText textInputEditText){
         DatePickerDialog datePicker = new DatePickerDialog(getContext());
-        datePicker.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Calendar selectedDate = Calendar.getInstance();
-                selectedDate.set(year, month, dayOfMonth);
-                String dateString = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-                        .format(selectedDate.getTime());
-                textInputEditText.setText(dateString);
-            }
+        datePicker.setOnDateSetListener((view, year, month, dayOfMonth) -> {
+            Calendar selectedDate = Calendar.getInstance();
+            selectedDate.set(year, month, dayOfMonth);
+            String dateString = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+                    .format(selectedDate.getTime());
+            textInputEditText.setText(dateString);
         });
         datePicker.show();
     }
     protected void showTimePickerDialog(EditText textInputEditText){
-        TimePickerDialog timePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String time = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
-                textInputEditText.setText(time);
-            }
+        TimePickerDialog timePicker = new TimePickerDialog(getContext(), (view, hourOfDay, minute) -> {
+            String time = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+            textInputEditText.setText(time);
         }, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
         timePicker.show();
     }
@@ -82,24 +73,14 @@ public abstract class AbstractTaskDetailFragment extends Fragment {
         for(Editor timeEditor: editors){
             timeEditor.setFocusable(false);
             timeEditor.setClickable(true);
-            timeEditor.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showTimePickerDialog(timeEditor);
-                }
-            });
+            timeEditor.setOnClickListener(v -> showTimePickerDialog(timeEditor));
         }
     }
     protected <Editor extends EditText> void initDateInputs(Editor... editors){
         for(Editor timeEditor: editors){
             timeEditor.setFocusable(false);
             timeEditor.setClickable(true);
-            timeEditor.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showDatePickerDialog(timeEditor);
-                }
-            });
+            timeEditor.setOnClickListener(v -> showDatePickerDialog(timeEditor));
         }
     }
 }

@@ -1,26 +1,22 @@
 package com.diplom.todoapp.dialogs.viewmodels;
 
-import android.widget.EditText;
-
 import androidx.annotation.NonNull;
 
-import com.diplom.todoapp.EditorsUtil;
-import com.diplom.todoapp.PriorityUtil;
-import com.diplom.todoapp.ReminderUtil;
-import com.diplom.todoapp.databinding.FragmentDateTaskDetailBinding;
+import com.diplom.todoapp.utils.EditorsUtil;
+import com.diplom.todoapp.utils.PriorityUtil;
+import com.diplom.todoapp.utils.ReminderUtil;
 import com.diplom.todoapp.databinding.FragmentTaskDetailBinding;
 import com.diplom.todoapp.dialogs.OnDataReceivedListener;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Priority;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Reminders;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.firebase.FirebaseRepository;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public class TaskDetailViewModel {
     FirebaseRepository firebaseRepository = FirebaseRepository.getInstance();
@@ -38,10 +34,13 @@ public class TaskDetailViewModel {
                 task = (Task) data;
                 binding.taskTitle.setText(task.title);
                 binding.taskDescribe.setText(task.describe);
-                SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+                SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
+                SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
                 try {
-                    String dateStart = format.format(task.dateStart);
+                    String dateStart = formatDate.format(task.dateStart);
+                    String timeStart = formatTime.format(task.dateStart);
                     binding.taskEditTextDate.setText(dateStart);
+                    binding.taskEditTextTime.setText(timeStart);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -49,7 +48,6 @@ public class TaskDetailViewModel {
                 binding.taskPriority.setSelection(PriorityUtil.getPriorityIndex(PriorityUtil.getPriorityEnum(task.priority)));
                 binding.taskReminder.setSelection(ReminderUtil.getReminderIndex(ReminderUtil.getReminderEnum(task.reminder)));
             }
-
             @Override
             public void onError(IllegalArgumentException databaseError) {
 
@@ -62,29 +60,31 @@ public class TaskDetailViewModel {
                         binding.taskEditTextTime, binding.taskEditTextDate)){
             throw new IOException();
         }
-        if(task != null) return;
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        Time time = Time.valueOf(binding.taskEditTextTime.getText().toString() + ":00");
         Date createDate = null;
         String title = binding.taskTitle.getText().toString();
         String describe = binding.taskDescribe.getText().toString();
         boolean allDay = binding.allDayCheckBox.isChecked();
         Date dateStart = null;
-        String priority = binding.taskPriority.getSelectedItem().toString().toUpperCase();
+        String priority = binding.taskPriority.getSelectedItem().toString();
         String reminder = binding.taskReminder.getSelectedItem().toString();
         try {
             createDate = format.parse(format.format(new Date()));
             dateStart = format.parse(binding.taskEditTextDate.getText().toString());
-            if (task == null)
-                task = new Task("Task-" + firebaseRepository.generateKey(), createDate, title, describe, allDay,
-                            dateStart, priority, reminder);
-            else
-                task.setTask(task.id, createDate, title, describe, allDay,
-                        dateStart, priority, reminder);
+            assert dateStart != null;
+            dateStart.setTime(dateStart.getTime() + time.getTime());
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
         catch (IllegalArgumentException e){
             throw new IllegalArgumentException("wrong date input");
         }
+        if (task == null)
+            task = new Task("Task-" + firebaseRepository.generateKey(), createDate, title, describe, allDay,
+                    dateStart, priority, reminder);
+        else
+            task.setTask(task.id, createDate, title, describe, allDay,
+                    dateStart, priority, reminder);
     }
 }

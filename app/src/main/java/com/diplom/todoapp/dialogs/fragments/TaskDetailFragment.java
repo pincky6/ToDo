@@ -11,9 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.diplom.todoapp.EditorsUtil;
+import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.databinding.FragmentTaskDetailBinding;
-import com.diplom.todoapp.dialogs.viewmodels.DateTaskDetailViewModel;
 import com.diplom.todoapp.dialogs.viewmodels.TaskDetailViewModel;
 
 import java.io.IOException;
@@ -42,7 +41,8 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
         EditorsUtil.initTextWatchers(binding.taskTitle, binding.taskDescribe,
                         binding.taskEditTextDate, binding.taskEditTextTime);
         initSpinners(binding.taskReminder, binding.taskPriority);
-        initToolbar(binding.toolbar);
+        initToolbar(binding.toolbar, binding.getRoot(),
+                TaskDetailFragmentDirections.showEventTaskFragment());
         initDateInputs(binding.taskEditTextDate);
         initTimeInputs(binding.taskEditTextTime);
         initSaveButton();
@@ -58,28 +58,25 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
         binding = null;
     }
         private void initSaveButton(){
-        binding.taskSaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    taskDetailViewModel.setTask(binding);
-                }
-                catch (IllegalArgumentException e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    return;
-                }
-                catch (IOException e){
-                    EditorsUtil.setErrorBackground(binding.taskTitle, binding.taskDescribe,
-                                        binding.taskEditTextDate, binding.taskEditTextTime);
-                    return;
-                }
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(TASK_KEY, taskDetailViewModel.getTask());
-                getParentFragmentManager().setFragmentResult(TASK_KEY, bundle);
-                findNavController(getView()).navigate(
-                        TaskDetailFragmentDirections.actionTaskDetailFragmentToEventTaskFragment()
-                );
+        binding.taskSaveButton.setOnClickListener(v -> {
+            try {
+                taskDetailViewModel.setTask(binding);
             }
+            catch (IllegalArgumentException e){
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                return;
+            }
+            catch (IOException e){
+                EditorsUtil.setErrorBackground(binding.taskTitle, binding.taskDescribe,
+                                    binding.taskEditTextDate, binding.taskEditTextTime);
+                return;
+            }
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(TASK_KEY, taskDetailViewModel.getTask());
+            getParentFragmentManager().setFragmentResult(TASK_KEY, bundle);
+            findNavController(binding.getRoot()).navigate(
+                    TaskDetailFragmentDirections.showEventTaskFragment()
+            );
         });
     }
 }
