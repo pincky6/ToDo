@@ -1,4 +1,4 @@
-package com.diplom.todoapp;
+package com.diplom.todoapp.utils;
 
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Reminders;
 

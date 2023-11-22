@@ -1,4 +1,4 @@
-package com.diplom.todoapp;
+package com.diplom.todoapp.utils;
 
 import android.graphics.Color;
 

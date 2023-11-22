@@ -1,8 +1,10 @@
-package com.diplom.todoapp;
+package com.diplom.todoapp.utils;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+
+import com.diplom.todoapp.R;
 
 public class EditorsUtil {
 
