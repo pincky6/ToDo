@@ -38,8 +38,8 @@ public class RegisterFragment extends Fragment {
                     return;
                 }
                 firebaseRepository.createUserWithGmailAndPassword(binding,
-                        binding.emailTextEdit.getText().toString(),
-                        binding.passwordEditText.getText().toString());
+                        binding.emailTextEdit.getText().toString().trim(),
+                        binding.passwordEditText.getText().toString().trim());
             }
         });
         initToolbar();

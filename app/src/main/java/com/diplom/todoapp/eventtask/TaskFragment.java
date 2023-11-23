@@ -6,8 +6,8 @@ import static androidx.navigation.ViewKt.findNavController;
 import com.diplom.todoapp.R;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
@@ -15,40 +15,45 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.databinding.FragmentEventTaskBinding;
 import com.diplom.todoapp.dialogs.fragments.DateTaskDetailFragment;
-import com.diplom.todoapp.dialogs.fragments.DateTaskDetailFragmentDirections;
 import com.diplom.todoapp.dialogs.fragments.TaskDetailFragment;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.firebase.FirebaseRepository;
-import com.google.android.material.appbar.MaterialToolbar;
+
+import com.*;
+import java.util.GregorianCalendar;
 
 public class TaskFragment extends Fragment {
     private FragmentEventTaskBinding binding = null;
     private TaskViewModel taskViewModel;
     private FirebaseRepository firebase;
+    private int lastScrollPosition = 0;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firebase = FirebaseRepository.getInstance();
         taskViewModel = new TaskViewModel();
+
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentEventTaskBinding.inflate(inflater);
+
+//        initialCalendarViewHeight = binding.calendar.getHeight();
         initMenus();
         initRecyclerView();
         initFragmentResults();
+        initCalendar();
         return binding.getRoot();
     }
 
@@ -127,6 +132,16 @@ public class TaskFragment extends Fragment {
                     taskViewModel.remove(id);
                     binding.recyclerView.getAdapter().notifyDataSetChanged();
                 }));
+        binding.recyclerView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            Log.d("Y", lastScrollPosition + " " + oldScrollY);
+            if(lastScrollPosition < oldScrollY) {
+                binding.appBarLayout.animate().translationY(-(float)binding.appBarLayout.getHeight());
+            }
+            else {
+                binding.appBarLayout.animate().translationY(0f);
+            }
+            lastScrollPosition = oldScrollY;
+        });
         if(taskViewModel.isEmpty())
             taskViewModel.loadFirebase(binding.recyclerView);
     }
@@ -146,5 +161,12 @@ public class TaskFragment extends Fragment {
             firebase.addTask(dateTask);
            // binding.recyclerView.getAdapter().notifyDataSetChanged();
         });
+    }
+
+    private void initCalendar(){
+//        binding.calendar.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
+//            GregorianCalendar calendar = new GregorianCalendar(year, month, dayOfMonth);
+//            Log.d("Date", calendar.getTime().toString());
+//        });
     }
 }

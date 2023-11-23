@@ -16,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class TaskViewModel extends ViewModel {
     public ArrayList<AbstractTask> taskList;
@@ -49,7 +50,7 @@ public class TaskViewModel extends ViewModel {
     }
     public void remove(String id){
         for(AbstractTask abstractTask: taskList){
-            if(abstractTask.id == id) {
+            if(Objects.equals(abstractTask.id, id)) {
                 taskList.remove(abstractTask);
                 return;
             }

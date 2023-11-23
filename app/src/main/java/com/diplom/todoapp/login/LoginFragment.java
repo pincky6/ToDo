@@ -56,24 +56,16 @@ public class LoginFragment extends Fragment {
     }
 
     private void initButtons(){
-        binding.signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(EditorsUtil.checkEditors(binding.emailTextEdit, binding.passwordEditText)){
-                    EditorsUtil.setErrorBackground(binding.emailTextEdit, binding.passwordEditText);
-                    return;
-                }
-                firebase.signInWithGmailAndPassword(binding, binding.emailTextEdit.getText().toString(),
-                                                    binding.passwordEditText.getText().toString());
+        binding.signInButton.setOnClickListener(v -> {
+            if(EditorsUtil.checkEditors(binding.emailTextEdit, binding.passwordEditText)){
+                EditorsUtil.setErrorBackground(binding.emailTextEdit, binding.passwordEditText);
+                return;
             }
+            firebase.signInWithGmailAndPassword(binding, binding.emailTextEdit.getText().toString().trim(),
+                                                binding.passwordEditText.getText().toString().trim());
         });
-        binding.signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                findNavController(binding.getRoot()).navigate(
-                        LoginFragmentDirections.showRegisterFragment()
-                );
-            }
-        });
+        binding.signUpButton.setOnClickListener(v -> findNavController(binding.getRoot()).navigate(
+                LoginFragmentDirections.showRegisterFragment()
+        ));
     }
 }
