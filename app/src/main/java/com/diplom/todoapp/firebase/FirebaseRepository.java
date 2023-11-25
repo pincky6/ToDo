@@ -64,86 +64,60 @@ public class FirebaseRepository {
         }
     }
     public void signInWithGmailAndPassword(FragmentLoginBinding binding, String gmail, String password){
-        auth.signInWithEmailAndPassword(gmail, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    if(!isVerified()) {
-                        Toast.makeText(binding.getRoot().getContext(), "Check your gmail", Toast.LENGTH_SHORT).show();
-                        sendVerification(binding);
-                    }
-                    else
-                    {
-                        initDatabase();
-                        findNavController(binding.getRoot()).navigate(
-                                LoginFragmentDirections.showEventTaskFragment()
-                        );
-                    }
+        auth.signInWithEmailAndPassword(gmail, password).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                if(!isVerified()) {
+                    Toast.makeText(binding.getRoot().getContext(), "Check your gmail", Toast.LENGTH_SHORT).show();
+                    sendVerification(binding);
                 }
-                else
-                {
-                    Toast.makeText(binding.getRoot().getContext(),
-                            "Something was wrong. Try sign up latter or check gmail and password",
-                            Toast.LENGTH_LONG).show();
+                else {
+                    initDatabase();
+                    findNavController(binding.getRoot()).navigate(
+                            LoginFragmentDirections.showEventTaskFragment()
+                    );
                 }
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+            else
+            {
                 Toast.makeText(binding.getRoot().getContext(),
-                        e.getMessage(),
+                        "Something was wrong. Try sign up latter or check gmail and password",
                         Toast.LENGTH_LONG).show();
             }
-        });
+        }).addOnFailureListener(e -> Toast.makeText(binding.getRoot().getContext(),
+                e.getMessage(),
+                Toast.LENGTH_LONG).show());
     }
 
     private void sendVerification(FragmentLoginBinding binding){
-        auth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                auth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            findNavController(binding.getRoot()).navigate(
-                                    LoginFragmentDirections.showEventTaskFragment()
-                            );
-                        }
-                        else
-                        {
-                            Toast.makeText(binding.getRoot().getContext(),
-                                    "Something was wrong. Try sign up latter or check gmail and password",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(binding.getRoot().getContext(),
-                                e.getMessage(),
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
+        auth.getCurrentUser().sendEmailVerification().addOnCompleteListener(task ->
+                auth.getCurrentUser().sendEmailVerification().addOnCompleteListener(task1 -> {
+            if(task1.isSuccessful()){
+                findNavController(binding.getRoot()).navigate(
+                        LoginFragmentDirections.showEventTaskFragment()
+                );
             }
-        });
+            else {
+                Toast.makeText(binding.getRoot().getContext(),
+                        "Something was wrong. Try sign up latter or check gmail and password",
+                        Toast.LENGTH_LONG).show();
+            }
+        }).addOnFailureListener(e -> Toast.makeText(binding.getRoot().getContext(),
+                e.getMessage(),
+                Toast.LENGTH_LONG).show()));
     }
 
     public void createUserWithGmailAndPassword(FragmentRegisterBinding binding, String gmail, String password){
-        auth.createUserWithEmailAndPassword(gmail, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(binding.getRoot().getContext(), "You register", Toast.LENGTH_SHORT).show();
-                    findNavController(binding.getRoot()).navigate(
-                            RegisterFragmentDirections.showLoginFragment()
-                    );
-                }
-                else
-                {
-                    Toast.makeText(binding.getRoot().getContext(),
-                            "Something was wrong. Try sign up latter or check gmail and password",
-                            Toast.LENGTH_LONG).show();
-                }
+        auth.createUserWithEmailAndPassword(gmail, password).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                Toast.makeText(binding.getRoot().getContext(), "You register", Toast.LENGTH_SHORT).show();
+                findNavController(binding.getRoot()).navigate(
+                        RegisterFragmentDirections.showLoginFragment()
+                );
+            }
+            else {
+                Toast.makeText(binding.getRoot().getContext(),
+                        "Something was wrong. Try sign up latter or check gmail and password",
+                        Toast.LENGTH_LONG).show();
             }
         }).addOnFailureListener(e -> Toast.makeText(binding.getRoot().getContext(),
                 e.getMessage(),
@@ -164,12 +138,11 @@ public class FirebaseRepository {
                 String dataType = key.split("-")[0];
                 if(dataType.equals("Task")) {
                     abstractTask =
-                            (com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task)
-                                    snapshot.getValue(com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task.class);
+                            snapshot.getValue(com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task.class);
                 }
                 else
                 {
-                    abstractTask = (DateTask)snapshot.getValue(DateTask.class);
+                    abstractTask = snapshot.getValue(DateTask.class);
                 }
                 if (abstractTask != null) {
                     dataReceivedListener.onDataReceived(abstractTask);
@@ -195,13 +168,12 @@ public class FirebaseRepository {
                     String key = strs[0];
                     if(key.equals("Task")){
                         com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task task =
-                                (com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task)
-                                        snapshot.getValue(com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task.class);
+                                snapshot.getValue(com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task.class);
                         task.id = snapshot.getKey();
                         taskList.add(task);
                     }
                     else if(key.equals("DateTask")){
-                        DateTask dateTask = (DateTask) snapshot.getValue(DateTask.class);
+                        DateTask dateTask = snapshot.getValue(DateTask.class);
                         dateTask.id = snapshot.getKey();
                         taskList.add(dateTask);
                     }
