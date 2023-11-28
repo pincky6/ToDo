@@ -27,6 +27,17 @@ public class PriorityUtil {
         }
         return 0;
     }
+    public static int getPriorityColor(String priority){
+        switch (priority){
+            case "Low":
+                return Color.GREEN;
+            case "Middle":
+                return Color.YELLOW;
+            case "High":
+                return Color.RED;
+        }
+        return Color.GREEN;
+    }
     public static int getPriorityIndex(Priority priority){
         switch (priority){
             case LOW:
