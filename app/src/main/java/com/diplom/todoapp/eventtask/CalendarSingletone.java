@@ -9,6 +9,7 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,6 +49,11 @@ public class CalendarSingletone {
                 Integer.parseInt(taskDayFormat[1]),
                 Integer.parseInt(taskDayFormat[0]));
     }
+    public boolean compareCalendarDays(CalendarDay lhs, CalendarDay rhs){
+        return lhs.getDay() == rhs.getDay() &&
+                lhs.getMonth() == rhs.getMonth() &&
+                lhs.getYear() == rhs.getYear();
+    }
     public HashMap<CalendarDay, HashSet<Integer>> getDayTaskCalendarColors(){
         return dayTaskCalendarColors;
     }
@@ -69,6 +75,7 @@ public class CalendarSingletone {
     public void put(CalendarDay day, HashSet<Integer> colors){
         dayTaskCalendarColors.put(day, colors);
     }
+
     public SimpleDateFormat getFormat(){
         return format;
     }
