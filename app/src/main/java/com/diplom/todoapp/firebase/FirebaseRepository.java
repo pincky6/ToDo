@@ -4,9 +4,11 @@ package com.diplom.todoapp.firebase;
 import static androidx.navigation.ViewKt.findNavController;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +34,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import kotlin.jvm.internal.Lambda;
 
 public class FirebaseRepository {
     private static FirebaseRepository firebaseRepository = null;
@@ -157,14 +161,13 @@ public class FirebaseRepository {
             }
         });
     }
-    public void readAllTasks(ArrayList<AbstractTask> taskList, RecyclerView recyclerView){
+    public void readAllTasks(ArrayList<AbstractTask> taskList, RecyclerView recyclerView, InitExpression initLambda){
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     if(snapshot.getKey() == null) return;
                     String[] strs = snapshot.getKey().split("-");
-                    if(strs == null) return;
                     String key = strs[0];
                     if(key.equals("Task")){
                         com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task task =
@@ -178,6 +181,8 @@ public class FirebaseRepository {
                         taskList.add(dateTask);
                     }
                 }
+                if(initLambda != null)
+                    initLambda.init(taskList);
                 recyclerView.getAdapter().notifyDataSetChanged();
             }
 
