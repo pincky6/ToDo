@@ -15,6 +15,8 @@ import com.diplom.todoapp.eventtask.listeners.TaskListener;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 
+import java.text.SimpleDateFormat;
+
 public class DateTaskHolder extends AbstractTaskHolder {
     ItemDateTaskBinding binding;
     public DateTaskHolder(@NonNull ItemDateTaskBinding binding) {
@@ -27,11 +29,11 @@ public class DateTaskHolder extends AbstractTaskHolder {
                      RemoveListener removeListener){
         if(!(abstractTask instanceof DateTask)) throw new IllegalArgumentException("wrong type of argument in date task holder");
         DateTask dateTask = (DateTask) abstractTask;
-
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
         binding.title.setText(dateTask.title);
-        binding.date.setText(dateTask.createDate.toString());
-        binding.dateStart.setText(dateTask.dateStart.toString());
-        binding.dateEnd.setText(dateTask.dateEnd.toString());
+        binding.date.setText(formatDate.format(dateTask.createDate));
+        binding.dateStart.setText(formatDate.format(dateTask.dateStart));
+        binding.dateEnd.setText(formatDate.format(dateTask.dateEnd));
         binding.describe.setText(dateTask.describe);
 
         int color = PriorityUtil.getPriorityColor(PriorityUtil.getPriorityEnum(dateTask.priority));
