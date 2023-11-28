@@ -3,6 +3,7 @@
 
     <string name="action_show_task_list">Show Full Task List</string>
     <string name="action_settings">Settings</string>
+    <string name="action_filter">Filter</string>
 
     <string name="add_new_task">Add New Task</string>
     <string name="add_new_event">Add New Event</string>
