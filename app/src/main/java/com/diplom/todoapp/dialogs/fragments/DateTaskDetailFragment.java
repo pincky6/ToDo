@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.databinding.FragmentDateTaskDetailBinding;
 import com.diplom.todoapp.dialogs.viewmodels.DateTaskDetailViewModel;
@@ -21,7 +22,7 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
 
     private DateTaskDetailViewModel dateTaskDetailViewModel;
     public FragmentDateTaskDetailBinding binding = null;
-    public static final String DATE_TASK_KEY = "DATE_TASK_KEY";
+    public static final String DATE_TASK_KEY = "TASK_KEY";
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
