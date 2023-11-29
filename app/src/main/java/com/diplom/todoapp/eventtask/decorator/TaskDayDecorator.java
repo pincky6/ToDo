@@ -1,17 +1,10 @@
 package com.diplom.todoapp.eventtask.decorator;
 
-import android.util.Log;
-
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Objects;
-import java.util.TreeSet;
 
 public class TaskDayDecorator implements DayViewDecorator {
 

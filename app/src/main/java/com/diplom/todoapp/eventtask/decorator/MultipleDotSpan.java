@@ -5,11 +5,9 @@ import static com.prolificinteractive.materialcalendarview.spans.DotSpan.DEFAULT
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.text.style.LineBackgroundSpan;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class MultipleDotSpan implements LineBackgroundSpan {

@@ -2,14 +2,12 @@ package com.diplom.todoapp.eventtask;
 
 import androidx.annotation.NonNull;
 
-import com.diplom.todoapp.eventtask.decorator.TaskDayDecorator;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.utils.PriorityUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;

@@ -1,8 +1,6 @@
 package com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

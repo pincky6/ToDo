@@ -1,8 +1,5 @@
 package com.diplom.todoapp.eventtask;
 
-
-import com.diplom.todoapp.eventtask.CalendarSingletone;
-
 import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
