@@ -20,4 +20,14 @@
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
     <string name="register">Register</string>
+
+    <string name="task_filter_title">Tasks</string>
+    <string name="priority_filter_title">Priorities</string>
+    <string name="ok_button_filter">OK</string>
+    <string name="cancel_button_filter">Cancel</string>
+    <string name="task_filter">Task</string>
+    <string name="date_task_filter">Date Task</string>
+    <string name="low_filter_priority">Low</string>
+    <string name="middle_filter_priority">Middle</string>
+    <string name="high_filter_priority">High</string>
 </resources>
