@@ -41,13 +41,13 @@ public class CalendarSingletone {
         }
         return calendarSingletone;
     }
-    public CalendarDay getCalendarDay(@NonNull Date date){
+    public static CalendarDay getCalendarDay(@NonNull Date date){
         String[] taskDayFormat = format.format(date).split("\\.");
         return CalendarDay.from(Integer.parseInt(taskDayFormat[2]),
                 Integer.parseInt(taskDayFormat[1]),
                 Integer.parseInt(taskDayFormat[0]));
     }
-    public boolean compareCalendarDays(CalendarDay lhs, CalendarDay rhs){
+    public static boolean compareCalendarDays(CalendarDay lhs, CalendarDay rhs){
         return lhs.getDay() == rhs.getDay() &&
                 lhs.getMonth() == rhs.getMonth() &&
                 lhs.getYear() == rhs.getYear();

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.databinding.FragmentEventTaskBinding;
 import com.diplom.todoapp.dialogs.fragments.TaskDetailFragment;
+import com.diplom.todoapp.dialogs.fragments.TaskFilterFragmentDialog;
 import com.diplom.todoapp.eventtask.decorator.Decorators;
 import com.diplom.todoapp.eventtask.decorator.TaskDayDecorator;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskAdapter;
@@ -40,13 +41,17 @@ public class TaskFragment extends Fragment {
     private TaskViewModel taskViewModel;
     private FirebaseRepository firebase;
     private CalendarSingletone calendarSingletone;
-    private Decorators decorators = new Decorators();
+    private Decorators decorators;
+    private TaskFilter filter;
+    private CalendarDay choosedDay;
+    int currentMonth = -1;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firebase = FirebaseRepository.getInstance();
         taskViewModel = new TaskViewModel();
-
+        decorators = new Decorators();
+        filter = new TaskFilter(0);
     }
     @Nullable
     @Override
@@ -77,15 +82,16 @@ public class TaskFragment extends Fragment {
         });
         binding.toolbar.setOnMenuItemClickListener(item -> {
             if(item.getItemId() == R.id.action_show_task_list){
+                choosedDay = null;
                 binding.calendar.setSelectedDate((CalendarDay)null);
-                resetAdapterList(taskViewModel.taskList);
+                resetAdapterList(filter.filter(taskViewModel.taskList, choosedDay, currentMonth));
             }
             else if(item.getItemId() == R.id.action_settings){
                 Toast.makeText(getContext(), "smthj", Toast.LENGTH_SHORT).show();
             }
             else if(item.getItemId() == R.id.action_filter){
                 findNavController(getView()).navigate(
-                        TaskFragmentDirections.showTaskFilterDialog()
+                        TaskFragmentDirections.showTaskFilterDialog(filter.getMask())
                 );
             }
             return false;
@@ -134,6 +140,7 @@ public class TaskFragment extends Fragment {
             initDecorators();
             calendarSingletone = CalendarSingletone.initialize(taskViewModel.taskList);
             CalendarDay day = calendarSingletone.getCalendarDay(new Date());
+            currentMonth = day.getMonth();
             ArrayList<AbstractTask> showedTask;
             showedTask = taskViewModel.filterForMonth(day);
             resetAdapterList(showedTask);
@@ -158,28 +165,36 @@ public class TaskFragment extends Fragment {
             }
             firebase.addTask(abstractTask);
         });
+        getParentFragmentManager().setFragmentResultListener(TaskFilterFragmentDialog.FILTER_KEY, getViewLifecycleOwner(), ((requestKey, result) -> {
+            Integer mask = (Integer) result.get(requestKey);
+            filter.setMask(mask);
+            resetAdapterList(filter.filter(taskViewModel.taskList, choosedDay, currentMonth));
+        }));
     }
     private void initCalendar(){
         binding.calendar.setOnMonthChangedListener((widget, date) ->{
             ArrayList<AbstractTask> tasks;
             CalendarDay selectedDate = binding.calendar.getSelectedDate();
             calendarSingletone = CalendarSingletone.initialize(taskViewModel.taskList);
+            currentMonth = date.getMonth();
             if(selectedDate != null &&
                     selectedDate.getMonth() == date.getMonth() &&
                     selectedDate.getYear() == date.getYear()){
                 tasks = taskViewModel.filterForDay(selectedDate);
+                resetAdapterList(filter.filter(tasks, selectedDate, currentMonth));
             }
             else {
                 tasks = taskViewModel.filterForMonth(date);
+                resetAdapterList(filter.filter(tasks, null, currentMonth));
             }
-            resetAdapterList(tasks);
         });
 
         binding.calendar.setOnDateChangedListener((widget, date, selected) -> {
             ArrayList<AbstractTask> tasks;
             calendarSingletone = CalendarSingletone.initialize(taskViewModel.taskList);
             tasks = taskViewModel.filterForDay(date);
-            resetAdapterList(tasks);
+            choosedDay = date;
+            resetAdapterList(filter.filter(tasks, choosedDay, currentMonth));
         });
     }
     private void initDecorators(){
