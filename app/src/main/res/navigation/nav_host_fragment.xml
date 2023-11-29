@@ -84,5 +84,9 @@
         android:id="@+id/taskFilterFragmentDialog"
         android:name="com.diplom.todoapp.dialogs.fragments.TaskFilterFragmentDialog"
         android:label="TaskFilterFragmentDialog"
-        tools:layout="@layout/fragment_event_filter_dialog"/>
+        tools:layout="@layout/fragment_event_filter_dialog">
+        <argument
+            android:name="mask"
+            app:argType="java.lang.Integer"/>
+    </dialog>
 </navigation>
