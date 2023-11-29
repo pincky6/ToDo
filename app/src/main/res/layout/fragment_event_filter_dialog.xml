@@ -78,7 +78,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view2" />
 
     <CheckBox
-        android:id="@+id/MiddlePriorityCheckBox"
+        android:id="@+id/middlePriorityCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -88,14 +88,14 @@
         app:layout_constraintTop_toBottomOf="@+id/lowPriorityCheckBox" />
 
     <CheckBox
-        android:id="@+id/HighPriorityCheckBox"
+        android:id="@+id/highPriorityCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/high_filter_priority"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MiddlePriorityCheckBox" />
+        app:layout_constraintTop_toBottomOf="@+id/middlePriorityCheckBox" />
 
     <Button
         android:id="@+id/okButton"
@@ -109,7 +109,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/HighPriorityCheckBox" />
+        app:layout_constraintTop_toBottomOf="@+id/highPriorityCheckBox" />
 
     <Button
         android:id="@+id/cancelButton"
@@ -124,6 +124,6 @@
         app:layout_constraintEnd_toStartOf="@+id/okButton"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/HighPriorityCheckBox" />
+        app:layout_constraintTop_toBottomOf="@+id/highPriorityCheckBox" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

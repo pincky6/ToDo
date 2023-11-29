@@ -29,6 +29,9 @@
         <action
             android:id="@+id/showLoginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/showTaskFilterDialog"
+            app:destination="@id/taskFilterFragmentDialog" />
     </fragment>
     <fragment
         android:id="@+id/taskDetailFragment"
@@ -77,4 +80,9 @@
             android:id="@+id/showLoginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/taskFilterFragmentDialog"
+        android:name="com.diplom.todoapp.dialogs.fragments.TaskFilterFragmentDialog"
+        android:label="TaskFilterFragmentDialog"
+        tools:layout="@layout/fragment_event_filter_dialog"/>
 </navigation>

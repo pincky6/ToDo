@@ -33,7 +33,6 @@ public class DateTaskDetailViewModel {
                 SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
                 SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
                 try {
-                    String createDate = formatDate.format(data.createDate);
                     String dateStart = formatDate.format(dateTask.dateStart);
                     String dateEnd = formatDate.format(dateTask.dateEnd);
                     String timeStart = formatTime.format(dateTask.dateStart);

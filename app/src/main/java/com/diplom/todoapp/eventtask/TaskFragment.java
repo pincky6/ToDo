@@ -83,6 +83,11 @@ public class TaskFragment extends Fragment {
             else if(item.getItemId() == R.id.action_settings){
                 Toast.makeText(getContext(), "smthj", Toast.LENGTH_SHORT).show();
             }
+            else if(item.getItemId() == R.id.action_filter){
+                findNavController(getView()).navigate(
+                        TaskFragmentDirections.showTaskFilterDialog()
+                );
+            }
             return false;
         });
         binding.fab.setOnClickListener(v -> {
