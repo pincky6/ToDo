@@ -18,11 +18,11 @@ public class PriorityUtil {
     }
     public static int getPriorityColor(Priority priority){
         switch (priority.getPriority()){
-            case 1:
-                return Color.GREEN;
-            case 2:
-                return Color.YELLOW;
             case 4:
+                return Color.GREEN;
+            case 8:
+                return Color.YELLOW;
+            case 16:
                 return Color.RED;
         }
         return 0;
