@@ -27,37 +27,31 @@
             android:id="@+id/showDateTaskDetailFragment"
             app:destination="@id/dateTaskDetailFragment" />
         <action
-            android:id="@+id/showLoginFragment"
-            app:destination="@id/loginFragment" />
-        <action
             android:id="@+id/showTaskFilterDialog"
             app:destination="@id/taskFilterFragmentDialog" />
+        <action
+            android:id="@+id/showSearchFragment"
+            app:destination="@id/taskSearchFragment" />
     </fragment>
     <fragment
         android:id="@+id/taskDetailFragment"
-        android:name="com.diplom.todoapp.dialogs.fragments.TaskDetailFragment"
+        android:name="com.diplom.todoapp.dialogs.eventtaskfragments.TaskDetailFragment"
         android:label="TaskDetailFragment"
         tools:layout="@layout/fragment_task_detail">
         <argument
             android:name="taskID"
             app:argType="java.lang.String" />
-        <action
-            android:id="@+id/showEventTaskFragment"
-            app:destination="@id/eventTaskFragment" />
 
     </fragment>
     <fragment
         android:id="@+id/dateTaskDetailFragment"
-        android:name="com.diplom.todoapp.dialogs.fragments.DateTaskDetailFragment"
+        android:name="com.diplom.todoapp.dialogs.eventtaskfragments.DateTaskDetailFragment"
         android:label="DateTaskDetailFragment"
         tools:layout="@layout/fragment_date_task_detail">
 
         <argument
             android:name="dateTaskID"
             app:argType="java.lang.String" />
-        <action
-            android:id="@+id/showEventTaskFragment"
-            app:destination="@id/eventTaskFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -75,18 +69,36 @@
         android:id="@+id/registerFragment"
         android:name="com.diplom.todoapp.login.RegisterFragment"
         android:label="RegisterFragment"
-        tools:layout="@layout/fragment_register">
+        tools:layout="@layout/fragment_register"/>
+    <fragment
+        android:id="@+id/taskSearchFragment"
+        android:name="com.diplom.todoapp.searchs.TaskSearchFragment"
+        android:label="TaskSearchFragment"
+        tools:layout="@layout/fragment_task_search">
+        <argument
+            android:name="searchByDate"
+            app:argType="java.lang.Boolean"/>
         <action
-            android:id="@+id/showLoginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/showDatePicker"
+            app:destination="@id/datePickerFragment" />
+        <action
+            android:id="@+id/showTaskDetailFromSearch"
+            app:destination="@id/taskDetailFragment" />
+        <action
+            android:id="@+id/showDateTaskDetailFromSearch"
+            app:destination="@id/dateTaskDetailFragment" />
     </fragment>
     <dialog
         android:id="@+id/taskFilterFragmentDialog"
-        android:name="com.diplom.todoapp.dialogs.fragments.TaskFilterFragmentDialog"
+        android:name="com.diplom.todoapp.dialogs.filterfragment.TaskFilterFragmentDialog"
         android:label="TaskFilterFragmentDialog"
         tools:layout="@layout/fragment_event_filter_dialog">
         <argument
             android:name="mask"
             app:argType="java.lang.Integer"/>
     </dialog>
+    <dialog
+        android:id="@+id/datePickerFragment"
+        android:name="com.diplom.todoapp.dialogs.DatePickerDialogFragment"
+        android:label="DatePickerFragment"/>
 </navigation>
