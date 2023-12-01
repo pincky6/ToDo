@@ -14,7 +14,6 @@ import com.diplom.todoapp.dialogs.OnDataReceivedListener;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 import com.diplom.todoapp.login.LoginFragmentDirections;
-import com.diplom.todoapp.login.RegisterFragmentDirections;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -100,9 +99,7 @@ public class FirebaseRepository {
         auth.createUserWithEmailAndPassword(gmail, password).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 Toast.makeText(binding.getRoot().getContext(), "You register", Toast.LENGTH_SHORT).show();
-                findNavController(binding.getRoot()).navigate(
-                        RegisterFragmentDirections.showLoginFragment()
-                );
+                findNavController(binding.getRoot()).popBackStack();
             }
             else {
                 Toast.makeText(binding.getRoot().getContext(),

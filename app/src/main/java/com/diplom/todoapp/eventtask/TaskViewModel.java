@@ -29,6 +29,9 @@ public class TaskViewModel extends ViewModel {
         }
         throw new IllegalArgumentException("wrong id");
     }
+    public void add(AbstractTask task){
+        taskList.add(task);
+    }
     public void remove(String id){
         for(AbstractTask abstractTask: taskList){
             if(Objects.equals(abstractTask.id, id)) {

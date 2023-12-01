@@ -21,7 +21,7 @@ public class Decorators {
     }
     public void addDecorator(TaskDayDecorator decorator, FragmentEventTaskBinding binding){
         decorators.add(decorator);
-        binding.calendar.addDecorator(decorator);
+        binding.calendar.addDecorators(decorators);
     }
     public void removeDecorator(TaskDayDecorator decorator){
         decorators.remove(decorator);

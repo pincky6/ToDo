@@ -58,11 +58,11 @@ public class TaskFilter {
         }).collect(Collectors.toList());
     }
 
-    public int getTypeMask(String type){
+    public int getTypeMask(@NonNull String type){
         if(type.equals("DateTask")) return TASK_MASK.DATE_TASK.get();
         return TASK_MASK.TASK.get();
     }
-    public boolean getTypeRes(String type){
+    public boolean getTypeRes(@NonNull String type){
         int typeMask = (mask & TASK_MASK.TASK.get()) |
                        (mask & TASK_MASK.DATE_TASK.get());
         if(typeMask == 0 || typeMask == 3){
@@ -70,11 +70,24 @@ public class TaskFilter {
         }
         return !((typeMask & getTypeMask(type)) == 0);
     }
-    public boolean getPriorityRes(String priority){
+    public boolean getPriorityRes(@NonNull String priority){
         int typeMask = (mask & TASK_MASK.LOW_PRIORITY.get()) |
                        (mask & TASK_MASK.MIDDLE_PRIORITY.get()) |
                        (mask & TASK_MASK.HIGH_PRIORITY.get());
         if(typeMask == 0 || typeMask == 28) return true;
         return (mask & PriorityUtil.getPriorityEnum(priority).getPriority()) != 0;
+    }
+    public ArrayList<AbstractTask> filterByDate(@NonNull ArrayList<AbstractTask> list, @Nullable Date date){
+        if (date == null) return list;
+       return (ArrayList<AbstractTask>) list.stream().filter(task -> {
+            CalendarDay searchDay = CalendarSingletone.getCalendarDay(date);
+            CalendarDay taskDay = CalendarSingletone.getCalendarDay(task.dateStart);
+            return CalendarSingletone.compareCalendarDays(searchDay, taskDay);
+        }).collect(Collectors.toList());
+    }
+    public ArrayList<AbstractTask> filterByTitle(@NonNull ArrayList<AbstractTask> list, @Nullable String title){
+        if(title == null) return list;
+        return (ArrayList<AbstractTask>) list.stream().filter(task -> task.title.contains(title))
+                .collect(Collectors.toList());
     }
 }

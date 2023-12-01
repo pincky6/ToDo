@@ -30,17 +30,14 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentRegisterBinding.inflate(inflater, container, false);
         EditorsUtil.initTextWatchers(binding.emailTextEdit, binding.passwordEditText);
-        binding.registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(EditorsUtil.checkEditors(binding.emailTextEdit, binding.passwordEditText)){
-                    EditorsUtil.setErrorBackground(binding.emailTextEdit, binding.passwordEditText);
-                    return;
-                }
-                firebaseRepository.createUserWithGmailAndPassword(binding,
-                        binding.emailTextEdit.getText().toString().trim(),
-                        binding.passwordEditText.getText().toString().trim());
+        binding.registerButton.setOnClickListener(v -> {
+            if(EditorsUtil.checkEditors(binding.emailTextEdit, binding.passwordEditText)){
+                EditorsUtil.setErrorBackground(binding.emailTextEdit, binding.passwordEditText);
+                return;
             }
+            firebaseRepository.createUserWithGmailAndPassword(binding,
+                    binding.emailTextEdit.getText().toString().trim(),
+                    binding.passwordEditText.getText().toString().trim());
         });
         initToolbar();
         return binding.getRoot();
@@ -59,13 +56,6 @@ public class RegisterFragment extends Fragment {
 
     public void initToolbar(){
         binding.toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);
-        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                findNavController(getView()).navigate(
-                        RegisterFragmentDirections.showLoginFragment()
-                );
-            }
-        });
+        binding.toolbar.setNavigationOnClickListener(v -> findNavController(getView()).popBackStack());
     }
 }

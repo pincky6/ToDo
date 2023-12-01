@@ -2,6 +2,7 @@ package com.diplom.todoapp.eventtask;
 
 import androidx.annotation.NonNull;
 
+import com.diplom.todoapp.eventtask.decorator.Decorators;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.utils.PriorityUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -16,8 +17,13 @@ public class CalendarSingletone {
     private static final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
     private HashMap<CalendarDay, HashSet<Integer>> dayTaskCalendarColors = new HashMap<>();
     private static CalendarSingletone calendarSingletone;
+    private Decorators decorators;
+    public Decorators getDecorators(){
+        return decorators;
+    }
 
     private CalendarSingletone(ArrayList<AbstractTask> tasks){
+        decorators = new Decorators();
         for(AbstractTask task: tasks) {
             HashSet<Integer> prioritiesColor = new HashSet<>();
             CalendarDay day = getCalendarDay(task.dateStart);
