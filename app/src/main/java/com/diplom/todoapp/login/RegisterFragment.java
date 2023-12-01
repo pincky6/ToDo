@@ -62,9 +62,7 @@ public class RegisterFragment extends Fragment {
         binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findNavController(getView()).navigate(
-                        RegisterFragmentDirections.showLoginFragment()
-                );
+                findNavController(getView()).popBackStack();
             }
         });
     }

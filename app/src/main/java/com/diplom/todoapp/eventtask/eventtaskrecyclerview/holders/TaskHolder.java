@@ -5,12 +5,12 @@ import android.app.AlertDialog;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.utils.PriorityUtil;
 import com.diplom.todoapp.databinding.ItemTaskBinding;
 import com.diplom.todoapp.eventtask.listeners.RemoveListener;
 import com.diplom.todoapp.eventtask.listeners.TaskListener;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 
 import java.text.SimpleDateFormat;
 

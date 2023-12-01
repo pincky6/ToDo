@@ -1,15 +1,16 @@
-package com.diplom.todoapp.eventtask.decorator;
+package com.diplom.todoapp.eventtask.calendar.decorator;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
+
 
 import java.util.HashSet;
 
 public class TaskDayDecorator implements DayViewDecorator {
 
     private final CalendarDay day;
-    private final HashSet<Integer> colors;
+    private HashSet<Integer> colors;
     public TaskDayDecorator(CalendarDay day, HashSet<Integer> colors) {
         this.day = day;
         this.colors = colors;
@@ -19,6 +20,9 @@ public class TaskDayDecorator implements DayViewDecorator {
     }
     public HashSet<Integer> getColors(){
         return colors;
+    }
+    public void setColors(HashSet<Integer> colors){
+        this.colors = colors;
     }
     @Override
     public boolean shouldDecorate(CalendarDay day) {

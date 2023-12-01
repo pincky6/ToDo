@@ -5,13 +5,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.diplom.todoapp.eventtask.listeners.RemoveListener;
-import com.diplom.todoapp.eventtask.listeners.TaskListener;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.AbstractTaskHolder;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskHolderFactory;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskType;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
+import com.diplom.todoapp.eventtask.listeners.RemoveListener;
+import com.diplom.todoapp.eventtask.listeners.TaskListener;
 
 import java.util.ArrayList;
 

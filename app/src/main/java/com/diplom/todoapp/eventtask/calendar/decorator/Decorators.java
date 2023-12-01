@@ -1,6 +1,5 @@
-package com.diplom.todoapp.eventtask.decorator;
+package com.diplom.todoapp.eventtask.calendar.decorator;
 
-import com.diplom.todoapp.databinding.FragmentEventTaskBinding;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
@@ -19,19 +18,10 @@ public class Decorators {
     public void addDecorator(TaskDayDecorator decorator){
         decorators.add(decorator);
     }
-    public void addDecorator(TaskDayDecorator decorator, FragmentEventTaskBinding binding){
-        decorators.add(decorator);
-        binding.calendar.addDecorator(decorator);
-    }
     public void removeDecorator(TaskDayDecorator decorator){
         decorators.remove(decorator);
     }
-    public void removeDecorator(CalendarDay day, FragmentEventTaskBinding binding){
-        TaskDayDecorator removedDecorator = search(day);
-        if(removedDecorator == null) return;
-        binding.calendar.removeDecorator(removedDecorator);
-        removeDecorator(removedDecorator);
-    }
+
     public TaskDayDecorator search(CalendarDay day){
         TaskDayDecorator searchedDecorator = null;
         for(TaskDayDecorator decorator: decorators){

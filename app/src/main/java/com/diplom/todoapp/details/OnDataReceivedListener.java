@@ -1,4 +1,4 @@
-package com.diplom.todoapp.dialogs;
+package com.diplom.todoapp.details;
 
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 
