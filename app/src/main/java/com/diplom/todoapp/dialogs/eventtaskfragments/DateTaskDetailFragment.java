@@ -44,8 +44,7 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
                 binding.dateTaskEditTextTime, binding.dateTaskEditTextDate2,
                 binding.dateTaskEditTextTime2);
         initSpinners(binding.dateTaskReminder, binding.dateTaskPriority);
-        initToolbar(binding.toolbar, binding.getRoot(),
-                DateTaskDetailFragmentDirections.showEventTaskFragment());
+        initToolbar(binding.toolbar, binding.getRoot());
         initDateInputs(binding.dateTaskEditTextDate,
                         binding.dateTaskEditTextDate2);
         initTimeInputs(binding.dateTaskEditTextTime,
@@ -81,9 +80,7 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
             Bundle bundle = new Bundle();
             bundle.putSerializable(DATE_TASK_KEY, dateTaskDetailViewModel.getDateTask());
             getParentFragmentManager().setFragmentResult(DATE_TASK_KEY, bundle);
-            findNavController(binding.getRoot()).navigate(
-                    DateTaskDetailFragmentDirections.showEventTaskFragment()
-            );
+            findNavController(binding.getRoot()).popBackStack();
         });
     }
 }

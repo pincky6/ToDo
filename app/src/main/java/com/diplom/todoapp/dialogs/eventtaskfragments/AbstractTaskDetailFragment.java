@@ -36,11 +36,9 @@ public abstract class AbstractTaskDetailFragment extends Fragment {
                         priorities);
         taskPriority.setAdapter(prioritiyAdapter);
     }
-    protected void initToolbar(MaterialToolbar toolbar, View parentView, NavDirections direction){
+    protected void initToolbar(MaterialToolbar toolbar, View parentView){
         toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);
-        toolbar.setNavigationOnClickListener(v -> findNavController(parentView).navigate(
-                direction
-        ));
+        toolbar.setNavigationOnClickListener(v -> findNavController(parentView).popBackStack());
     }
     protected void showDatePickerDialog(EditText textInputEditText){
         DatePickerDialog datePicker = new DatePickerDialog(getContext());

@@ -41,8 +41,7 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
         EditorsUtil.initTextWatchers(binding.taskTitle, binding.taskDescribe,
                         binding.taskEditTextDate, binding.taskEditTextTime);
         initSpinners(binding.taskReminder, binding.taskPriority);
-        initToolbar(binding.toolbar, binding.getRoot(),
-                TaskDetailFragmentDirections.showEventTaskFragment());
+        initToolbar(binding.toolbar, binding.getRoot());
         initDateInputs(binding.taskEditTextDate);
         initTimeInputs(binding.taskEditTextTime);
         initSaveButton();
@@ -74,9 +73,7 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
             Bundle bundle = new Bundle();
             bundle.putSerializable(TASK_KEY, taskDetailViewModel.getTask());
             getParentFragmentManager().setFragmentResult(TASK_KEY, bundle);
-            findNavController(binding.getRoot()).navigate(
-                    TaskDetailFragmentDirections.showEventTaskFragment()
-            );
+            findNavController(binding.getRoot()).popBackStack();
         });
     }
 }
