@@ -29,7 +29,7 @@
             android:id="@+id/calendarFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.diplom.todoapp.eventtask.MaterialCalendarFragment"
+            android:name="com.diplom.todoapp.eventtask.calendar.decorator.MaterialCalendarFragment"
             app:layout_scrollFlags="enterAlways|scroll"/>
 
 
@@ -37,7 +37,7 @@
     </com.google.android.material.appbar.AppBarLayout>
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/taskListFragment"
-            android:name="com.diplom.todoapp.eventtask.TaskListFragment"
+            android:name="com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskListFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"

@@ -1,4 +1,4 @@
-package com.diplom.todoapp.eventtask;
+package com.diplom.todoapp.eventtask.eventtaskrecyclerview;
 
 
 import androidx.lifecycle.ViewModel;

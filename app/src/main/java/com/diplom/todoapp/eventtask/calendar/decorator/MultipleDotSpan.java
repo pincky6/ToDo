@@ -1,4 +1,4 @@
-package com.diplom.todoapp.eventtask.decorator;
+package com.diplom.todoapp.eventtask.calendar.decorator;
 
 import static com.prolificinteractive.materialcalendarview.spans.DotSpan.DEFAULT_RADIUS;
 
