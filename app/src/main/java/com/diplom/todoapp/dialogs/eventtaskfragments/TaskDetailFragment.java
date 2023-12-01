@@ -1,4 +1,4 @@
-package com.diplom.todoapp.dialogs.fragments;
+package com.diplom.todoapp.dialogs.eventtaskfragments;
 
 import static androidx.navigation.ViewKt.findNavController;
 
@@ -11,9 +11,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.databinding.FragmentTaskDetailBinding;
-import com.diplom.todoapp.dialogs.viewmodels.TaskDetailViewModel;
+import com.diplom.todoapp.utils.EditorsUtil;
+import com.diplom.todoapp.dialogs.eventtaskviewmodels.TaskDetailViewModel;
 
 import java.io.IOException;
 public class TaskDetailFragment extends AbstractTaskDetailFragment {

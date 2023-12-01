@@ -1,4 +1,4 @@
-package com.diplom.todoapp.dialogs.viewmodels;
+package com.diplom.todoapp.dialogs.eventtaskviewmodels;
 
 public class NoteDetailViewModel {
 }

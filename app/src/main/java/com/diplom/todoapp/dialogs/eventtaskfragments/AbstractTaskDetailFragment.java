@@ -1,4 +1,4 @@
-package com.diplom.todoapp.dialogs.fragments;
+package com.diplom.todoapp.dialogs.eventtaskfragments;
 
 import static androidx.navigation.ViewKt.findNavController;
 
@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavDirections;
 
 import com.diplom.todoapp.R;
 import com.google.android.material.appbar.MaterialToolbar;
