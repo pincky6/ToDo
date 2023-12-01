@@ -1,4 +1,4 @@
-package com.diplom.todoapp.dialogs.fragments;
+package com.diplom.todoapp.details.fragments;
 
 import static androidx.navigation.ViewKt.findNavController;
 
@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.databinding.FragmentDateTaskDetailBinding;
-import com.diplom.todoapp.dialogs.viewmodels.DateTaskDetailViewModel;
+import com.diplom.todoapp.details.viewmodels.DateTaskDetailViewModel;
 
 import java.io.IOException;
 

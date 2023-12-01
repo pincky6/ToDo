@@ -1,4 +1,4 @@
-package com.diplom.todoapp.dialogs.fragments;
+package com.diplom.todoapp.details.fragments;
 
 import static androidx.navigation.ViewKt.findNavController;
 

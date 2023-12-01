@@ -26,35 +26,26 @@
         <action
             android:id="@+id/showDateTaskDetailFragment"
             app:destination="@id/dateTaskDetailFragment" />
-        <action
-            android:id="@+id/showLoginFragment"
-            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/taskDetailFragment"
-        android:name="com.diplom.todoapp.dialogs.fragments.TaskDetailFragment"
+        android:name="com.diplom.todoapp.details.fragments.TaskDetailFragment"
         android:label="TaskDetailFragment"
         tools:layout="@layout/fragment_task_detail">
         <argument
             android:name="taskID"
             app:argType="java.lang.String" />
-        <action
-            android:id="@+id/showEventTaskFragment"
-            app:destination="@id/eventTaskFragment" />
 
     </fragment>
     <fragment
         android:id="@+id/dateTaskDetailFragment"
-        android:name="com.diplom.todoapp.dialogs.fragments.DateTaskDetailFragment"
+        android:name="com.diplom.todoapp.details.fragments.DateTaskDetailFragment"
         android:label="DateTaskDetailFragment"
         tools:layout="@layout/fragment_date_task_detail">
 
         <argument
             android:name="dateTaskID"
             app:argType="java.lang.String" />
-        <action
-            android:id="@+id/showEventTaskFragment"
-            app:destination="@id/eventTaskFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -72,9 +63,5 @@
         android:id="@+id/registerFragment"
         android:name="com.diplom.todoapp.login.RegisterFragment"
         android:label="RegisterFragment"
-        tools:layout="@layout/fragment_register">
-        <action
-            android:id="@+id/showLoginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_register"/>
 </navigation>

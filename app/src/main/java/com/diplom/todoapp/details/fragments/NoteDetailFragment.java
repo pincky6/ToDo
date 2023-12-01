@@ -1,4 +1,4 @@
-package com.diplom.todoapp.dialogs.fragments;
+package com.diplom.todoapp.details.fragments;
 
 public class NoteDetailFragment {
 }
