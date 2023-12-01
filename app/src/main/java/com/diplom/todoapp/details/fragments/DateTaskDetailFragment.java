@@ -11,7 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.databinding.FragmentDateTaskDetailBinding;
 import com.diplom.todoapp.dialogs.viewmodels.DateTaskDetailViewModel;
@@ -22,7 +21,6 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
 
     private DateTaskDetailViewModel dateTaskDetailViewModel;
     public FragmentDateTaskDetailBinding binding = null;
-    public static final String DATE_TASK_KEY = "TASK_KEY";
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +43,7 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
                 binding.dateTaskEditTextTime, binding.dateTaskEditTextDate2,
                 binding.dateTaskEditTextTime2);
         initSpinners(binding.dateTaskReminder, binding.dateTaskPriority);
-        initToolbar(binding.toolbar, binding.getRoot(),
-                DateTaskDetailFragmentDirections.showEventTaskFragment());
+        initToolbar(binding.toolbar, binding.getRoot());
         initDateInputs(binding.dateTaskEditTextDate,
                         binding.dateTaskEditTextDate2);
         initTimeInputs(binding.dateTaskEditTextTime,
@@ -80,11 +77,10 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
                 return;
             }
             Bundle bundle = new Bundle();
-            bundle.putSerializable(DATE_TASK_KEY, dateTaskDetailViewModel.getDateTask());
-            getParentFragmentManager().setFragmentResult(DATE_TASK_KEY, bundle);
-            findNavController(binding.getRoot()).navigate(
-                    DateTaskDetailFragmentDirections.showEventTaskFragment()
-            );
+
+            bundle.putSerializable(TASK_DETAIL_KEY, dateTaskDetailViewModel.getDateTask());
+            getParentFragmentManager().setFragmentResult(TASK_DETAIL_KEY, bundle);
+            findNavController(binding.getRoot()).popBackStack();
         });
     }
 }

@@ -4,31 +4,22 @@ import static androidx.navigation.ViewKt.findNavController;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavDirections;
 
 import com.diplom.todoapp.R;
-import com.diplom.todoapp.databinding.FragmentDateTaskDetailBinding;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
 public abstract class AbstractTaskDetailFragment extends Fragment {
+    public static final String TASK_DETAIL_KEY = "TASK_DETAIL_KEY";
     protected void initSpinners(Spinner taskReminder, Spinner taskPriority){
 
         String[] reminders = new String[]{"1 day before", "5 minutes before", "Don\'t remind"};
@@ -45,11 +36,9 @@ public abstract class AbstractTaskDetailFragment extends Fragment {
                         priorities);
         taskPriority.setAdapter(prioritiyAdapter);
     }
-    protected void initToolbar(MaterialToolbar toolbar, View parentView, NavDirections direction){
+    protected void initToolbar(MaterialToolbar toolbar, View parentView){
         toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);
-        toolbar.setNavigationOnClickListener(v -> findNavController(parentView).navigate(
-                direction
-        ));
+        toolbar.setNavigationOnClickListener(v -> findNavController(parentView).popBackStack());
     }
     protected void showDatePickerDialog(EditText textInputEditText){
         DatePickerDialog datePicker = new DatePickerDialog(getContext());

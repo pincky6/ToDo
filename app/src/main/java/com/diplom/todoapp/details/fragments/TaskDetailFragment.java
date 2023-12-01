@@ -11,7 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.databinding.FragmentTaskDetailBinding;
 import com.diplom.todoapp.dialogs.viewmodels.TaskDetailViewModel;
@@ -20,7 +19,6 @@ import java.io.IOException;
 public class TaskDetailFragment extends AbstractTaskDetailFragment {
     private TaskDetailViewModel taskDetailViewModel;
     public FragmentTaskDetailBinding binding = null;
-    public static final String TASK_KEY = "TASK_KEY";
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +40,7 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
         EditorsUtil.initTextWatchers(binding.taskTitle, binding.taskDescribe,
                         binding.taskEditTextDate, binding.taskEditTextTime);
         initSpinners(binding.taskReminder, binding.taskPriority);
-        initToolbar(binding.toolbar, binding.getRoot(),
-                TaskDetailFragmentDirections.showEventTaskFragment());
+        initToolbar(binding.toolbar, binding.getRoot());
         initDateInputs(binding.taskEditTextDate);
         initTimeInputs(binding.taskEditTextTime);
         initSaveButton();
@@ -73,11 +70,9 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
                 return;
             }
             Bundle bundle = new Bundle();
-            bundle.putSerializable(TASK_KEY, taskDetailViewModel.getTask());
-            getParentFragmentManager().setFragmentResult(TASK_KEY, bundle);
-            findNavController(binding.getRoot()).navigate(
-                    TaskDetailFragmentDirections.showEventTaskFragment()
-            );
+            bundle.putSerializable(TASK_DETAIL_KEY, taskDetailViewModel.getTask());
+            getParentFragmentManager().setFragmentResult(TASK_DETAIL_KEY, bundle);
+            findNavController(binding.getRoot()).popBackStack();
         });
     }
 }

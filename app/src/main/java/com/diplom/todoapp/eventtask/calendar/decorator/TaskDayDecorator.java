@@ -1,22 +1,17 @@
 package com.diplom.todoapp.eventtask.decorator;
 
-import android.util.Log;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Objects;
-import java.util.TreeSet;
 
 public class TaskDayDecorator implements DayViewDecorator {
 
     private final CalendarDay day;
-    private final HashSet<Integer> colors;
+    private HashSet<Integer> colors;
     public TaskDayDecorator(CalendarDay day, HashSet<Integer> colors) {
         this.day = day;
         this.colors = colors;
@@ -26,6 +21,9 @@ public class TaskDayDecorator implements DayViewDecorator {
     }
     public HashSet<Integer> getColors(){
         return colors;
+    }
+    public void setColors(HashSet<Integer> colors){
+        this.colors = colors;
     }
     @Override
     public boolean shouldDecorate(CalendarDay day) {
