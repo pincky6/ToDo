@@ -3,28 +3,18 @@ package com.diplom.todoapp.firebase;
 
 import static androidx.navigation.ViewKt.findNavController;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.diplom.todoapp.databinding.FragmentLoginBinding;
 import com.diplom.todoapp.databinding.FragmentRegisterBinding;
-import com.diplom.todoapp.dialogs.OnDataReceivedListener;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskAdapter;
+import com.diplom.todoapp.details.OnDataReceivedListener;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.login.LoginFragmentDirections;
-import com.diplom.todoapp.login.RegisterFragmentDirections;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,10 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Date;
-
-import kotlin.jvm.internal.Lambda;
-
 public class FirebaseRepository {
     private static FirebaseRepository firebaseRepository = null;
 
@@ -114,9 +100,7 @@ public class FirebaseRepository {
         auth.createUserWithEmailAndPassword(gmail, password).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 Toast.makeText(binding.getRoot().getContext(), "You register", Toast.LENGTH_SHORT).show();
-                findNavController(binding.getRoot()).navigate(
-                        RegisterFragmentDirections.showLoginFragment()
-                );
+                findNavController(binding.getRoot()).popBackStack();
             }
             else {
                 Toast.makeText(binding.getRoot().getContext(),
@@ -142,7 +126,7 @@ public class FirebaseRepository {
                 String dataType = key.split("-")[0];
                 if(dataType.equals("Task")) {
                     abstractTask =
-                            snapshot.getValue(com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task.class);
+                            snapshot.getValue(Task.class);
                 }
                 else
                 {
@@ -170,8 +154,8 @@ public class FirebaseRepository {
                     String[] strs = snapshot.getKey().split("-");
                     String key = strs[0];
                     if(key.equals("Task")){
-                        com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task task =
-                                snapshot.getValue(com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task.class);
+                        Task task =
+                                snapshot.getValue(Task.class);
                         task.id = snapshot.getKey();
                         taskList.add(task);
                     }
@@ -184,6 +168,36 @@ public class FirebaseRepository {
                 if(initLambda != null)
                     initLambda.init(taskList);
                 recyclerView.getAdapter().notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void readAllTasks(ArrayList<AbstractTask> taskList, InitExpression initLambda){
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    if(snapshot.getKey() == null) return;
+                    String[] strs = snapshot.getKey().split("-");
+                    String key = strs[0];
+                    if(key.equals("Task")){
+                        Task task =
+                                snapshot.getValue(Task.class);
+                        task.id = snapshot.getKey();
+                        taskList.add(task);
+                    }
+                    else if(key.equals("DateTask")){
+                        DateTask dateTask = snapshot.getValue(DateTask.class);
+                        dateTask.id = snapshot.getKey();
+                        taskList.add(dateTask);
+                    }
+                }
+                if(initLambda != null)
+                    initLambda.init(taskList);
             }
 
             @Override
