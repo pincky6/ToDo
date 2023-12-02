@@ -1,4 +1,4 @@
-package com.diplom.todoapp.dialogs.fragments;
+package com.diplom.todoapp.eventtask;
 
 import static androidx.navigation.ViewKt.findNavController;
 
@@ -28,7 +28,9 @@ public class TaskFilterFragmentDialog extends DialogFragment {
         binding = FragmentEventFilterDialogBinding.inflate(inflater, container, false);
         Bundle args = getArguments();
         Integer mask = (Integer)args.get("mask");
-        setCheckboxes(mask);
+        if(mask != null) {
+            setCheckboxes(mask);
+        }
         return binding.getRoot();
     }
     @Override
