@@ -34,7 +34,7 @@ public class TaskSearchFragment extends Fragment {
     FragmentTaskSearchBinding binding = null;
     SearchView searchView = null;
     TaskFilter filter = new TaskFilter(0);
-    TaskListViewModel taskViewModel = new TaskListViewModel();
+    TaskListViewModel taskListViewModel = new TaskListViewModel();
     String searchedTitle = null;
     Boolean searchByDate = false;
 
@@ -84,7 +84,7 @@ public class TaskSearchFragment extends Fragment {
         if(searchByDate){
             getParentFragmentManager().setFragmentResultListener(DatePickerDialogFragment.DATE_PICKER_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
                 Date date = (Date)result.get(requestKey);
-                taskViewModel.set date;
+                taskViewModel. date;
                 resetAdapterList(filter.filterByDate(taskViewModel.taskList, date));
                 searchView.setIconified(true);
             });
