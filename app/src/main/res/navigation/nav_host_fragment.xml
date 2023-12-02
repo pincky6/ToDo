@@ -65,7 +65,7 @@
 
     <fragment
         android:id="@+id/taskSearchFragment"
-        android:name="com.diplom.todoapp.searchs.TaskSearchFragment"
+        android:name="com.diplom.todoapp.eventtask.searchs.TaskSearchFragment"
         android:label="TaskSearchFragment"
         tools:layout="@layout/fragment_task_search">
         <argument
@@ -92,6 +92,6 @@
     </dialog>
     <dialog
         android:id="@+id/datePickerFragment"
-        android:name="com.diplom.todoapp.dialogs.DatePickerDialogFragment"
+        android:name="com.diplom.todoapp.eventtask.searchs.DatePickerDialogFragment"
         android:label="DatePickerFragment"/>
 </navigation>

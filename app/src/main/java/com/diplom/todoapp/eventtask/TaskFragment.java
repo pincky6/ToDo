@@ -69,9 +69,8 @@ public class TaskFragment extends Fragment {
         binding.toolbar.setOnMenuItemClickListener(item -> {
             if(item.getItemId() == R.id.action_show_task_list){
                 taskListFragment.getFilter().setSelectedDay(null);
+                materialCalendarFragment.unselectDate();
                 taskListFragment.showAllList();
-                //binding.calendar.setSelectedDate((CalendarDay)null);
-                // resetAdapterList(taskViewModel.taskList);
             }
             else if(item.getItemId() == R.id.action_settings){
                 Toast.makeText(getContext(), "smthj", Toast.LENGTH_SHORT).show();

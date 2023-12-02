@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 public class TaskFilter {
     private int mask = 0;
     private CalendarDay selectedDay = null;
+    String selectedTitle = null;
     private int selectedMonth = CalendarUtil.getCalendarDay(new Date()).getMonth();
     public TaskFilter(int mask){
         this.mask = mask;
@@ -36,6 +37,12 @@ public class TaskFilter {
     public void setSelectedMonth(int selectedMonth){
         this.selectedMonth = selectedMonth;
     }
+    public String getSelectedTitle(){
+        return selectedTitle;
+    }
+    public void setSelectedTitle(String selectedTitle){
+        this.selectedTitle = selectedTitle;
+    }
     public ArrayList<AbstractTask> filter(@NonNull ArrayList<AbstractTask> list){
         int currentMonth = CalendarUtil.getCalendarDay(new Date()).getMonth();
         if(mask == 0 && selectedDay == null && selectedMonth == currentMonth){
@@ -55,6 +62,12 @@ public class TaskFilter {
                     (CalendarUtil.getCalendarDay(task.dateStart).getMonth() == selectedMonth);
         }).collect(Collectors.toList());
     }
+    public ArrayList<AbstractTask> filterByTitle(@NonNull ArrayList<AbstractTask> list){
+        if(selectedTitle == null) return list;
+        return (ArrayList<AbstractTask>) list.stream().filter(abstractTask -> selectedTitle.equals(abstractTask.title))
+                .collect(Collectors.toList());
+    }
+
 
     public int getTypeMask(String type){
         if(type.equals("DateTask")) return TASK_MASK.DATE_TASK.get();

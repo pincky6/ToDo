@@ -74,6 +74,9 @@ public class MaterialCalendarFragment extends Fragment {
             }
         });
     }
+    public void unselectDate(){
+        binding.calendar.setSelectedDate((CalendarDay) null);
+    }
     public void addNewTaskDecorator(AbstractTask abstractTask){
         if(abstractTask == null) return;
         CalendarDay day = CalendarUtil.getCalendarDay(abstractTask.dateStart);

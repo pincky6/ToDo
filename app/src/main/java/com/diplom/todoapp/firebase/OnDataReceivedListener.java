@@ -1,4 +1,4 @@
-package com.diplom.todoapp.details;
+package com.diplom.todoapp.firebase;
 
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 

@@ -123,12 +123,12 @@ public class TaskListFragment extends Fragment {
     private void removeTask(AbstractTask abstractTask){
         taskListViewModel.removeById(abstractTask.id);
         int color = PriorityUtil.getPriorityColor(abstractTask.priority);
-        for(AbstractTask task1: taskListViewModel.taskList){
-            if(task1.dateStart == abstractTask.dateStart &&
-                    PriorityUtil.getPriorityColor(task1.priority) == color){
-                return;
-            }
-        }
+//        for(AbstractTask task1: taskListViewModel.taskList){
+//            if(task1.dateStart == abstractTask.dateStart &&
+//                    PriorityUtil.getPriorityColor(task1.priority) == color){
+//                return;
+//            }
+//        }
         resetAdapterList(filter.filter(taskListViewModel.taskList));
     }
     private void resetAdapterList(ArrayList<AbstractTask> tasks){

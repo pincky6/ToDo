@@ -1,4 +1,4 @@
-package com.diplom.todoapp.dialogs;
+package com.diplom.todoapp.eventtask.searchs;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

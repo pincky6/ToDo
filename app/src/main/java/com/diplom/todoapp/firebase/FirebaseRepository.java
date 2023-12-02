@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.diplom.todoapp.databinding.FragmentLoginBinding;
 import com.diplom.todoapp.databinding.FragmentRegisterBinding;
 
-import com.diplom.todoapp.details.OnDataReceivedListener;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;

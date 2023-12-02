@@ -6,7 +6,7 @@ import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.utils.PriorityUtil;
 import com.diplom.todoapp.utils.ReminderUtil;
 import com.diplom.todoapp.databinding.FragmentTaskDetailBinding;
-import com.diplom.todoapp.details.OnDataReceivedListener;
+import com.diplom.todoapp.firebase.OnDataReceivedListener;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.firebase.FirebaseRepository;

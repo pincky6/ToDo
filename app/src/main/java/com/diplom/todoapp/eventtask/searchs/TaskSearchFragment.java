@@ -1,4 +1,4 @@
-package com.diplom.todoapp.searchs;
+package com.diplom.todoapp.eventtask.searchs;
 
 import static androidx.navigation.ViewKt.findNavController;
 
@@ -15,25 +15,23 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.R;
-import com.diplom.todoapp.databinding.FragmentTaskSearchBinding;
-import com.diplom.todoapp.dialogs.DatePickerDialogFragment;
-import com.diplom.todoapp.details.fragments.TaskDetailFragment;
+import com.diplom.todoapp.details.fragments.AbstractTaskDetailFragment;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskListViewModel;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.filter.TaskFilter;
-import com.diplom.todoapp.firebase.FirebaseRepository;
+import com.diplom.todoapp.searchs.TaskSearchFragmentDirections;
+import com.diplom.todoapp.utils.CalendarUtil;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Objects;
 
 public class TaskSearchFragment extends Fragment {
     FragmentTaskSearchBinding binding = null;
     SearchView searchView = null;
-    TaskFilter filter = new TaskFilter(0);
+    TaskFilter filter = new TaskFilter(31);
     TaskListViewModel taskListViewModel = new TaskListViewModel();
     String searchedTitle = null;
     Boolean searchByDate = false;
@@ -57,8 +55,8 @@ public class TaskSearchFragment extends Fragment {
         searchView = binding.toolbar.findViewById(R.id.app_bar_search);
         searchByDate = (Boolean)args.get("searchByDate");
         initMenus(searchByDate);
-        initAdapter(taskViewModel.taskList);
-        taskViewModel.loadFirebase(binding.recyclerView, null);
+        initAdapter(taskListViewModel.taskList);
+        taskListViewModel.loadFirebase(binding.recyclerView, null);
         initCalendar(searchByDate);
     }
 
@@ -83,9 +81,10 @@ public class TaskSearchFragment extends Fragment {
     private void initCalendar(Boolean searchByDate){
         if(searchByDate){
             getParentFragmentManager().setFragmentResultListener(DatePickerDialogFragment.DATE_PICKER_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
-                Date date = (Date)result.get(requestKey);
-                taskViewModel. date;
-                resetAdapterList(filter.filterByDate(taskViewModel.taskList, date));
+                CalendarDay date = CalendarUtil.getCalendarDay((Date)result.get(requestKey));
+                filter.setSelectedDay(date);
+                filter.setSelectedMonth(date.getMonth());
+                resetAdapterList(filter.filter(taskListViewModel.taskList));
                 searchView.setIconified(true);
             });
             return;
@@ -98,8 +97,8 @@ public class TaskSearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                searchedTitle = newText;
-                resetAdapterList(filter.filterByTitle(taskViewModel.taskList, searchedTitle));
+                filter.setSelectedTitle(newText);
+                resetAdapterList(filter.filterByTitle(taskListViewModel.taskList));
                 return false;
             }
         });
@@ -119,28 +118,29 @@ public class TaskSearchFragment extends Fragment {
                     }
                 },
                 id -> {
-                    AbstractTask task = taskViewModel.getFromId(id);
+                    AbstractTask task = taskListViewModel.getFromId(id);
                     removeTask(task);
                     binding.recyclerView.getAdapter().notifyDataSetChanged();
                 }));
-        getParentFragmentManager().setFragmentResultListener(TaskDetailFragment.TASK_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
-            AbstractTask abstractTask = (AbstractTask) result.get(requestKey);
-            assert abstractTask != null;
-            firebase.addTask(abstractTask);
-            taskViewModel.loadFirebase(binding.recyclerView, null);
+        getParentFragmentManager().setFragmentResultListener(AbstractTaskDetailFragment.TASK_DETAIL_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
+            AbstractTask resetedTask = (AbstractTask) result.get(requestKey);
+            assert resetedTask != null;
+            AbstractTask oldTask = taskListViewModel.getFromId(resetedTask.id);
+            taskListViewModel.remove(oldTask.id);
+            taskListViewModel.addTask(resetedTask);
             if(searchByDate)
-                resetAdapterList(filter.filterByDate(taskViewModel.taskList, choosedDay));
+                resetAdapterList(filter.filter(taskListViewModel.taskList));
             else
-                resetAdapterList(filter.filterByTitle(taskViewModel.taskList, searchedTitle));
+                resetAdapterList(filter.filterByTitle(taskListViewModel.taskList));
         });
     }
-    private void removeTask(AbstractTask task){
-        firebase.removeTask(task.id);
-        taskViewModel.remove(task.id);
+
+    private void removeTask(AbstractTask abstractTask){
+        taskListViewModel.removeById(abstractTask.id);
         if(searchByDate)
-            resetAdapterList(filter.filterByDate(taskViewModel.taskList, choosedDay));
+            resetAdapterList(filter.filter(taskListViewModel.taskList));
         else
-            resetAdapterList(filter.filterByTitle(taskViewModel.taskList, searchedTitle));
+            resetAdapterList(filter.filterByTitle(taskListViewModel.taskList));
     }
     private void resetAdapterList(ArrayList<AbstractTask> tasks){
         TaskAdapter taskAdapter = (TaskAdapter) Objects.requireNonNull(binding.recyclerView.getAdapter());
