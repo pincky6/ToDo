@@ -16,8 +16,14 @@ public class CalendarUtil {
                 Integer.parseInt(taskDayFormat[0]));
     }
     public static boolean compareCalendarDays(CalendarDay lhs, CalendarDay rhs){
+        if(lhs == null || rhs == null) return false;
         return lhs.getDay() == rhs.getDay() &&
                 lhs.getMonth() == rhs.getMonth() &&
+                lhs.getYear() == rhs.getYear();
+    }
+    public static boolean compareCalendarMonths(CalendarDay lhs, CalendarDay rhs){
+        if(lhs == null || rhs == null) return false;
+        return lhs.getMonth() == rhs.getMonth() &&
                 lhs.getYear() == rhs.getYear();
     }
 }
