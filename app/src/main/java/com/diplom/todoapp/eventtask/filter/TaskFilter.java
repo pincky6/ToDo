@@ -1,7 +1,6 @@
 package com.diplom.todoapp.eventtask.filter;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.utils.CalendarUtil;
@@ -53,34 +52,20 @@ public class TaskFilter {
             }
             String type = task.id.split("-")[0];
             return getTypeRes(type) && getPriorityRes(task.priority) &&
-                   (CalendarUtil.getCalendarDay(task.dateStart).getMonth() == selectedMonth);
+                    (CalendarUtil.getCalendarDay(task.dateStart).getMonth() == selectedMonth);
         }).collect(Collectors.toList());
     }
 
-    public int getTypeMask(@NonNull String type){
+    public int getTypeMask(String type){
         if(type.equals("DateTask")) return TASK_MASK.DATE_TASK.get();
         return TASK_MASK.TASK.get();
     }
-    public boolean getTypeRes(@NonNull String type){
+    public boolean getTypeRes(String type){
         int typeMask = (mask & TASK_MASK.TASK.get()) |
-                       (mask & TASK_MASK.DATE_TASK.get());
+                (mask & TASK_MASK.DATE_TASK.get());
         return (typeMask & getTypeMask(type)) != 0;
     }
-
     public boolean getPriorityRes(String priority){
         return (mask & PriorityUtil.getPriorityEnum(priority).getPriority()) != 0;
-    }
-    public ArrayList<AbstractTask> filterByDate(@NonNull ArrayList<AbstractTask> list, @Nullable Date date){
-        if (date == null) return list;
-       return (ArrayList<AbstractTask>) list.stream().filter(task -> {
-            CalendarDay searchDay = CalendarUtil.getCalendarDay(date);
-            CalendarDay taskDay = CalendarUtil.getCalendarDay(task.dateStart);
-            return CalendarUtil.compareCalendarDays(searchDay, taskDay);
-        }).collect(Collectors.toList());
-    }
-    public ArrayList<AbstractTask> filterByTitle(@NonNull ArrayList<AbstractTask> list, @Nullable String title){
-        if(title == null) return list;
-        return (ArrayList<AbstractTask>) list.stream().filter(task -> task.title.contains(title))
-                .collect(Collectors.toList());
     }
 }
