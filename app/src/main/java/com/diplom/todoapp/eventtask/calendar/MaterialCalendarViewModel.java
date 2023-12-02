@@ -40,9 +40,9 @@ public class MaterialCalendarViewModel extends ViewModel {
                     convertToHashSetColors(entry.getValue())));
         }
     }
-//    public HashMap<CalendarDay, ArrayList<Integer>> getDayTaskCalendarColors(){
-//        return dayTaskCalendarColors;
-//    }
+    public HashMap<CalendarDay, ArrayList<Integer>> getDayTaskCalendarColors(){
+        return dayTaskCalendarColors;
+    }
     public TaskDayDecorator removeByColor(CalendarDay day, int color){
         if(!dayTaskCalendarColors.containsKey(day)) return null;
         TaskDayDecorator dayDecorator = decorators.search(day);
