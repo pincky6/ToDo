@@ -61,7 +61,7 @@
         tools:layout="@layout/fragment_register"/>
     <dialog
         android:id="@+id/taskFilterFragmentDialog"
-        android:name="com.diplom.todoapp.eventtask.TaskFilterFragmentDialog"
+        android:name="com.diplom.todoapp.eventtask.filter.TaskFilterFragmentDialog"
         android:label="TaskFilterFragmentDialog"
         tools:layout="@layout/fragment_event_filter_dialog">
         <argument

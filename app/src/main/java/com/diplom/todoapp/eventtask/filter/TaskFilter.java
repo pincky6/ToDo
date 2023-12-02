@@ -1,37 +1,15 @@
-package com.diplom.todoapp.eventtask;
-
-import android.provider.CalendarContract;
+package com.diplom.todoapp.eventtask.filter;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Priority;
 import com.diplom.todoapp.utils.CalendarUtil;
 import com.diplom.todoapp.utils.PriorityUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
-import org.threeten.bp.LocalDate;
-
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.stream.Collectors;
-
-enum TASK_MASK{
-    TASK(1),
-    DATE_TASK(2),
-    LOW_PRIORITY(4),
-    MIDDLE_PRIORITY(8),
-    HIGH_PRIORITY(16);
-    private final int i;
-    TASK_MASK(int i) {
-        this.i = i;
-    }
-    public int get(){
-        return i;
-    }
-}
 
 public class TaskFilter {
     private int mask = 0;

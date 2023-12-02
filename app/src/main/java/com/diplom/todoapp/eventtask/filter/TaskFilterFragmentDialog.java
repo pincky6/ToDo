@@ -1,4 +1,4 @@
-package com.diplom.todoapp.eventtask;
+package com.diplom.todoapp.eventtask.filter;
 
 import static androidx.navigation.ViewKt.findNavController;
 

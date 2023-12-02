@@ -21,6 +21,8 @@ import com.diplom.todoapp.details.fragments.AbstractTaskDetailFragment;
 import com.diplom.todoapp.eventtask.calendar.decorator.MaterialCalendarFragment;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskListFragment;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
+import com.diplom.todoapp.eventtask.filter.TaskFilter;
+import com.diplom.todoapp.eventtask.filter.TaskFilterFragmentDialog;
 import com.diplom.todoapp.firebase.FirebaseRepository;
 
 public class TaskFragment extends Fragment {
