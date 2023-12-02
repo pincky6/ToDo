@@ -13,9 +13,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.databinding.FragmentTaskListBinding;
+import com.diplom.todoapp.eventtask.TaskFilter;
 import com.diplom.todoapp.eventtask.TaskFragmentDirections;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
-import com.diplom.todoapp.eventtask.listeners.OnAbstractTaskDecoratorListener;
+import com.diplom.todoapp.eventtask.listeners.OnTaskListener;
+import com.diplom.todoapp.eventtask.listeners.OnResetTaskLisener;
 import com.diplom.todoapp.utils.CalendarUtil;
 import com.diplom.todoapp.utils.PriorityUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -25,13 +27,27 @@ import java.util.Date;
 import java.util.Objects;
 
 public class TaskListFragment extends Fragment {
-    public static final String TASK_LIST_KEY = "TASK_LIST_KEY";
     public static final String REQUEST_ADD_TASK = "ADD_TASK";
     public static final String REQUEST_REMOVE_TASK = "REMOVE_TASK";
 
     private FragmentTaskListBinding binding = null;
     private TaskListViewModel taskListViewModel = new TaskListViewModel();
-    private OnAbstractTaskDecoratorListener abstractTaskDecoratorListener = null;
+    private TaskFilter filter = new TaskFilter(31);
+    private OnTaskListener onTaskListener = null;
+    private OnResetTaskLisener onResetTaskLisener = null;
+
+    public int getFilterMask(){
+        return filter.getMask();
+    }
+    public void setFilterMask(int mask){
+        filter.setMask(mask);
+    }
+    public TaskFilter getFilter(){
+        return filter;
+    }
+    public  void setFilter(TaskFilter filter){
+        this.filter = filter;
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,8 +66,11 @@ public class TaskListFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-    public void setAbstractTaskDecoratorListener(OnAbstractTaskDecoratorListener listener){
-        abstractTaskDecoratorListener = listener;
+    public void setOnTaskListener(OnTaskListener listener){
+        onTaskListener = listener;
+    }
+    public void setOnResetTaskLisener(OnResetTaskLisener lisener) {
+        onResetTaskLisener = lisener;
     }
     private void initRecyclerView(){
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -72,29 +91,34 @@ public class TaskListFragment extends Fragment {
                     if(id == null) return;
                     AbstractTask task = taskListViewModel.getFromId(id);
                     removeTask(task);
-                    if(abstractTaskDecoratorListener != null) {
-                        abstractTaskDecoratorListener.run(task, REQUEST_REMOVE_TASK);
+                    if(onTaskListener != null) {
+                        onTaskListener.listen(task, REQUEST_REMOVE_TASK);
                     }
                     binding.recyclerView.getAdapter().notifyDataSetChanged();
                 }));
         if(!taskListViewModel.isEmpty()) return;
         taskListViewModel.loadFirebase(binding.recyclerView, tasks -> {
             CalendarDay day = CalendarUtil.getCalendarDay(new Date());
-            ArrayList<AbstractTask> showedTask;
-            showedTask = taskListViewModel.filterForMonth(day);
-            resetAdapterList(showedTask);
+            filter.setSelectedMonth(day.getMonth());
+            resetAdapterList(filter.filter(tasks));
         });
     }
-    public void addNewTask(AbstractTask abstractTask){
-        assert abstractTask != null;
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(REQUEST_ADD_TASK, abstractTask);
-        getParentFragmentManager().setFragmentResult(TASK_LIST_KEY, bundle);
-        taskListViewModel.addTask(abstractTask);
-        if(abstractTaskDecoratorListener != null) {
-            abstractTaskDecoratorListener.run(abstractTask, REQUEST_ADD_TASK);
+    public void addTask(AbstractTask newTask){
+        assert newTask != null;
+        AbstractTask oldTask = taskListViewModel.getFromId(newTask.id);
+        if(oldTask == null) {
+            taskListViewModel.addTask(newTask);
+            if(onTaskListener != null) {
+                onTaskListener.listen(newTask, REQUEST_ADD_TASK);
+            }
+        } else {
+            taskListViewModel.remove(oldTask.id);
+            taskListViewModel.addTask(newTask);
+            if(onResetTaskLisener != null){
+                onResetTaskLisener.listen(oldTask, newTask);
+            }
         }
-        resetAdapterList(taskListViewModel.taskList);
+        resetAdapterList(filter.filter(taskListViewModel.taskList));
     }
     private void removeTask(AbstractTask abstractTask){
         taskListViewModel.removeById(abstractTask.id);
@@ -105,12 +129,17 @@ public class TaskListFragment extends Fragment {
                 return;
             }
         }
-        resetAdapterList(taskListViewModel.taskList);
+        resetAdapterList(filter.filter(taskListViewModel.taskList));
     }
     private void resetAdapterList(ArrayList<AbstractTask> tasks){
         TaskAdapter taskAdapter = (TaskAdapter) Objects.requireNonNull(binding.recyclerView.getAdapter());
         taskAdapter.resetTaskList(tasks);
         taskAdapter.notifyDataSetChanged();
     }
+    public void updateUi(){
+        resetAdapterList(filter.filter(taskListViewModel.taskList));
+    }
+    public void showAllList(){
+        resetAdapterList(taskListViewModel.taskList);
+    }
 }
-

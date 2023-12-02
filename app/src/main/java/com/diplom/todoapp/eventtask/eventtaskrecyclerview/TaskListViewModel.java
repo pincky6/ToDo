@@ -36,7 +36,7 @@ public class TaskListViewModel extends ViewModel {
                 return abstractTask;
             }
         }
-        throw new IllegalArgumentException("wrong id");
+        return null;
     }
     public void remove(String id){
         for(AbstractTask abstractTask: taskList){
@@ -45,27 +45,6 @@ public class TaskListViewModel extends ViewModel {
                 return;
             }
         }
-    }
-    public ArrayList<AbstractTask> filterForDay(CalendarDay day){
-        ArrayList<AbstractTask> tasks = new ArrayList<>();
-        for(AbstractTask task: taskList){
-            CalendarDay taskDay = CalendarUtil.getCalendarDay(task.dateStart);
-            if(CalendarUtil.compareCalendarDays(taskDay, day)){
-                tasks.add(task);
-            }
-        }
-        return tasks;
-    }
-    public ArrayList<AbstractTask> filterForMonth(CalendarDay day){
-        ArrayList<AbstractTask> tasks = new ArrayList<>();
-        for (AbstractTask task : taskList) {
-            CalendarDay taskDay = CalendarUtil.getCalendarDay(task.dateStart);
-            if (day.getMonth() == taskDay.getMonth() &&
-                    day.getYear() == taskDay.getYear()) {
-                tasks.add(task);
-            }
-        }
-        return tasks;
     }
     public boolean isEmpty(){
         return taskList.isEmpty();
