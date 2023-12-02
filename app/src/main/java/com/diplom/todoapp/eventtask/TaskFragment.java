@@ -15,8 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.diplom.todoapp.databinding.FragmentEventTaskBinding;
 
+import com.diplom.todoapp.databinding.FragmentEventTaskBinding;
 import com.diplom.todoapp.details.fragments.AbstractTaskDetailFragment;
 import com.diplom.todoapp.eventtask.calendar.decorator.MaterialCalendarFragment;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskListFragment;
@@ -26,7 +26,8 @@ import com.diplom.todoapp.firebase.FirebaseRepository;
 public class TaskFragment extends Fragment {
     private FragmentEventTaskBinding binding = null;
     private FirebaseRepository firebase;
-    private TaskFilter filter;
+    private TaskListFragment taskListFragment = null;
+    private MaterialCalendarFragment materialCalendarFragment = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,16 +45,11 @@ public class TaskFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TaskListFragment taskListFragment = (TaskListFragment) getChildFragmentManager().findFragmentById(R.id.taskListFragment);
-        taskListFragment.setAbstractTaskDecoratorListener((abstractTask, requestKey) -> {
-            MaterialCalendarFragment materialCalendarFragment = (MaterialCalendarFragment)
-                    getChildFragmentManager().findFragmentById(R.id.calendarFragment);
-            if(requestKey.equals(TaskListFragment.REQUEST_ADD_TASK)) {
-                materialCalendarFragment.addNewTaskDecorator(abstractTask);
-            } else {
-                materialCalendarFragment.removeTaskDecorator(abstractTask);
-            }
-        });
+        taskListFragment = (TaskListFragment) getChildFragmentManager().findFragmentById(R.id.taskListFragment);
+        materialCalendarFragment = (MaterialCalendarFragment)
+                getChildFragmentManager().findFragmentById(R.id.calendarFragment);
+        initTaskListFragmentListeners();
+        initMaterialCalendarFragment();
     }
     @Override
     public void onDestroyView() {
@@ -68,7 +64,8 @@ public class TaskFragment extends Fragment {
         });
         binding.toolbar.setOnMenuItemClickListener(item -> {
             if(item.getItemId() == R.id.action_show_task_list){
-
+                taskListFragment.getFilter().setSelectedDay(null);
+                taskListFragment.showAllList();
                 //binding.calendar.setSelectedDate((CalendarDay)null);
                 // resetAdapterList(taskViewModel.taskList);
             }
@@ -77,7 +74,7 @@ public class TaskFragment extends Fragment {
             }
             else if(item.getItemId() == R.id.action_filter){
                 findNavController(getView()).navigate(
-                        TaskFragmentDirections.showTaskFilterDialog(filter.getMask())
+                        TaskFragmentDirections.showTaskFilterDialog(taskListFragment.getFilterMask())
                 );
             }
             return false;
@@ -105,10 +102,41 @@ public class TaskFragment extends Fragment {
     }
 
     private void initUpdateTaskListListener(){
+        getParentFragmentManager().setFragmentResultListener(TaskFilterFragmentDialog.FILTER_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
+            Integer mask = (Integer)result.get(requestKey);
+            taskListFragment.setFilterMask(mask);
+            taskListFragment.updateUi();
+        });
         getParentFragmentManager().setFragmentResultListener(AbstractTaskDetailFragment.TASK_DETAIL_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
             AbstractTask abstractTask = (AbstractTask)result.get(requestKey);
-            TaskListFragment taskListFragment = (TaskListFragment) getChildFragmentManager().findFragmentById(R.id.taskListFragment);
-            taskListFragment.addNewTask(abstractTask);
+            taskListFragment.addTask(abstractTask);
+        });
+    }
+
+    private void initTaskListFragmentListeners(){
+        taskListFragment.setOnTaskListener((abstractTask, requestKey) -> {
+            if(requestKey.equals(TaskListFragment.REQUEST_ADD_TASK)) {
+                materialCalendarFragment.addNewTaskDecorator(abstractTask);
+            } else {
+                materialCalendarFragment.removeTaskDecorator(abstractTask);
+            }
+        });
+        taskListFragment.setOnResetTaskLisener((oldTask, newTask) -> {
+            materialCalendarFragment.removeTaskDecorator(oldTask);
+            materialCalendarFragment.addNewTaskDecorator(newTask);
+        });
+    }
+    private void initMaterialCalendarFragment(){
+        materialCalendarFragment.setOnDayChangedListener(day -> {
+            TaskFilter filter = taskListFragment.getFilter();
+            filter.setSelectedDay(day);
+            filter.setSelectedMonth(day.getMonth());
+            taskListFragment.updateUi();
+        });
+        materialCalendarFragment.setOnMonthChangedListener((month) -> {
+            TaskFilter filter = taskListFragment.getFilter();
+            filter.setSelectedMonth(month);
+            taskListFragment.updateUi();
         });
     }
 }
