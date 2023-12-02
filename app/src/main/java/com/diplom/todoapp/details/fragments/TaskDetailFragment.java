@@ -1,4 +1,4 @@
-package com.diplom.todoapp.dialogs.eventtaskfragments;
+package com.diplom.todoapp.details.fragments;
 
 import static androidx.navigation.ViewKt.findNavController;
 
@@ -13,13 +13,12 @@ import androidx.annotation.Nullable;
 
 import com.diplom.todoapp.databinding.FragmentTaskDetailBinding;
 import com.diplom.todoapp.utils.EditorsUtil;
-import com.diplom.todoapp.dialogs.eventtaskviewmodels.TaskDetailViewModel;
+import com.diplom.todoapp.details.viewmodels.TaskDetailViewModel;
 
 import java.io.IOException;
 public class TaskDetailFragment extends AbstractTaskDetailFragment {
     private TaskDetailViewModel taskDetailViewModel;
     public FragmentTaskDetailBinding binding = null;
-    public static final String TASK_KEY = "TASK_KEY";
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,8 +70,8 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
                 return;
             }
             Bundle bundle = new Bundle();
-            bundle.putSerializable(TASK_KEY, taskDetailViewModel.getTask());
-            getParentFragmentManager().setFragmentResult(TASK_KEY, bundle);
+            bundle.putSerializable(TASK_DETAIL_KEY, taskDetailViewModel.getTask());
+            getParentFragmentManager().setFragmentResult(TASK_DETAIL_KEY, bundle);
             findNavController(binding.getRoot()).popBackStack();
         });
     }

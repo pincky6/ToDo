@@ -1,4 +1,4 @@
-package com.diplom.todoapp.eventtask;
+package com.diplom.todoapp.eventtask.eventtaskrecyclerview;
 
 import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
@@ -6,20 +6,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.firebase.FirebaseRepository;
 import com.diplom.todoapp.firebase.InitExpression;
+import com.diplom.todoapp.utils.CalendarUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class TaskViewModel extends ViewModel {
+public class TaskListViewModel extends ViewModel {
     public ArrayList<AbstractTask> taskList;
     private FirebaseRepository firebase;
-    public TaskViewModel(){
+    public TaskListViewModel(){
         firebase = FirebaseRepository.getInstance();
         taskList = new ArrayList<>();
     }
     public void loadFirebase(RecyclerView recyclerView, InitExpression initLambda){
         firebase.readAllTasks(taskList, recyclerView, initLambda);
+    }
+    public void addTask(AbstractTask abstractTask){
+        firebase.addTask(abstractTask);
+        taskList.add(abstractTask);
+    }
+    public void removeById(String id){
+        firebase.removeTask(id);
+        remove(id);
     }
     public AbstractTask getFromId(String id){
         for(AbstractTask abstractTask: taskList){
@@ -27,7 +36,7 @@ public class TaskViewModel extends ViewModel {
                 return abstractTask;
             }
         }
-        throw new IllegalArgumentException("wrong id");
+        return null;
     }
     public void add(AbstractTask task){
         taskList.add(task);
@@ -39,29 +48,6 @@ public class TaskViewModel extends ViewModel {
                 return;
             }
         }
-    }
-    public ArrayList<AbstractTask> filterForDay(CalendarDay day){
-        ArrayList<AbstractTask> tasks = new ArrayList<>();
-        CalendarSingletone calendarSingletone = CalendarSingletone.initialize(taskList);
-        for(AbstractTask task: taskList){
-            CalendarDay taskDay = calendarSingletone.getCalendarDay(task.dateStart);
-            if(calendarSingletone.compareCalendarDays(taskDay, day)){
-                tasks.add(task);
-            }
-        }
-        return tasks;
-    }
-    public ArrayList<AbstractTask> filterForMonth(CalendarDay day){
-        ArrayList<AbstractTask> tasks = new ArrayList<>();
-        CalendarSingletone calendarSingletone = CalendarSingletone.initialize(taskList);
-        for (AbstractTask task : taskList) {
-            CalendarDay taskDay = calendarSingletone.getCalendarDay(task.dateStart);
-            if (day.getMonth() == taskDay.getMonth() &&
-                    day.getYear() == taskDay.getYear()) {
-                tasks.add(task);
-            }
-        }
-        return tasks;
     }
     public boolean isEmpty(){
         return taskList.isEmpty();

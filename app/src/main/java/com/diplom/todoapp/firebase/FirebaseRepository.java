@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.diplom.todoapp.databinding.FragmentLoginBinding;
 import com.diplom.todoapp.databinding.FragmentRegisterBinding;
-import com.diplom.todoapp.dialogs.OnDataReceivedListener;
+
+import com.diplom.todoapp.details.OnDataReceivedListener;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.login.LoginFragmentDirections;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -125,7 +128,7 @@ public class FirebaseRepository {
                 String dataType = key.split("-")[0];
                 if(dataType.equals("Task")) {
                     abstractTask =
-                            snapshot.getValue(com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task.class);
+                            snapshot.getValue(Task.class);
                 }
                 else
                 {
@@ -153,8 +156,8 @@ public class FirebaseRepository {
                     String[] strs = snapshot.getKey().split("-");
                     String key = strs[0];
                     if(key.equals("Task")){
-                        com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task task =
-                                snapshot.getValue(com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task.class);
+                        Task task =
+                                snapshot.getValue(Task.class);
                         task.id = snapshot.getKey();
                         taskList.add(task);
                     }
@@ -167,6 +170,36 @@ public class FirebaseRepository {
                 if(initLambda != null)
                     initLambda.init(taskList);
                 recyclerView.getAdapter().notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void readAllTasks(ArrayList<AbstractTask> taskList, InitExpression initLambda){
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    if(snapshot.getKey() == null) return;
+                    String[] strs = snapshot.getKey().split("-");
+                    String key = strs[0];
+                    if(key.equals("Task")){
+                        Task task =
+                                snapshot.getValue(Task.class);
+                        task.id = snapshot.getKey();
+                        taskList.add(task);
+                    }
+                    else if(key.equals("DateTask")){
+                        DateTask dateTask = snapshot.getValue(DateTask.class);
+                        dateTask.id = snapshot.getKey();
+                        taskList.add(dateTask);
+                    }
+                }
+                if(initLambda != null)
+                    initLambda.init(taskList);
             }
 
             @Override

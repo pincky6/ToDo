@@ -6,15 +6,6 @@
     android:id="@+id/nav_host_fragment"
     app:startDestination="@id/loginFragment">
 
-<!--    <TextView-->
-<!--        android:id="@+id/textView2"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="binding.emailTextEdit.getText().toString(),&#xA;                                                    binding.passwordEditText.getText().toString()" />-->
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="binding.emailTextEdit.getText().toString(),&#xA;                                                    binding.passwordEditText.getText().toString()" />-->
     <fragment
         android:id="@+id/eventTaskFragment"
         android:name="com.diplom.todoapp.eventtask.TaskFragment"
@@ -33,9 +24,10 @@
             android:id="@+id/showSearchFragment"
             app:destination="@id/taskSearchFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/taskDetailFragment"
-        android:name="com.diplom.todoapp.dialogs.eventtaskfragments.TaskDetailFragment"
+        android:name="com.diplom.todoapp.details.fragments.TaskDetailFragment"
         android:label="TaskDetailFragment"
         tools:layout="@layout/fragment_task_detail">
         <argument
@@ -45,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/dateTaskDetailFragment"
-        android:name="com.diplom.todoapp.dialogs.eventtaskfragments.DateTaskDetailFragment"
+        android:name="com.diplom.todoapp.details.fragments.DateTaskDetailFragment"
         android:label="DateTaskDetailFragment"
         tools:layout="@layout/fragment_date_task_detail">
 
@@ -70,6 +62,7 @@
         android:name="com.diplom.todoapp.login.RegisterFragment"
         android:label="RegisterFragment"
         tools:layout="@layout/fragment_register"/>
+
     <fragment
         android:id="@+id/taskSearchFragment"
         android:name="com.diplom.todoapp.searchs.TaskSearchFragment"
@@ -90,7 +83,7 @@
     </fragment>
     <dialog
         android:id="@+id/taskFilterFragmentDialog"
-        android:name="com.diplom.todoapp.dialogs.filterfragment.TaskFilterFragmentDialog"
+        android:name="com.diplom.todoapp.eventtask.filter.TaskFilterFragmentDialog"
         android:label="TaskFilterFragmentDialog"
         tools:layout="@layout/fragment_event_filter_dialog">
         <argument

@@ -3,39 +3,26 @@ package com.diplom.todoapp.searchs;
 import static androidx.navigation.ViewKt.findNavController;
 
 
-import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.R;
 import com.diplom.todoapp.databinding.FragmentTaskSearchBinding;
 import com.diplom.todoapp.dialogs.DatePickerDialogFragment;
-import com.diplom.todoapp.dialogs.eventtaskfragments.TaskDetailFragment;
-import com.diplom.todoapp.eventtask.CalendarSingletone;
-import com.diplom.todoapp.eventtask.TaskFilter;
-import com.diplom.todoapp.eventtask.TaskFragmentDirections;
-import com.diplom.todoapp.eventtask.TaskViewModel;
-import com.diplom.todoapp.eventtask.decorator.TaskDayDecorator;
+import com.diplom.todoapp.details.fragments.TaskDetailFragment;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskAdapter;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskListViewModel;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
-import com.diplom.todoapp.eventtask.listeners.RemoveListener;
-import com.diplom.todoapp.eventtask.listeners.TaskListener;
+import com.diplom.todoapp.eventtask.filter.TaskFilter;
 import com.diplom.todoapp.firebase.FirebaseRepository;
-import com.diplom.todoapp.utils.PriorityUtil;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,9 +34,7 @@ public class TaskSearchFragment extends Fragment {
     FragmentTaskSearchBinding binding = null;
     SearchView searchView = null;
     TaskFilter filter = new TaskFilter(0);
-    TaskViewModel taskViewModel = new TaskViewModel();
-    FirebaseRepository firebase = FirebaseRepository.getInstance();
-    Date choosedDay = null;
+    TaskListViewModel taskViewModel = new TaskListViewModel();
     String searchedTitle = null;
     Boolean searchByDate = false;
 
@@ -99,7 +84,7 @@ public class TaskSearchFragment extends Fragment {
         if(searchByDate){
             getParentFragmentManager().setFragmentResultListener(DatePickerDialogFragment.DATE_PICKER_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
                 Date date = (Date)result.get(requestKey);
-                choosedDay = date;
+                taskViewModel.set date;
                 resetAdapterList(filter.filterByDate(taskViewModel.taskList, date));
                 searchView.setIconified(true);
             });

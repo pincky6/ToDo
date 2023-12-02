@@ -1,4 +1,5 @@
-package com.diplom.todoapp.dialogs.eventtaskfragments;
+package com.diplom.todoapp.details.fragments;
+
 
 import static androidx.navigation.ViewKt.findNavController;
 
@@ -19,6 +20,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public abstract class AbstractTaskDetailFragment extends Fragment {
+    public static final String TASK_DETAIL_KEY = "TASK_DETAIL_KEY";
     protected void initSpinners(Spinner taskReminder, Spinner taskPriority){
 
         String[] reminders = new String[]{"1 day before", "5 minutes before", "Don\'t remind"};

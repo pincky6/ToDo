@@ -1,6 +1,5 @@
 package com.diplom.todoapp.eventtask;
 
-
 import static androidx.navigation.ViewKt.findNavController;
 
 import com.diplom.todoapp.R;
@@ -16,45 +15,27 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+
 
 import com.diplom.todoapp.databinding.FragmentEventTaskBinding;
-import com.diplom.todoapp.dialogs.eventtaskfragments.TaskDetailFragment;
-import com.diplom.todoapp.dialogs.filterfragment.TaskFilterFragmentDialog;
-import com.diplom.todoapp.eventtask.decorator.Decorators;
-import com.diplom.todoapp.eventtask.decorator.TaskDayDecorator;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskAdapter;
+import com.diplom.todoapp.details.fragments.AbstractTaskDetailFragment;
+import com.diplom.todoapp.eventtask.calendar.decorator.MaterialCalendarFragment;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskListFragment;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
+import com.diplom.todoapp.eventtask.filter.TaskFilter;
+import com.diplom.todoapp.eventtask.filter.TaskFilterFragmentDialog;
 import com.diplom.todoapp.firebase.FirebaseRepository;
-
-
-import com.diplom.todoapp.firebase.InitExpression;
-import com.diplom.todoapp.utils.PriorityUtil;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
 
 public class TaskFragment extends Fragment {
     private FragmentEventTaskBinding binding = null;
-    private TaskViewModel taskViewModel;
     private FirebaseRepository firebase;
-    private CalendarSingletone calendarSingletone;
-    private Decorators decorators;
-    private TaskFilter filter;
-    private CalendarDay choosedDay;
-    int currentMonth = -1;
+    private TaskListFragment taskListFragment = null;
+    private MaterialCalendarFragment materialCalendarFragment = null;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firebase = FirebaseRepository.getInstance();
-        taskViewModel = new TaskViewModel();
-        decorators = new Decorators();
-        filter = new TaskFilter(0);
     }
     @Nullable
     @Override
@@ -62,28 +43,17 @@ public class TaskFragment extends Fragment {
         Log.d("TASK_FRAGMENT", "onCreateView");
         binding = FragmentEventTaskBinding.inflate(inflater);
         initMenus();
-        initRecyclerView();
-        initFragmentResults();
-        initCalendar();
+        initUpdateTaskListListener();
         return binding.getRoot();
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        taskViewModel.loadFirebase(binding.recyclerView, tasks -> {
-            decorators.getDecorators().clear();
-            initDecorators();
-            binding.calendar.removeDecorators();
-            binding.calendar.addDecorators(decorators.getDecorators());
-//            resetAdapterList(filter.filter(taskViewModel.taskList, choosedDay, currentMonth));
-
-            calendarSingletone = CalendarSingletone.initialize(taskViewModel.taskList);
-            CalendarDay day = calendarSingletone.getCalendarDay(new Date());
-            currentMonth = day.getMonth();
-            ArrayList<AbstractTask> showedTask;
-            showedTask = taskViewModel.filterForMonth(day);
-            resetAdapterList(showedTask);
-        });
+        taskListFragment = (TaskListFragment) getChildFragmentManager().findFragmentById(R.id.taskListFragment);
+        materialCalendarFragment = (MaterialCalendarFragment)
+                getChildFragmentManager().findFragmentById(R.id.calendarFragment);
+        initTaskListFragmentListeners();
+        initMaterialCalendarFragment();
     }
     @Override
     public void onDestroyView() {
@@ -93,19 +63,22 @@ public class TaskFragment extends Fragment {
     private void initMenus(){
         binding.toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);
         binding.toolbar.setNavigationOnClickListener(v -> {
-             firebase.signOut();
-             findNavController(binding.getRoot()).popBackStack();
+            firebase.signOut();
+            findNavController(getView()).popBackStack();
         });
         binding.toolbar.setOnMenuItemClickListener(item -> {
             if(item.getItemId() == R.id.action_show_task_list){
-                choosedDay = null;
-                binding.calendar.setSelectedDate((CalendarDay)null);
-                resetAdapterList(filter.filter(taskViewModel.taskList, choosedDay, currentMonth));
-            } else if(item.getItemId() == R.id.action_settings){
+                taskListFragment.getFilter().setSelectedDay(null);
+                taskListFragment.showAllList();
+                //binding.calendar.setSelectedDate((CalendarDay)null);
+                // resetAdapterList(taskViewModel.taskList);
+            }
+            else if(item.getItemId() == R.id.action_settings){
                 Toast.makeText(getContext(), "smthj", Toast.LENGTH_SHORT).show();
-            } else if(item.getItemId() == R.id.action_filter){
-                findNavController(binding.getRoot()).navigate(
-                        TaskFragmentDirections.showTaskFilterDialog(filter.getMask())
+            }
+            else if(item.getItemId() == R.id.action_filter){
+                findNavController(getView()).navigate(
+                        TaskFragmentDirections.showTaskFilterDialog(taskListFragment.getFilterMask())
                 );
             } else if (item.getItemId() == R.id.action_search_by_title){
                 findNavController(binding.getRoot()).navigate(
@@ -125,12 +98,12 @@ public class TaskFragment extends Fragment {
             popupMenu.setOnMenuItemClickListener(item -> {
                 int id = item.getItemId();
                 if(id == R.id.add_new_task){
-                    findNavController(getView()).navigate(
+                    findNavController(binding.getRoot()).navigate(
                             TaskFragmentDirections.showTaskDetailFragment("")
                     );
                     return true;
                 } else if (id == R.id.add_new_event) {
-                    findNavController(getView()).navigate(
+                    findNavController(binding.getRoot()).navigate(
                             TaskFragmentDirections.showDateTaskDetailFragment("")
                     );
                     return true;
@@ -140,109 +113,43 @@ public class TaskFragment extends Fragment {
             popupMenu.show();
         });
     }
-    private void initRecyclerView(){
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerView.setAdapter(new TaskAdapter(taskViewModel.taskList, (AbstractTask task) -> {
-            if (task.id.split("-")[0].equals("Task")) {
-                findNavController(binding.getRoot()).navigate(
-                        TaskFragmentDirections.showTaskDetailFragment(task.id)
-                );
-            } else {
-                findNavController(binding.getRoot()).navigate(
-                        TaskFragmentDirections.showDateTaskDetailFragment(task.id)
-                );
-            }
-        },
-        id -> {
-            AbstractTask task = taskViewModel.getFromId(id);
-            removeTask(task);
-            binding.recyclerView.getAdapter().notifyDataSetChanged();
-        }));
-    }
-    private void initFragmentResults(){
-        getParentFragmentManager().setFragmentResultListener(TaskDetailFragment.TASK_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
-            AbstractTask abstractTask = (AbstractTask) result.get(requestKey);
-            assert abstractTask != null;
-            calendarSingletone = CalendarSingletone.initialize(taskViewModel.taskList);
-            CalendarDay day = calendarSingletone.getCalendarDay(abstractTask.dateStart);
-            int color = PriorityUtil.getPriorityColor(abstractTask.priority);
-            if(calendarSingletone.containsKey(day)){
-                calendarSingletone.get(day).add(color);
-                decorators.removeDecorator(day, binding);
-                decorators.addDecorator(new TaskDayDecorator(day, calendarSingletone.get(day)), binding);
-            } else {
-                HashSet<Integer> colors = new HashSet<>();
-                colors.add(color);
-                calendarSingletone.put(day, colors);
-                decorators.addDecorator(new TaskDayDecorator(day, colors), binding);
-            }
-            firebase.addTask(abstractTask);
-            //taskViewModel.add(abstractTask);
-            taskViewModel.taskList.clear();
-            taskViewModel.loadFirebase(binding.recyclerView, days -> {
 
-                resetAdapterList(filter.filter(taskViewModel.taskList, choosedDay, currentMonth));
-            });
+    private void initUpdateTaskListListener(){
+        getParentFragmentManager().setFragmentResultListener(TaskFilterFragmentDialog.FILTER_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
+            Integer mask = (Integer)result.get(requestKey);
+            taskListFragment.setFilterMask(mask);
+            taskListFragment.updateUi();
         });
-        getParentFragmentManager().setFragmentResultListener(TaskFilterFragmentDialog.FILTER_KEY, getViewLifecycleOwner(), ((requestKey, result) -> {
-            Integer mask = (Integer) result.get(requestKey);
-            filter.setMask(mask);
-            resetAdapterList(filter.filter(taskViewModel.taskList, choosedDay, currentMonth));
-        }));
-    }
-    private void initCalendar(){
-        binding.calendar.setOnMonthChangedListener((widget, date) ->{
-            ArrayList<AbstractTask> tasks;
-            CalendarDay selectedDate = binding.calendar.getSelectedDate();
-            calendarSingletone = CalendarSingletone.initialize(taskViewModel.taskList);
-            currentMonth = date.getMonth();
-            if(selectedDate != null &&
-                    selectedDate.getMonth() == date.getMonth() &&
-                    selectedDate.getYear() == date.getYear()){
-                tasks = taskViewModel.filterForDay(selectedDate);
-                resetAdapterList(filter.filter(tasks, selectedDate, currentMonth));
-            }
-            else {
-                tasks = taskViewModel.filterForMonth(date);
-                resetAdapterList(filter.filter(tasks, null, currentMonth));
-            }
-        });
-        binding.calendar.setOnDateChangedListener((widget, date, selected) -> {
-            ArrayList<AbstractTask> tasks;
-            calendarSingletone = CalendarSingletone.initialize(taskViewModel.taskList);
-            tasks = taskViewModel.filterForDay(date);
-            choosedDay = date;
-            resetAdapterList(filter.filter(tasks, choosedDay, currentMonth));
+        getParentFragmentManager().setFragmentResultListener(AbstractTaskDetailFragment.TASK_DETAIL_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
+            AbstractTask abstractTask = (AbstractTask)result.get(requestKey);
+            taskListFragment.addTask(abstractTask);
         });
     }
-    private void initDecorators(){
-        calendarSingletone = CalendarSingletone.initialize(taskViewModel.taskList);
-        for(Map.Entry<CalendarDay, HashSet<Integer>> entry: calendarSingletone.getDayTaskCalendarColors().entrySet()){
-            decorators.addDecorator(new TaskDayDecorator(entry.getKey(), entry.getValue()));
-        }
-        binding.calendar.addDecorators(decorators.getDecorators());
-    }
-    private void removeTask(AbstractTask task){
-        CalendarDay day = calendarSingletone.getCalendarDay(task.dateStart);
-        int color = PriorityUtil.getPriorityColor(task.priority);
-        calendarSingletone.removeFromDateTaskCalendarColors(day, color);
-        firebase.removeTask(task.id);
-        taskViewModel.remove(task.id);
-        for(AbstractTask task1: taskViewModel.taskList){
-            if(task1.dateStart == task.dateStart &&
-               PriorityUtil.getPriorityColor(task1.priority) == color){
-                return;
+
+    private void initTaskListFragmentListeners(){
+        taskListFragment.setOnTaskListener((abstractTask, requestKey) -> {
+            if(requestKey.equals(TaskListFragment.REQUEST_ADD_TASK)) {
+                materialCalendarFragment.addNewTaskDecorator(abstractTask);
+            } else {
+                materialCalendarFragment.removeTaskDecorator(abstractTask);
             }
-        }
-        decorators.removeDecorator(day, binding);
-        if(calendarSingletone.containsKey(day)){
-            decorators.addDecorator(new TaskDayDecorator(day, calendarSingletone.get(day)), binding);
-        }
-        resetAdapterList(filter.filter(taskViewModel.taskList, choosedDay, currentMonth));
+        });
+        taskListFragment.setOnResetTaskLisener((oldTask, newTask) -> {
+            materialCalendarFragment.removeTaskDecorator(oldTask);
+            materialCalendarFragment.addNewTaskDecorator(newTask);
+        });
     }
-    private void resetAdapterList(ArrayList<AbstractTask> tasks){
-        TaskAdapter taskAdapter = (TaskAdapter)Objects.requireNonNull(binding.recyclerView.getAdapter());
-        taskAdapter.resetTaskList(tasks);
-        taskAdapter.notifyDataSetChanged();
+    private void initMaterialCalendarFragment(){
+        materialCalendarFragment.setOnDayChangedListener(day -> {
+            TaskFilter filter = taskListFragment.getFilter();
+            filter.setSelectedDay(day);
+            filter.setSelectedMonth(day.getMonth());
+            taskListFragment.updateUi();
+        });
+        materialCalendarFragment.setOnMonthChangedListener((month) -> {
+            TaskFilter filter = taskListFragment.getFilter();
+            filter.setSelectedMonth(month);
+            taskListFragment.updateUi();
+        });
     }
 }
