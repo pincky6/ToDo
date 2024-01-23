@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.SuccsessFlag;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class SuccsessFlagUtil {
@@ -44,10 +45,22 @@ public class SuccsessFlagUtil {
     }
 
     public static String getStringFlagFromDate(@NonNull Date date){
-        Date todayDate = new Date();
-        if(date.before(todayDate)) return "NOT_DONE";
-        if(date.equals(todayDate)) return "IN_PROGRESS";
-        if(date.after(todayDate)) return "NOT_IN_PROGRESS";
+        Calendar cal1 = Calendar.getInstance();
+        cal1.set(Calendar.HOUR_OF_DAY, 0);
+        cal1.set(Calendar.MINUTE, 0);
+        cal1.set(Calendar.SECOND, 0);
+        cal1.set(Calendar.MILLISECOND, 0);
+
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(date);
+        cal2.set(Calendar.HOUR_OF_DAY, 0);
+        cal2.set(Calendar.MINUTE, 0);
+        cal2.set(Calendar.SECOND, 0);
+        cal2.set(Calendar.MILLISECOND, 0);
+
+        if(cal1.compareTo(cal2) == 1) return "NOT_DONE";
+        if(cal1.compareTo(cal2) == 0) return "IN_PROGRESS";
+        if(cal1.compareTo(cal2) == -1) return "NOT_IN_PROGRESS";
         return "NOT_IN_PROGRESS";
     }
 
