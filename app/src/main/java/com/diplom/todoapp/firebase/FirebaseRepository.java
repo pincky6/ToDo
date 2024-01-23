@@ -17,6 +17,7 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.login.LoginFragmentDirections;
 
+import com.diplom.todoapp.utils.SuccsessFlagUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -158,11 +159,15 @@ public class FirebaseRepository {
                     if(key.equals("Task")){
                         Task task = snapshot.getValue(Task.class);
                         task.id = snapshot.getKey();
+                        task.succsessFlag = SuccsessFlagUtil.getStringFlagFromDate(task.dateStart);
+                        addTask(task);
                         taskList.add(task);
                     }
                     else if(key.equals("DateTask")){
                         DateTask dateTask = snapshot.getValue(DateTask.class);
                         dateTask.id = snapshot.getKey();
+                        dateTask.succsessFlag = SuccsessFlagUtil.getStringFlagFromDate(dateTask.dateStart);
+                        addTask(dateTask);
                         taskList.add(dateTask);
                     }
                 }

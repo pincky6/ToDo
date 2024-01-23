@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.databinding.FragmentTaskListBinding;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.SuccsessFlag;
 import com.diplom.todoapp.eventtask.filter.TaskFilter;
 import com.diplom.todoapp.eventtask.TaskFragmentDirections;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
@@ -21,6 +22,7 @@ import com.diplom.todoapp.eventtask.listeners.OnResetTaskLisener;
 import com.diplom.todoapp.utils.CalendarUtil;
 import com.diplom.todoapp.utils.NotificationsUtil;
 import com.diplom.todoapp.utils.PriorityUtil;
+import com.diplom.todoapp.utils.SuccsessFlagUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
