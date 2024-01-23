@@ -159,15 +159,19 @@ public class FirebaseRepository {
                     if(key.equals("Task")){
                         Task task = snapshot.getValue(Task.class);
                         task.id = snapshot.getKey();
-                        task.succsessFlag = SuccsessFlagUtil.getStringFlagFromDate(task.dateStart);
-                        addTask(task);
+                        if(!task.succsessFlag.equals("DONE")) {
+                            task.succsessFlag = SuccsessFlagUtil.getStringFlagFromDate(task.dateStart);
+                            addTask(task);
+                        }
                         taskList.add(task);
                     }
                     else if(key.equals("DateTask")){
                         DateTask dateTask = snapshot.getValue(DateTask.class);
                         dateTask.id = snapshot.getKey();
-                        dateTask.succsessFlag = SuccsessFlagUtil.getStringFlagFromDate(dateTask.dateStart);
-                        addTask(dateTask);
+                        if(!dateTask.succsessFlag.equals("DONE")) {
+                            dateTask.succsessFlag = SuccsessFlagUtil.getStringFlagFromDate(dateTask.dateStart);
+                            addTask(dateTask);
+                        }
                         taskList.add(dateTask);
                     }
                 }
