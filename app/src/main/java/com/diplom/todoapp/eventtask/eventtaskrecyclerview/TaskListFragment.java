@@ -21,7 +21,6 @@ import com.diplom.todoapp.eventtask.listeners.OnTaskListener;
 import com.diplom.todoapp.eventtask.listeners.OnResetTaskLisener;
 import com.diplom.todoapp.utils.CalendarUtil;
 import com.diplom.todoapp.utils.NotificationsUtil;
-import com.diplom.todoapp.utils.PriorityUtil;
 import com.diplom.todoapp.utils.SuccsessFlagUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 

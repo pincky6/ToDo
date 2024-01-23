@@ -4,7 +4,6 @@ import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Priority;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.SuccsessFlag;
 
 import java.util.Date;

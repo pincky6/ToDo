@@ -4,19 +4,14 @@ import static com.diplom.todoapp.App.CHANNEL_ID;
 
 import android.Manifest;
 import android.app.Notification;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

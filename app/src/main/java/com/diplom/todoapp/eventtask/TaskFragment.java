@@ -25,7 +25,6 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.filter.TaskFilter;
 import com.diplom.todoapp.eventtask.filter.TaskFilterFragmentDialog;
 import com.diplom.todoapp.firebase.FirebaseRepository;
-import com.diplom.todoapp.utils.NotificationsUtil;
 
 public class TaskFragment extends Fragment {
     private FragmentEventTaskBinding binding = null;

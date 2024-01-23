@@ -3,7 +3,6 @@ package com.diplom.todoapp.firebase;
 
 import static androidx.navigation.ViewKt.findNavController;
 
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
