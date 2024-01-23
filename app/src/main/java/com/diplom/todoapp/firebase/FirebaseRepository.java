@@ -3,6 +3,7 @@ package com.diplom.todoapp.firebase;
 
 import static androidx.navigation.ViewKt.findNavController;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -155,8 +156,7 @@ public class FirebaseRepository {
                     String[] strs = snapshot.getKey().split("-");
                     String key = strs[0];
                     if(key.equals("Task")){
-                        Task task =
-                                snapshot.getValue(Task.class);
+                        Task task = snapshot.getValue(Task.class);
                         task.id = snapshot.getKey();
                         taskList.add(task);
                     }
@@ -186,8 +186,7 @@ public class FirebaseRepository {
                     String[] strs = snapshot.getKey().split("-");
                     String key = strs[0];
                     if(key.equals("Task")){
-                        Task task =
-                                snapshot.getValue(Task.class);
+                        Task task = snapshot.getValue(Task.class);
                         task.id = snapshot.getKey();
                         taskList.add(task);
                     }

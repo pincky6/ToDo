@@ -19,6 +19,7 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.listeners.OnTaskListener;
 import com.diplom.todoapp.eventtask.listeners.OnResetTaskLisener;
 import com.diplom.todoapp.utils.CalendarUtil;
+import com.diplom.todoapp.utils.NotificationsUtil;
 import com.diplom.todoapp.utils.PriorityUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
@@ -109,6 +110,7 @@ public class TaskListFragment extends Fragment {
         if(oldTask == null) {
             taskListViewModel.addTask(newTask);
             if(onTaskListener != null) {
+                NotificationsUtil.createNotification(getContext(), newTask);
                 onTaskListener.listen(newTask, REQUEST_ADD_TASK);
             }
         } else {
@@ -122,7 +124,7 @@ public class TaskListFragment extends Fragment {
     }
     private void removeTask(AbstractTask abstractTask){
         taskListViewModel.removeById(abstractTask.id);
-        int color = PriorityUtil.getPriorityColor(abstractTask.priority);
+//        int color = PriorityUtil.getPriorityColor(abstractTask.priority);
 //        for(AbstractTask task1: taskListViewModel.taskList){
 //            if(task1.dateStart == abstractTask.dateStart &&
 //                    PriorityUtil.getPriorityColor(task1.priority) == color){

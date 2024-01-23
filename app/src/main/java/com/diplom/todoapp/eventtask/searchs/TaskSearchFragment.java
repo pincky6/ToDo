@@ -15,12 +15,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.R;
+import com.diplom.todoapp.databinding.FragmentTaskSearchBinding;
 import com.diplom.todoapp.details.fragments.AbstractTaskDetailFragment;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskListViewModel;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.filter.TaskFilter;
-import com.diplom.todoapp.searchs.TaskSearchFragmentDirections;
 import com.diplom.todoapp.utils.CalendarUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
