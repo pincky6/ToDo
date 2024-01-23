@@ -1,6 +1,10 @@
 package com.diplom.todoapp.utils;
 
+import androidx.annotation.NonNull;
+
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.SuccsessFlag;
+
+import java.util.Date;
 
 public class SuccsessFlagUtil {
     public static String getStringFromFlag(SuccsessFlag flag){
@@ -16,7 +20,7 @@ public class SuccsessFlagUtil {
         }
         return "NOT_IN_PROGRESS";
     }
-    public static SuccsessFlag getFlagFromString(String flagString){
+    public static SuccsessFlag getFlagFromString(@NonNull String flagString){
         switch (flagString){
             case "NOT_IN_PROGRESS":
                 return SuccsessFlag.NOT_IN_PROGRESS;
@@ -28,5 +32,20 @@ public class SuccsessFlagUtil {
                 return SuccsessFlag.DONE;
         }
         return SuccsessFlag.NOT_IN_PROGRESS;
+    }
+    public static SuccsessFlag getFlagFromDate(@NonNull Date date){
+        Date todayDate = new Date();
+        if(date.before(todayDate)) return SuccsessFlag.NOT_IN_PROGRESS;
+        if(date.equals(todayDate)) return SuccsessFlag.IN_PROGRESS;
+        if(date.after(todayDate)) return SuccsessFlag.NOT_DONE;
+        return SuccsessFlag.NOT_IN_PROGRESS;
+    }
+
+    public static String getStringFlagFromDate(@NonNull Date date){
+        Date todayDate = new Date();
+        if(date.before(todayDate)) return "NOT_IN_PROGRESS";
+        if(date.equals(todayDate)) return "IN_PROGRESS";
+        if(date.after(todayDate)) return "NOT_DONE";
+        return "NOT_IN_PROGRESS";
     }
 }
