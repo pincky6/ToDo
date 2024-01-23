@@ -20,8 +20,10 @@ import com.diplom.todoapp.details.fragments.AbstractTaskDetailFragment;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskListViewModel;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.SuccsessFlag;
 import com.diplom.todoapp.eventtask.filter.TaskFilter;
 import com.diplom.todoapp.utils.CalendarUtil;
+import com.diplom.todoapp.utils.SuccsessFlagUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
@@ -120,6 +122,12 @@ public class TaskSearchFragment extends Fragment {
                 id -> {
                     AbstractTask task = taskListViewModel.getFromId(id);
                     removeTask(task);
+                    binding.recyclerView.getAdapter().notifyDataSetChanged();
+                },
+                abstractTask ->
+                {
+                    abstractTask.succsessFlag = SuccsessFlagUtil.getStringFromFlag(SuccsessFlag.DONE);
+                    taskListViewModel.updateTask(abstractTask);
                     binding.recyclerView.getAdapter().notifyDataSetChanged();
                 }));
         getParentFragmentManager().setFragmentResultListener(AbstractTaskDetailFragment.TASK_DETAIL_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
