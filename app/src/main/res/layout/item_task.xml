@@ -3,32 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/info"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="TextView"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/border">
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_weight="1"
+        />
+        <View
+            android:id="@+id/succsessIndicator"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
     <LinearLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="@id/date"
+        app:layout_constraintTop_toBottomOf="@id/info"
         android:background="@drawable/border">
 
         <View
             android:id="@+id/leftSide"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="5" />
+            android:layout_weight="10" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,13 +49,13 @@
             android:background="@drawable/border_content">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/dateStart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/dateStart"
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
@@ -56,10 +67,5 @@
                 android:text="TextView" />
         </LinearLayout>
 
-        <View
-            android:id="@+id/rightSide"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="5" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
