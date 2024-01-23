@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class CalendarUtil {
@@ -14,6 +15,12 @@ public class CalendarUtil {
         return CalendarDay.from(Integer.parseInt(taskDayFormat[2]),
                 Integer.parseInt(taskDayFormat[1]),
                 Integer.parseInt(taskDayFormat[0]));
+    }
+
+    public static Calendar getCalendar(@NonNull Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(date.getTime());
+        return Calendar.getInstance();
     }
     public static boolean compareCalendarDays(CalendarDay lhs, CalendarDay rhs){
         if(lhs == null || rhs == null) return false;

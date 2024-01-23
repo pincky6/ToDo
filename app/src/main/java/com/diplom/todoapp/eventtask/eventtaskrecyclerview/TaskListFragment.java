@@ -110,20 +110,22 @@ public class TaskListFragment extends Fragment {
         if(oldTask == null) {
             taskListViewModel.addTask(newTask);
             if(onTaskListener != null) {
-                NotificationsUtil.createNotification(getContext(), newTask);
                 onTaskListener.listen(newTask, REQUEST_ADD_TASK);
             }
         } else {
             taskListViewModel.remove(oldTask.id);
+            NotificationsUtil.deleteNotification(getContext(), oldTask);
             taskListViewModel.addTask(newTask);
             if(onResetTaskLisener != null){
                 onResetTaskLisener.listen(oldTask, newTask);
             }
         }
+        NotificationsUtil.createNotification(getContext(), newTask);
         resetAdapterList(filter.filter(taskListViewModel.taskList));
     }
     private void removeTask(AbstractTask abstractTask){
         taskListViewModel.removeById(abstractTask.id);
+        NotificationsUtil.deleteNotification(getContext(), abstractTask);
 //        int color = PriorityUtil.getPriorityColor(abstractTask.priority);
 //        for(AbstractTask task1: taskListViewModel.taskList){
 //            if(task1.dateStart == abstractTask.dateStart &&
