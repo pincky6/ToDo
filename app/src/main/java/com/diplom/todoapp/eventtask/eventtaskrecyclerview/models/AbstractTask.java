@@ -2,6 +2,8 @@ package com.diplom.todoapp.eventtask.eventtaskrecyclerview.models;
 
 import androidx.annotation.NonNull;
 
+import com.diplom.todoapp.utils.SuccsessFlagUtil;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,8 +19,10 @@ public abstract class AbstractTask implements Serializable{
     public Date dateStart;
     public String priority;
     public String reminder;
+    public String succsessFlag;
     public  AbstractTask(@NonNull String id, @NonNull Date createDate, @NonNull String title, @NonNull String describe,
-                        boolean allDayFlag, @NonNull Date dateStart, @NonNull Priority priority, @NonNull Reminders reminder){
+                        boolean allDayFlag, @NonNull Date dateStart, @NonNull Priority priority, @NonNull Reminders reminder,
+                         @NonNull SuccsessFlag succsessFlag){
         this.id = id;
         this.createDate = createDate;
         this.title = title;
@@ -27,9 +31,11 @@ public abstract class AbstractTask implements Serializable{
         this.dateStart = safeDateAfterInit(dateStart, createDate);
         this.priority = priority.name();
         this.reminder = reminder.name();
+        this.succsessFlag = SuccsessFlagUtil.getStringFromFlag(succsessFlag);
     }
     public  AbstractTask(@NonNull String id, @NonNull Date createDate, @NonNull String title, @NonNull String describe,
-                         boolean allDayFlag, @NonNull Date dateStart, @NonNull String priority, @NonNull String reminder){
+                         boolean allDayFlag, @NonNull Date dateStart, @NonNull String priority, @NonNull String reminder,
+                         @NonNull String succsessFlag){
         this.id = id;
         this.createDate = createDate;
         this.title = title;
@@ -38,9 +44,11 @@ public abstract class AbstractTask implements Serializable{
         this.dateStart = safeDateAfterInit(dateStart, createDate);
         this.priority = priority;
         this.reminder = reminder;
+        this.succsessFlag = succsessFlag;
     }
     public void setTask(@NonNull String id, @NonNull Date createDate, @NonNull String title, @NonNull String describe,
-                        boolean allDayFlag, @NonNull Date dateStart,  @NonNull String priority, @NonNull String reminder){
+                        boolean allDayFlag, @NonNull Date dateStart,  @NonNull String priority, @NonNull String reminder,
+                        @NonNull String succsessFlag){
         this.id = id;
         this.createDate = createDate;
         this.title = title;
@@ -49,6 +57,7 @@ public abstract class AbstractTask implements Serializable{
         this.dateStart = safeDateAfterInit(dateStart, createDate);
         this.priority = priority;
         this.reminder = reminder;
+        this.succsessFlag = succsessFlag;
     }
     protected Date safeDateAfterInit(Date initDate, Date stateDate){
         if(stateDate.compareTo(initDate) <= 0){
@@ -64,7 +73,4 @@ public abstract class AbstractTask implements Serializable{
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException{
         in.defaultReadObject();
     }
-
-
-
 }

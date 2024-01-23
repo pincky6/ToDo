@@ -10,6 +10,7 @@ import com.diplom.todoapp.firebase.OnDataReceivedListener;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 import com.diplom.todoapp.firebase.FirebaseRepository;
+import com.diplom.todoapp.utils.SuccsessFlagUtil;
 
 import java.io.IOException;
 import java.sql.Time;
@@ -81,6 +82,7 @@ public class DateTaskDetailViewModel {
         Time timeEnd = Time.valueOf(binding.dateTaskEditTextTime2.getText().toString() + ":00");
         String priority = binding.dateTaskPriority.getSelectedItem().toString();
         String reminder = binding.dateTaskReminder.getSelectedItem().toString();
+        String successFlag = "";
         try {
             createDate = format.parse(format.format(new Date()));
             dateStart = format.parse(binding.dateTaskEditTextDate.getText().toString());
@@ -89,6 +91,7 @@ public class DateTaskDetailViewModel {
             assert dateEnd != null;
             dateStart.setTime(dateStart.getTime() + timeStart.getTime());
             dateEnd.setTime(dateEnd.getTime() + timeEnd.getTime());
+            successFlag = SuccsessFlagUtil.getStringFlagFromDate(dateStart);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
@@ -97,9 +100,9 @@ public class DateTaskDetailViewModel {
         }
         if(dateTask == null)
             dateTask = new DateTask("DateTask-" + firebaseRepository.generateKey(), createDate, place, title, describe, allDay,
-                    dateStart, dateEnd, priority, reminder);
+                    dateStart, dateEnd, priority, reminder, successFlag);
         else
             dateTask.setTask(dateTask.id, createDate, place, title, describe, allDay,
-                    dateStart, dateEnd, priority, reminder);
+                    dateStart, dateEnd, priority, reminder, successFlag);
     }
 }

@@ -10,6 +10,7 @@ import com.diplom.todoapp.firebase.OnDataReceivedListener;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.firebase.FirebaseRepository;
+import com.diplom.todoapp.utils.SuccsessFlagUtil;
 
 import java.io.IOException;
 import java.sql.Time;
@@ -68,11 +69,13 @@ public class TaskDetailViewModel {
         Date dateStart = null;
         String priority = binding.taskPriority.getSelectedItem().toString();
         String reminder = binding.taskReminder.getSelectedItem().toString();
+        String successFlag = "";
         try {
             createDate = format.parse(format.format(new Date()));
             dateStart = format.parse(binding.taskEditTextDate.getText().toString());
             assert dateStart != null;
             dateStart.setTime(dateStart.getTime() + time.getTime());
+            successFlag = SuccsessFlagUtil.getStringFlagFromDate(dateStart);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
@@ -81,9 +84,9 @@ public class TaskDetailViewModel {
         }
         if (task == null)
             task = new Task("Task-" + firebaseRepository.generateKey(), createDate, title, describe, allDay,
-                    dateStart, priority, reminder);
+                    dateStart, priority, reminder, successFlag);
         else
             task.setTask(task.id, createDate, title, describe, allDay,
-                    dateStart, priority, reminder);
+                    dateStart, priority, reminder, successFlag);
     }
 }
