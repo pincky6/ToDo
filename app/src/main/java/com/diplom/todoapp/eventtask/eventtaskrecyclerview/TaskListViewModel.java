@@ -26,6 +26,14 @@ public class TaskListViewModel extends ViewModel {
         firebase.addTask(abstractTask);
         taskList.add(abstractTask);
     }
+    public void updateTask(AbstractTask abstractTask){
+        firebase.addTask(abstractTask);
+        for(AbstractTask task: taskList){
+            if(task.id.equals(abstractTask.id)){
+                task.succsessFlag = abstractTask.succsessFlag;
+            }
+        }
+    }
     public void removeById(String id){
         firebase.removeTask(id);
         remove(id);

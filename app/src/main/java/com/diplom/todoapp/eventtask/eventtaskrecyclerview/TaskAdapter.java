@@ -11,6 +11,7 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskType;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.eventtask.listeners.RemoveListener;
+import com.diplom.todoapp.eventtask.listeners.SetSuccsessListener;
 import com.diplom.todoapp.eventtask.listeners.TaskListener;
 
 import java.util.ArrayList;
@@ -19,12 +20,15 @@ public class TaskAdapter extends RecyclerView.Adapter<AbstractTaskHolder> {
     private ArrayList<AbstractTask> taskList;
     private TaskListener listener;
     private RemoveListener removeListener;
+    private SetSuccsessListener setSuccsessListener;
     public TaskAdapter(ArrayList<AbstractTask> taskList,
                        TaskListener listener,
-                       RemoveListener removeListener){
+                       RemoveListener removeListener,
+                       SetSuccsessListener setSuccsessListener){
         this.taskList = taskList;
         this.listener = listener;
         this.removeListener = removeListener;
+        this.setSuccsessListener = setSuccsessListener;
     }
     @Override
     public int getItemViewType(int position) {
@@ -44,7 +48,7 @@ public class TaskAdapter extends RecyclerView.Adapter<AbstractTaskHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull AbstractTaskHolder holder, int position) {
-        holder.bind(taskList.get(position), listener, removeListener);
+        holder.bind(taskList.get(position), listener, removeListener, setSuccsessListener);
     }
 
     @Override

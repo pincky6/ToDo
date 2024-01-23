@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
+import com.diplom.todoapp.eventtask.listeners.SetSuccsessListener;
 import com.diplom.todoapp.utils.PriorityUtil;
 import com.diplom.todoapp.databinding.ItemDateTaskBinding;
 import com.diplom.todoapp.eventtask.listeners.RemoveListener;
 import com.diplom.todoapp.eventtask.listeners.TaskListener;
+import com.diplom.todoapp.utils.SuccsessFlagUtil;
 
 import java.text.SimpleDateFormat;
 
@@ -24,7 +26,8 @@ public class DateTaskHolder extends AbstractTaskHolder {
     @Override
     public void bind(AbstractTask abstractTask,
                      TaskListener listener,
-                     RemoveListener removeListener){
+                     RemoveListener removeListener,
+                     SetSuccsessListener setSuccsessListener){
         if(!(abstractTask instanceof DateTask)) throw new IllegalArgumentException("wrong type of argument in date task holder");
         DateTask dateTask = (DateTask) abstractTask;
         SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
@@ -35,8 +38,9 @@ public class DateTaskHolder extends AbstractTaskHolder {
         binding.describe.setText(dateTask.describe);
 
         int color = PriorityUtil.getPriorityColor(PriorityUtil.getPriorityEnum(dateTask.priority));
+        int succsessIndicatorColor = SuccsessFlagUtil.getColorFromSuccsessFlagString(dateTask.succsessFlag);
         binding.leftSide.setBackgroundColor(color);
-        binding.rightSide.setBackgroundColor(color);
+        binding.succsessIndicator.setBackgroundColor(succsessIndicatorColor);
         Log.d("DateTask", dateTask.id);
         binding.getRoot().setOnClickListener(v -> listener.taskNavigation(dateTask));
         binding.getRoot().setOnLongClickListener(v -> {
@@ -45,10 +49,10 @@ public class DateTaskHolder extends AbstractTaskHolder {
                 return true;
             }
             AlertDialog.Builder builder = new AlertDialog.Builder(binding.getRoot().getContext());
-            builder.setMessage("You really want to delete this task?")
-                    .setPositiveButton("Delete", (dialog, id) -> removeListener.remove(dateTask.id))
-                    .setNegativeButton("Cancel", (dialog, id) -> {
-                    });
+            builder.setMessage("What do you want?")
+                    .setNeutralButton("Cancel", ((dialog, which) ->{} ))
+                    .setPositiveButton("Set Task", (dialog, id) ->setSuccsessListener.set(abstractTask))
+                    .setNegativeButton("Delete Task", (dialog, id) -> removeListener.remove(dateTask.id));
             AlertDialog dialog = builder.create();
             dialog.show();
             return true;

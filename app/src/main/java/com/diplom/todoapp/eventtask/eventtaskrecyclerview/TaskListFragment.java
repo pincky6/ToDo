@@ -77,18 +77,19 @@ public class TaskListFragment extends Fragment {
     }
     private void initRecyclerView(){
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerView.setAdapter(new TaskAdapter(taskListViewModel.taskList, (AbstractTask task) ->
-        {
-            if (task.id.split("-")[0].equals("Task")) {
-                findNavController(binding.getRoot()).navigate(
-                        TaskFragmentDirections.showTaskDetailFragment(task.id)
-                );
-            } else {
-                findNavController(binding.getRoot()).navigate(
-                        TaskFragmentDirections.showDateTaskDetailFragment(task.id)
-                );
-            }
-        },
+        binding.recyclerView.setAdapter(new TaskAdapter(taskListViewModel.taskList,
+             (AbstractTask task) ->
+            {
+                if (task.id.split("-")[0].equals("Task")) {
+                    findNavController(binding.getRoot()).navigate(
+                            TaskFragmentDirections.showTaskDetailFragment(task.id)
+                    );
+                } else {
+                    findNavController(binding.getRoot()).navigate(
+                            TaskFragmentDirections.showDateTaskDetailFragment(task.id)
+                    );
+                }
+            },
                 id ->
                 {
                     if(id == null) return;
@@ -97,6 +98,13 @@ public class TaskListFragment extends Fragment {
                     if(onTaskListener != null) {
                         onTaskListener.listen(task, REQUEST_REMOVE_TASK);
                     }
+                    binding.recyclerView.getAdapter().notifyDataSetChanged();
+                }
+                ,
+                abstractTask ->
+                {
+                    abstractTask.succsessFlag = SuccsessFlagUtil.getStringFromFlag(SuccsessFlag.DONE);
+                    taskListViewModel.updateTask(abstractTask);
                     binding.recyclerView.getAdapter().notifyDataSetChanged();
                 }));
         if(!taskListViewModel.isEmpty()) return;
