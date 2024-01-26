@@ -12,7 +12,6 @@ import java.util.Date;
 
 public abstract class AbstractTask implements Serializable{
     public String id;
-    public Date createDate;
     public String title;
     public String describe;
     public boolean allDayFlag;
@@ -20,41 +19,38 @@ public abstract class AbstractTask implements Serializable{
     public String priority;
     public String reminder;
     public String succsessFlag;
-    public  AbstractTask(@NonNull String id, @NonNull Date createDate, @NonNull String title, @NonNull String describe,
+    public  AbstractTask(@NonNull String id, @NonNull String title, @NonNull String describe,
                         boolean allDayFlag, @NonNull Date dateStart, @NonNull Priority priority, @NonNull Reminders reminder,
                          @NonNull SuccsessFlag succsessFlag){
         this.id = id;
-        this.createDate = createDate;
         this.title = title;
         this.describe = describe;
         this.allDayFlag = allDayFlag;
-        this.dateStart = safeDateAfterInit(dateStart, createDate);
+        this.dateStart = dateStart;
         this.priority = priority.name();
         this.reminder = reminder.name();
         this.succsessFlag = SuccsessFlagUtil.getStringFromFlag(succsessFlag);
     }
-    public  AbstractTask(@NonNull String id, @NonNull Date createDate, @NonNull String title, @NonNull String describe,
+    public  AbstractTask(@NonNull String id,  @NonNull String title, @NonNull String describe,
                          boolean allDayFlag, @NonNull Date dateStart, @NonNull String priority, @NonNull String reminder,
                          @NonNull String succsessFlag){
         this.id = id;
-        this.createDate = createDate;
         this.title = title;
         this.describe = describe;
         this.allDayFlag = allDayFlag;
-        this.dateStart = safeDateAfterInit(dateStart, createDate);
+        this.dateStart = dateStart;
         this.priority = priority;
         this.reminder = reminder;
         this.succsessFlag = succsessFlag;
     }
-    public void setTask(@NonNull String id, @NonNull Date createDate, @NonNull String title, @NonNull String describe,
+    public void setTask(@NonNull String id, @NonNull String title, @NonNull String describe,
                         boolean allDayFlag, @NonNull Date dateStart,  @NonNull String priority, @NonNull String reminder,
                         @NonNull String succsessFlag){
         this.id = id;
-        this.createDate = createDate;
         this.title = title;
         this.describe = describe;
         this.allDayFlag = allDayFlag;
-        this.dateStart = safeDateAfterInit(dateStart, createDate);
+        this.dateStart = dateStart;
         this.priority = priority;
         this.reminder = reminder;
         this.succsessFlag = succsessFlag;

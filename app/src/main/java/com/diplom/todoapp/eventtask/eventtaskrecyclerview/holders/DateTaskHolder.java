@@ -30,11 +30,13 @@ public class DateTaskHolder extends AbstractTaskHolder {
                      SetSuccsessListener setSuccsessListener){
         if(!(abstractTask instanceof DateTask)) throw new IllegalArgumentException("wrong type of argument in date task holder");
         DateTask dateTask = (DateTask) abstractTask;
-        SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy;hh:mm");
+        String[] formatedDateStart = formatDate.format(dateTask.dateStart).split(";");
+        String[] formatedDateEnd = formatDate.format(dateTask.dateStart).split(";");
         binding.title.setText(dateTask.title);
-        binding.date.setText(formatDate.format(dateTask.createDate));
-        binding.dateStart.setText(formatDate.format(dateTask.dateStart));
-        binding.dateEnd.setText(formatDate.format(dateTask.dateEnd));
+        binding.date.setText(formatedDateStart[0]);
+        binding.dateStart.setText(formatedDateStart[0] + "; " + formatedDateStart[1]);
+        binding.dateEnd.setText(formatedDateEnd[0] + "; " + formatedDateEnd[1]);
         binding.describe.setText(dateTask.describe);
 
         int color = PriorityUtil.getPriorityColor(PriorityUtil.getPriorityEnum(dateTask.priority));

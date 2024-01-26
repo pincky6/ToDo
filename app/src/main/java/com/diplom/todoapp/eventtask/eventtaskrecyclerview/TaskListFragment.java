@@ -33,7 +33,7 @@ public class TaskListFragment extends Fragment {
     public static final String REQUEST_REMOVE_TASK = "REMOVE_TASK";
 
     private FragmentTaskListBinding binding = null;
-    private TaskListViewModel taskListViewModel = new TaskListViewModel();
+    private  TaskListViewModel taskListViewModel = new TaskListViewModel();
     private TaskFilter filter = new TaskFilter(31);
     private OnTaskListener onTaskListener = null;
     private OnResetTaskLisener onResetTaskLisener = null;

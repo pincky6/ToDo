@@ -18,9 +18,9 @@ import java.util.ArrayList;
 
 public class TaskAdapter extends RecyclerView.Adapter<AbstractTaskHolder> {
     private ArrayList<AbstractTask> taskList;
-    private TaskListener listener;
-    private RemoveListener removeListener;
-    private SetSuccsessListener setSuccsessListener;
+    private final TaskListener listener;
+    private final RemoveListener removeListener;
+    private final SetSuccsessListener setSuccsessListener;
     public TaskAdapter(ArrayList<AbstractTask> taskList,
                        TaskListener listener,
                        RemoveListener removeListener,

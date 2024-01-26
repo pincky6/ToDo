@@ -19,6 +19,7 @@ public class NotificationsUtil {
         }
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = CalendarUtil.getCalendar(abstractTask.dateStart);
+        abstractTask.dateStart.getTime() ;
         if(ReminderUtil.getReminderEnum(abstractTask.reminder).equals(Reminders.MINUTES_5_BEFORE)){
             calendar.add(Calendar.MINUTE, -5);
         }
@@ -47,7 +48,8 @@ public class NotificationsUtil {
         try {
             int requestCode = NotificationReceiver.getId(abstractTask.id.split("--")[1]).intValue();
             notificationIntent.putExtra("requestCode",requestCode);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, notificationIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             alarmManager.cancel(pendingIntent);
         }
         catch (NoSuchAlgorithmException e){

@@ -26,11 +26,11 @@ public class TaskHolder extends AbstractTaskHolder {
     public void bind(AbstractTask abstractTask, TaskListener listener, RemoveListener removeListener, SetSuccsessListener setSuccsessListener){
         if(!(abstractTask instanceof Task)) throw new IllegalArgumentException("wrong type of argument in task holder");
         Task task = (Task) abstractTask;
-        SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
-
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy;hh:mm");
+        String[] formatedDateStart = formatDate.format(task.dateStart).split(";");
         binding.title.setText(task.title);
-        binding.date.setText(formatDate.format(task.createDate));
-        binding.dateStart.setText(formatDate.format(task.dateStart));
+        binding.date.setText(formatedDateStart[0]);
+        binding.dateStart.setText(formatedDateStart[0] + ";" + formatedDateStart[1]);
         binding.describe.setText(task.describe);
 
         int color = PriorityUtil.getPriorityColor(PriorityUtil.getPriorityEnum(task.priority));

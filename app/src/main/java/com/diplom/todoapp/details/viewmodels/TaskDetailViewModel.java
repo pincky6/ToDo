@@ -62,16 +62,14 @@ public class TaskDetailViewModel {
         }
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         Time time = Time.valueOf(binding.taskEditTextTime.getText().toString() + ":00");
-        Date createDate = null;
         String title = binding.taskTitle.getText().toString();
         String describe = binding.taskDescribe.getText().toString();
         boolean allDay = binding.allDayCheckBox.isChecked();
-        Date dateStart = null;
+        Date dateStart;
         String priority = binding.taskPriority.getSelectedItem().toString();
         String reminder = binding.taskReminder.getSelectedItem().toString();
-        String successFlag = "";
+        String successFlag;
         try {
-            createDate = format.parse(format.format(new Date()));
             dateStart = format.parse(binding.taskEditTextDate.getText().toString());
             assert dateStart != null;
             dateStart.setTime(dateStart.getTime() + time.getTime());
@@ -83,10 +81,10 @@ public class TaskDetailViewModel {
             throw new IllegalArgumentException("wrong date input");
         }
         if (task == null)
-            task = new Task("Task-" + firebaseRepository.generateKey(), createDate, title, describe, allDay,
+            task = new Task("Task-" + firebaseRepository.generateKey(), title, describe, allDay,
                     dateStart, priority, reminder, successFlag);
         else
-            task.setTask(task.id, createDate, title, describe, allDay,
+            task.setTask(task.id, title, describe, allDay,
                     dateStart, priority, reminder, successFlag);
     }
 }

@@ -71,7 +71,6 @@ public class DateTaskDetailViewModel {
         }
 
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        Date createDate = null;
         String title = binding.dateTaskTitle.getText().toString();
         String place = binding.dateTaskPlace.getText().toString();
         String describe = binding.dateTaskDescribe.getText().toString();
@@ -84,7 +83,6 @@ public class DateTaskDetailViewModel {
         String reminder = binding.dateTaskReminder.getSelectedItem().toString();
         String successFlag = "";
         try {
-            createDate = format.parse(format.format(new Date()));
             dateStart = format.parse(binding.dateTaskEditTextDate.getText().toString());
             dateEnd = format.parse(binding.dateTaskEditTextDate2.getText().toString());
             assert dateStart != null;
@@ -99,10 +97,10 @@ public class DateTaskDetailViewModel {
             throw new IllegalArgumentException("wrong date input");
         }
         if(dateTask == null)
-            dateTask = new DateTask("DateTask-" + firebaseRepository.generateKey(), createDate, place, title, describe, allDay,
+            dateTask = new DateTask("DateTask-" + firebaseRepository.generateKey(), place, title, describe, allDay,
                     dateStart, dateEnd, priority, reminder, successFlag);
         else
-            dateTask.setTask(dateTask.id, createDate, place, title, describe, allDay,
+            dateTask.setTask(dateTask.id, place, title, describe, allDay,
                     dateStart, dateEnd, priority, reminder, successFlag);
     }
 }

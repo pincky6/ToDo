@@ -20,7 +20,7 @@ public class CalendarUtil {
     public static Calendar getCalendar(@NonNull Date date){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(date.getTime());
-        return Calendar.getInstance();
+        return calendar;
     }
     public static boolean compareCalendarDays(CalendarDay lhs, CalendarDay rhs){
         if(lhs == null || rhs == null) return false;
