@@ -23,7 +23,7 @@ public abstract class AbstractTaskDetailFragment extends Fragment {
     public static final String TASK_DETAIL_KEY = "TASK_DETAIL_KEY";
     protected void initSpinners(Spinner taskReminder, Spinner taskPriority){
 
-        String[] reminders = new String[]{"1 day before", "5 minutes before", "Don\'t remind"};
+        String[] reminders = new String[]{"Don\'t remind", "5 minutes before", "1 hour before", "1 day before" };
         ArrayAdapter<String> remindAdapter =
                 new ArrayAdapter<>(getContext(),
                         androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,

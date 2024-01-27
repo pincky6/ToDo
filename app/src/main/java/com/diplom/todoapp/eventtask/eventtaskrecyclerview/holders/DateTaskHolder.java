@@ -32,11 +32,16 @@ public class DateTaskHolder extends AbstractTaskHolder {
         DateTask dateTask = (DateTask) abstractTask;
         SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy;hh:mm");
         String[] formatedDateStart = formatDate.format(dateTask.dateStart).split(";");
-        String[] formatedDateEnd = formatDate.format(dateTask.dateStart).split(";");
+        String[] formatedDateEnd = formatDate.format(dateTask.dateEnd).split(";");
         binding.title.setText(dateTask.title);
         binding.date.setText(formatedDateStart[0]);
-        binding.dateStart.setText(formatedDateStart[1]);
-        binding.dateEnd.setText(formatedDateEnd[1]);
+        if(dateTask.allDayFlag == true){
+            binding.dateStart.setText("All Day");
+            binding.dateEnd.setText("");
+        } else {
+            binding.dateStart.setText(formatedDateStart[1]);
+            binding.dateEnd.setText(formatedDateEnd[1]);
+        }
         binding.describe.setText(dateTask.describe);
 
         int color = PriorityUtil.getPriorityColor(PriorityUtil.getPriorityEnum(dateTask.priority));

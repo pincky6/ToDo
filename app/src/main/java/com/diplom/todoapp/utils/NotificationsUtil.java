@@ -23,8 +23,10 @@ public class NotificationsUtil {
         if(ReminderUtil.getReminderEnum(abstractTask.reminder).equals(Reminders.MINUTES_5_BEFORE)){
             calendar.add(Calendar.MINUTE, -5);
         }
-        else
-        {
+        else if(ReminderUtil.getReminderEnum(abstractTask.reminder).equals(Reminders.HOUR_1_BEFORE)){
+            calendar.add(Calendar.HOUR, -1);
+        }
+        else {
             calendar.add(Calendar.DAY_OF_MONTH, -1);
         }
         String idString = abstractTask.id.split("--")[1];
