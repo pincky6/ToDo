@@ -24,6 +24,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
     <string name="register">Register</string>
+    <string name="reset_password">Reset</string>
 
     <string name="task_filter_title">Tasks</string>
     <string name="priority_filter_title">Priorities</string>

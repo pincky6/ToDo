@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.diplom.todoapp.databinding.FragmentLoginBinding;
 import com.diplom.todoapp.databinding.FragmentRegisterBinding;
 
+import com.diplom.todoapp.databinding.FragmentResetPasswordBinding;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
@@ -19,6 +20,7 @@ import com.diplom.todoapp.login.LoginFragmentDirections;
 
 import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.utils.SuccsessFlagUtil;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -74,7 +76,6 @@ public class FirebaseRepository {
             else
             {
                 EditorsUtil.setErrorState(binding.passwordEditText);
-                EditorsUtil.setErrorBackground(binding.emailTextEdit, binding.passwordEditText);
                 Toast.makeText(binding.getRoot().getContext(),
                         "Something was wrong. Try sign up latter or check gmail and password",
                         Toast.LENGTH_LONG).show();
@@ -94,7 +95,6 @@ public class FirebaseRepository {
             }
             else {
                 EditorsUtil.setErrorState(binding.passwordEditText);
-                EditorsUtil.setErrorBackground(binding.emailTextEdit, binding.passwordEditText);
                 Toast.makeText(binding.getRoot().getContext(),
                         "Something was wrong. Try sign up latter or check gmail and password",
                         Toast.LENGTH_LONG).show();
@@ -112,7 +112,6 @@ public class FirebaseRepository {
             }
             else {
                 EditorsUtil.setErrorState(binding.passwordEditText);
-                EditorsUtil.setErrorBackground(binding.emailTextEdit, binding.passwordEditText);
                 Toast.makeText(binding.getRoot().getContext(),
                         "Something was wrong. Try sign up latter or check gmail and password",
                         Toast.LENGTH_LONG).show();
@@ -121,7 +120,17 @@ public class FirebaseRepository {
                 e.getMessage(),
                 Toast.LENGTH_LONG).show());
     }
-
+    public void resetPasswordFromGmail(FragmentResetPasswordBinding binding, String gmail){
+        auth.sendPasswordResetEmail(gmail)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(binding.getRoot().getContext(), "Check your gmail", Toast.LENGTH_SHORT).show();
+                        findNavController(binding.getRoot()).popBackStack();
+                    } else {
+                        Toast.makeText(binding.getRoot().getContext(), "Something was wrong", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
     public String generateKey(){
         return database.push().getKey();
     }
@@ -154,7 +163,6 @@ public class FirebaseRepository {
 
             }
         });
-        auth.
     }
     public void readAllTasks(ArrayList<AbstractTask> taskList, RecyclerView recyclerView, InitExpression initLambda){
         database.addListenerForSingleValueEvent(new ValueEventListener() {

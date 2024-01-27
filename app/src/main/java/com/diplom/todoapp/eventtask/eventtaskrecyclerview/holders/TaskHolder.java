@@ -30,7 +30,7 @@ public class TaskHolder extends AbstractTaskHolder {
         String[] formatedDateStart = formatDate.format(task.dateStart).split(";");
         binding.title.setText(task.title);
         binding.date.setText(formatedDateStart[0]);
-        binding.dateStart.setText(formatedDateStart[0] + ";" + formatedDateStart[1]);
+        binding.dateStart.setText(formatedDateStart[1]);
         binding.describe.setText(task.describe);
 
         int color = PriorityUtil.getPriorityColor(PriorityUtil.getPriorityEnum(task.priority));

@@ -68,5 +68,8 @@ public class LoginFragment extends Fragment {
         binding.signUpButton.setOnClickListener(v -> findNavController(binding.getRoot()).navigate(
                 LoginFragmentDirections.showRegisterFragment()
         ));
+        binding.resetButton.setOnClickListener(v -> findNavController(binding.getRoot()).navigate(
+                LoginFragmentDirections.showRessetPassword()
+        ));
     }
 }

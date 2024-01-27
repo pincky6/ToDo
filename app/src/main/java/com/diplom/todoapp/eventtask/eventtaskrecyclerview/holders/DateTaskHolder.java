@@ -35,8 +35,8 @@ public class DateTaskHolder extends AbstractTaskHolder {
         String[] formatedDateEnd = formatDate.format(dateTask.dateStart).split(";");
         binding.title.setText(dateTask.title);
         binding.date.setText(formatedDateStart[0]);
-        binding.dateStart.setText(formatedDateStart[0] + "; " + formatedDateStart[1]);
-        binding.dateEnd.setText(formatedDateEnd[0] + "; " + formatedDateEnd[1]);
+        binding.dateStart.setText(formatedDateStart[1]);
+        binding.dateEnd.setText(formatedDateEnd[1]);
         binding.describe.setText(dateTask.describe);
 
         int color = PriorityUtil.getPriorityColor(PriorityUtil.getPriorityEnum(dateTask.priority));

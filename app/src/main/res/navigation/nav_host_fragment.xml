@@ -62,6 +62,9 @@
         <action
             android:id="@+id/showEventTaskFragment"
             app:destination="@id/eventTaskFragment" />
+        <action
+            android:id="@+id/showRessetPassword"
+            app:destination="@id/resetPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -100,4 +103,8 @@
         android:id="@+id/datePickerFragment"
         android:name="com.diplom.todoapp.eventtask.searchs.DatePickerDialogFragment"
         android:label="DatePickerFragment"/>
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="com.diplom.todoapp.login.ResetPasswordFragment"
+        android:label="ResetPasswordFragment" />
 </navigation>
