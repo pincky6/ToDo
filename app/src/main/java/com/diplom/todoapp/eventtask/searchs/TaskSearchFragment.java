@@ -21,12 +21,14 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskListViewModel;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.SuccsessFlag;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.eventtask.filter.TaskFilter;
 import com.diplom.todoapp.utils.CalendarUtil;
 import com.diplom.todoapp.utils.SuccsessFlagUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -37,7 +39,13 @@ public class TaskSearchFragment extends Fragment {
     TaskListViewModel taskListViewModel = new TaskListViewModel();
     String searchedTitle = null;
     Boolean searchByDate = false;
-
+    public ArrayList<Date> getTaskDate(){
+        ArrayList<Date> tasks = new ArrayList<>();
+        for(AbstractTask abstractTask: taskListViewModel.taskList){
+            if(abstractTask instanceof Task) tasks.add(abstractTask.dateStart);
+        }
+        return tasks;
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,9 +117,11 @@ public class TaskSearchFragment extends Fragment {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(new TaskAdapter(list,
                 (AbstractTask task) -> {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(0);
                     if (task.id.split("-")[0].equals("Task")) {
                         findNavController(binding.getRoot()).navigate(
-                                TaskSearchFragmentDirections.showTaskDetailFromSearch(task.id)
+                                TaskSearchFragmentDirections.showTaskDetailFromSearch(task.id, getTaskDate(), task.dateStart)
                         );
                     } else {
                         findNavController(binding.getRoot()).navigate(

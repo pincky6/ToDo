@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.databinding.FragmentTaskListBinding;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.SuccsessFlag;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.eventtask.filter.TaskFilter;
 import com.diplom.todoapp.eventtask.TaskFragmentDirections;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
@@ -25,6 +26,7 @@ import com.diplom.todoapp.utils.SuccsessFlagUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -37,7 +39,9 @@ public class TaskListFragment extends Fragment {
     private TaskFilter filter = new TaskFilter(31);
     private OnTaskListener onTaskListener = null;
     private OnResetTaskLisener onResetTaskLisener = null;
-
+    public ArrayList<AbstractTask> getTaskList() {
+        return taskListViewModel.taskList;
+    }
     public int getFilterMask(){
         return filter.getMask();
     }
@@ -46,6 +50,13 @@ public class TaskListFragment extends Fragment {
     }
     public TaskFilter getFilter(){
         return filter;
+    }
+    public ArrayList<Date> getTaskDate(){
+        ArrayList<Date> tasks = new ArrayList<>();
+        for(AbstractTask abstractTask: taskListViewModel.taskList){
+            if(abstractTask instanceof Task) tasks.add(abstractTask.dateStart);
+        }
+        return tasks;
     }
     public  void setFilter(TaskFilter filter){
         this.filter = filter;
@@ -81,7 +92,7 @@ public class TaskListFragment extends Fragment {
             {
                 if (task.id.split("-")[0].equals("Task")) {
                     findNavController(binding.getRoot()).navigate(
-                            TaskFragmentDirections.showTaskDetailFragment(task.id)
+                            TaskFragmentDirections.showTaskDetailFragment(task.id, getTaskDate(), task.dateStart)
                     );
                 } else {
                     findNavController(binding.getRoot()).navigate(
@@ -109,7 +120,7 @@ public class TaskListFragment extends Fragment {
         if(!taskListViewModel.isEmpty()) return;
         taskListViewModel.loadFirebase(binding.recyclerView, tasks -> {
             CalendarDay day = CalendarUtil.getCalendarDay(new Date());
-            filter.setSelectedMonth(day.getMonth());
+            filter.setSelectedDay(day);
             resetAdapterList(filter.filter(tasks));
         });
     }

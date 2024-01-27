@@ -3,6 +3,7 @@ package com.diplom.todoapp.firebase;
 
 import static androidx.navigation.ViewKt.findNavController;
 
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.login.LoginFragmentDirections;
 
+import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.utils.SuccsessFlagUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -71,6 +73,8 @@ public class FirebaseRepository {
             }
             else
             {
+                EditorsUtil.setErrorState(binding.passwordEditText);
+                EditorsUtil.setErrorBackground(binding.emailTextEdit, binding.passwordEditText);
                 Toast.makeText(binding.getRoot().getContext(),
                         "Something was wrong. Try sign up latter or check gmail and password",
                         Toast.LENGTH_LONG).show();
@@ -89,6 +93,8 @@ public class FirebaseRepository {
                 );
             }
             else {
+                EditorsUtil.setErrorState(binding.passwordEditText);
+                EditorsUtil.setErrorBackground(binding.emailTextEdit, binding.passwordEditText);
                 Toast.makeText(binding.getRoot().getContext(),
                         "Something was wrong. Try sign up latter or check gmail and password",
                         Toast.LENGTH_LONG).show();
@@ -105,6 +111,8 @@ public class FirebaseRepository {
                 findNavController(binding.getRoot()).popBackStack();
             }
             else {
+                EditorsUtil.setErrorState(binding.passwordEditText);
+                EditorsUtil.setErrorBackground(binding.emailTextEdit, binding.passwordEditText);
                 Toast.makeText(binding.getRoot().getContext(),
                         "Something was wrong. Try sign up latter or check gmail and password",
                         Toast.LENGTH_LONG).show();
@@ -146,6 +154,7 @@ public class FirebaseRepository {
 
             }
         });
+        auth.
     }
     public void readAllTasks(ArrayList<AbstractTask> taskList, RecyclerView recyclerView, InitExpression initLambda){
         database.addListenerForSingleValueEvent(new ValueEventListener() {

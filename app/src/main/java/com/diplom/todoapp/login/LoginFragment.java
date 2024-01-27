@@ -27,6 +27,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        EditorsUtil.initTextWatchers(binding.emailTextEdit, binding.passwordEditText);
         if(firebase.checkUserExist() && firebase.isVerified()){
             firebase.initDatabase();
             findNavController(getView()).navigate(

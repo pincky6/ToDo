@@ -35,6 +35,9 @@
     <string name="middle_filter_priority">Middle</string>
     <string name="high_filter_priority">High</string>
 
+    <string name="date_text">Date</string>
+    <string name="time_text">Time</string>
+
     <string name="title_event_task">Tasks</string>
     <string name="title_notes">Notes</string>
 </resources>

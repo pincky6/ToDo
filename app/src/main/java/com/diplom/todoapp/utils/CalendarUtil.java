@@ -22,6 +22,13 @@ public class CalendarUtil {
         calendar.setTimeInMillis(date.getTime());
         return calendar;
     }
+    public static Date getDate(@NonNull CalendarDay date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(date.getYear(), date.getMonth() - 1, date.getDay());
+        Date res = new Date();
+        res.setTime(calendar.getTimeInMillis());
+        return res;
+    }
     public static boolean compareCalendarDays(CalendarDay lhs, CalendarDay rhs){
         if(lhs == null || rhs == null) return false;
         return lhs.getDay() == rhs.getDay() &&

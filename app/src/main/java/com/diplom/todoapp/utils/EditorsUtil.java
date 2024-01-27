@@ -44,4 +44,34 @@ public class EditorsUtil {
                 }
             });
     }
+
+    public static<Editor extends EditText> void setErrorState(Editor... editors){
+        for(Editor editor: editors){
+            editor.setBackgroundResource(R.drawable.error_background);
+            editor.setError("Wrong input");
+        }
+    }
+    public static<Editor extends EditText> void setConnectedTextWatchers(Editor... editors){
+        for(Editor editor: editors){
+            editor.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    for(Editor editor1: editors){
+                        editor1.setBackgroundResource(R.drawable.normal_background);
+                        editor1.setError(null);
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+        }
+    }
 }

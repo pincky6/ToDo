@@ -26,6 +26,9 @@ import com.diplom.todoapp.eventtask.filter.TaskFilter;
 import com.diplom.todoapp.eventtask.filter.TaskFilterFragmentDialog;
 import com.diplom.todoapp.firebase.FirebaseRepository;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class TaskFragment extends Fragment {
     private FragmentEventTaskBinding binding = null;
     private FirebaseRepository firebase;
@@ -98,7 +101,9 @@ public class TaskFragment extends Fragment {
                 int id = item.getItemId();
                 if(id == R.id.add_new_task){
                     findNavController(binding.getRoot()).navigate(
-                            TaskFragmentDirections.showTaskDetailFragment("")
+                            TaskFragmentDirections.showTaskDetailFragment("",
+                                                                          taskListFragment.getTaskDate(),
+                                                                          materialCalendarFragment.getSelectedCalendarDay())
                     );
                     return true;
                 } else if (id == R.id.add_new_event) {
@@ -139,13 +144,14 @@ public class TaskFragment extends Fragment {
         });
     }
     private void initMaterialCalendarFragment(){
-        materialCalendarFragment.setOnDayChangedListener(day -> {
+        materialCalendarFragment.setOnDayChangedListener((day, model) -> {
             TaskFilter filter = taskListFragment.getFilter();
             filter.setSelectedDay(day);
+            model.setSelectedDay(day);
             filter.setSelectedMonth(day.getMonth());
             taskListFragment.updateUi();
         });
-        materialCalendarFragment.setOnMonthChangedListener((month) -> {
+        materialCalendarFragment.setOnMonthChangedListener((month, model) -> {
             TaskFilter filter = taskListFragment.getFilter();
             filter.setSelectedMonth(month);
             taskListFragment.updateUi();
