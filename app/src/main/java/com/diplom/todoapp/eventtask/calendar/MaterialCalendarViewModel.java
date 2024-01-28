@@ -24,6 +24,7 @@ public class MaterialCalendarViewModel extends ViewModel {
     public MaterialCalendarViewModel(){
         dayTaskCalendarColors = new HashMap<>();
         decorators = new Decorators();
+        selectedDay = CalendarUtil.getCalendarDay(new Date());
     }
     public MaterialCalendarViewModel(ArrayList<AbstractTask> tasks){
         dayTaskCalendarColors = new HashMap<>();
@@ -75,8 +76,11 @@ public class MaterialCalendarViewModel extends ViewModel {
     public void setSelectedDay(CalendarDay calendarDay){
         selectedDay = calendarDay;
     }
-    public CalendarDay getSelectedDay(){
+    public CalendarDay getSelectedDaySafe(){
         if(selectedDay == null) return CalendarUtil.getCalendarDay(new Date());
+        return selectedDay;
+    }
+    public CalendarDay getSelectedDayUnsafe(){
         return selectedDay;
     }
     public void setTasksDecorators(ArrayList<AbstractTask> tasks){

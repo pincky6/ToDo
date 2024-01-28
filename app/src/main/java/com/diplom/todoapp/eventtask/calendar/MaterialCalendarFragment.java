@@ -32,6 +32,8 @@ public class MaterialCalendarFragment extends Fragment {
     private OnDayChangedListener dayChangedListener = null;
     private OnMonthChangedListener monthChangedListener = null;
     public Date getSelectedCalendarDay(){
+        CalendarDay day = binding.calendar.getSelectedDate();
+        if(day == null) return new Date();
         return CalendarUtil.getDate(binding.calendar.getSelectedDate());
     }
     public void setSelectedDay(CalendarDay day){
@@ -48,7 +50,7 @@ public class MaterialCalendarFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        model = new MaterialCalendarViewModel();;
+        model = new MaterialCalendarViewModel();
     }
 
     @Nullable
@@ -76,7 +78,7 @@ public class MaterialCalendarFragment extends Fragment {
         firebase.readAllTasks(taskList, days -> {
             model.setTasksDecorators(days);
             binding.calendar.addDecorators(model.getTaskDayDecoratorList());
-            binding.calendar.setSelectedDate(model.getSelectedDay());
+            binding.calendar.setSelectedDate(model.getSelectedDaySafe());
         });
     }
     private void initCalendarFragmentResults(){

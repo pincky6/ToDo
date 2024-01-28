@@ -13,6 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.databinding.FragmentTaskListBinding;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.AbstractTaskAdapter;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.TaskAdapter;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.TaskDaysAdapter;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.TaskMonthAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.SuccsessFlag;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.eventtask.filter.TaskFilter;
@@ -26,14 +30,12 @@ import com.diplom.todoapp.utils.SuccsessFlagUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
 public class TaskListFragment extends Fragment {
     public static final String REQUEST_ADD_TASK = "ADD_TASK";
     public static final String REQUEST_REMOVE_TASK = "REMOVE_TASK";
-
     private FragmentTaskListBinding binding = null;
     private  TaskListViewModel taskListViewModel = new TaskListViewModel();
     private TaskFilter filter = new TaskFilter(31);
@@ -87,36 +89,7 @@ public class TaskListFragment extends Fragment {
     }
     private void initRecyclerView(){
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerView.setAdapter(new TaskAdapter(taskListViewModel.taskList,
-             (AbstractTask task) ->
-            {
-                if (task.id.split("-")[0].equals("Task")) {
-                    findNavController(binding.getRoot()).navigate(
-                            TaskFragmentDirections.showTaskDetailFragment(task.id, getTaskDate(), task.dateStart)
-                    );
-                } else {
-                    findNavController(binding.getRoot()).navigate(
-                            TaskFragmentDirections.showDateTaskDetailFragment(task.id)
-                    );
-                }
-            },
-                id ->
-                {
-                    if(id == null) return;
-                    AbstractTask task = taskListViewModel.getFromId(id);
-                    removeTask(task);
-                    if(onTaskListener != null) {
-                        onTaskListener.listen(task, REQUEST_REMOVE_TASK);
-                    }
-                    binding.recyclerView.getAdapter().notifyDataSetChanged();
-                }
-                ,
-                abstractTask ->
-                {
-                    abstractTask.succsessFlag = SuccsessFlagUtil.getStringFromFlag(SuccsessFlag.DONE);
-                    taskListViewModel.updateTask(abstractTask);
-                    binding.recyclerView.getAdapter().notifyDataSetChanged();
-                }));
+        resetDayAdapter();
         if(!taskListViewModel.isEmpty()) return;
         taskListViewModel.loadFirebase(binding.recyclerView, tasks -> {
             CalendarDay day = CalendarUtil.getCalendarDay(new Date());
@@ -156,7 +129,7 @@ public class TaskListFragment extends Fragment {
         resetAdapterList(filter.filter(taskListViewModel.taskList));
     }
     private void resetAdapterList(ArrayList<AbstractTask> tasks){
-        TaskAdapter taskAdapter = (TaskAdapter) Objects.requireNonNull(binding.recyclerView.getAdapter());
+        AbstractTaskAdapter taskAdapter = (AbstractTaskAdapter) Objects.requireNonNull(binding.recyclerView.getAdapter());
         taskAdapter.resetTaskList(tasks);
         taskAdapter.notifyDataSetChanged();
     }
@@ -164,6 +137,103 @@ public class TaskListFragment extends Fragment {
         resetAdapterList(filter.filter(taskListViewModel.taskList));
     }
     public void showAllList(){
+        resetAllListAdapter();
         resetAdapterList(taskListViewModel.taskList);
+    }
+    public void resetAllListAdapter(){
+        binding.recyclerView.setAdapter(new TaskMonthAdapter(taskListViewModel.taskList,
+                (AbstractTask task) ->
+                {
+                    if (task.id.split("-")[0].equals("Task")) {
+                        findNavController(binding.getRoot()).navigate(
+                                TaskFragmentDirections.showTaskDetailFragment(task.id, getTaskDate(), task.dateStart)
+                        );
+                    } else {
+                        findNavController(binding.getRoot()).navigate(
+                                TaskFragmentDirections.showDateTaskDetailFragment(task.id)
+                        );
+                    }
+                },
+                id ->
+                {
+                    if(id == null) return;
+                    AbstractTask task = taskListViewModel.getFromId(id);
+                    removeTask(task);
+                    if(onTaskListener != null) {
+                        onTaskListener.listen(task, REQUEST_REMOVE_TASK);
+                    }
+                    binding.recyclerView.getAdapter().notifyDataSetChanged();
+                }
+                ,
+                abstractTask ->
+                {
+                    abstractTask.succsessFlag = SuccsessFlagUtil.getStringFromFlag(SuccsessFlag.DONE);
+                    taskListViewModel.updateTask(abstractTask);
+                    binding.recyclerView.getAdapter().notifyDataSetChanged();
+                }));
+    }
+    public void resetMonthAdapter(){
+        binding.recyclerView.setAdapter(new TaskDaysAdapter(filter.filter(taskListViewModel.taskList),
+                (AbstractTask task) ->
+                {
+                    if (task.id.split("-")[0].equals("Task")) {
+                        findNavController(binding.getRoot()).navigate(
+                                TaskFragmentDirections.showTaskDetailFragment(task.id, getTaskDate(), task.dateStart)
+                        );
+                    } else {
+                        findNavController(binding.getRoot()).navigate(
+                                TaskFragmentDirections.showDateTaskDetailFragment(task.id)
+                        );
+                    }
+                },
+                id ->
+                {
+                    if(id == null) return;
+                    AbstractTask task = taskListViewModel.getFromId(id);
+                    removeTask(task);
+                    if(onTaskListener != null) {
+                        onTaskListener.listen(task, REQUEST_REMOVE_TASK);
+                    }
+                    binding.recyclerView.getAdapter().notifyDataSetChanged();
+                }
+                ,
+                abstractTask ->
+                {
+                    abstractTask.succsessFlag = SuccsessFlagUtil.getStringFromFlag(SuccsessFlag.DONE);
+                    taskListViewModel.updateTask(abstractTask);
+                    binding.recyclerView.getAdapter().notifyDataSetChanged();
+                }));
+    }
+    public void resetDayAdapter(){
+        binding.recyclerView.setAdapter(new TaskAdapter(taskListViewModel.taskList,
+                (AbstractTask task) ->
+                {
+                    if (task.id.split("-")[0].equals("Task")) {
+                        findNavController(binding.getRoot()).navigate(
+                                TaskFragmentDirections.showTaskDetailFragment(task.id, getTaskDate(), task.dateStart)
+                        );
+                    } else {
+                        findNavController(binding.getRoot()).navigate(
+                                TaskFragmentDirections.showDateTaskDetailFragment(task.id)
+                        );
+                    }
+                },
+                id ->
+                {
+                    if(id == null) return;
+                    AbstractTask task = taskListViewModel.getFromId(id);
+                    removeTask(task);
+                    if(onTaskListener != null) {
+                        onTaskListener.listen(task, REQUEST_REMOVE_TASK);
+                    }
+                    binding.recyclerView.getAdapter().notifyDataSetChanged();
+                }
+                ,
+                abstractTask ->
+                {
+                    abstractTask.succsessFlag = SuccsessFlagUtil.getStringFromFlag(SuccsessFlag.DONE);
+                    taskListViewModel.updateTask(abstractTask);
+                    binding.recyclerView.getAdapter().notifyDataSetChanged();
+                }));
     }
 }

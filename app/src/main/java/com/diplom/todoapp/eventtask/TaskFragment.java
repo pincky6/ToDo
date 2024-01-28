@@ -99,7 +99,7 @@ public class TaskFragment extends Fragment {
             popupMenu.inflate(R.menu.popup_menu);
             popupMenu.setOnMenuItemClickListener(item -> {
                 int id = item.getItemId();
-                if(id == R.id.add_new_task){
+                if(id == R.id.add_new_task) {
                     findNavController(binding.getRoot()).navigate(
                             TaskFragmentDirections.showTaskDetailFragment("",
                                                                           taskListFragment.getTaskDate(),
@@ -146,14 +146,29 @@ public class TaskFragment extends Fragment {
     private void initMaterialCalendarFragment(){
         materialCalendarFragment.setOnDayChangedListener((day, model) -> {
             TaskFilter filter = taskListFragment.getFilter();
-            filter.setSelectedDay(day);
-            model.setSelectedDay(day);
             filter.setSelectedMonth(day.getMonth());
+            if(day.equals(model.getSelectedDayUnsafe())){
+                model.setSelectedDay(null);
+                filter.setSelectedDay(null);
+                materialCalendarFragment.unselectDate();
+                taskListFragment.resetMonthAdapter();
+            } else {
+                model.setSelectedDay(day);
+                filter.setSelectedDay(day);
+                taskListFragment.resetDayAdapter();
+            }
             taskListFragment.updateUi();
         });
         materialCalendarFragment.setOnMonthChangedListener((month, model) -> {
             TaskFilter filter = taskListFragment.getFilter();
+            if(model.getSelectedDayUnsafe() != null){
+                taskListFragment.updateUi();
+                return;
+            }
+            model.setSelectedDay(null);
+            filter.setSelectedDay(null);
             filter.setSelectedMonth(month);
+            taskListFragment.resetMonthAdapter();
             taskListFragment.updateUi();
         });
     }
