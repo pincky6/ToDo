@@ -54,6 +54,7 @@ public class TaskMonthAdapter extends AbstractTaskAdapter{
             return new EmptyHolder(binding);
         }
         ItemListTasksBinding binding = ItemListTasksBinding.inflate(inflater, parent, false);
+        binding.dayOfMonth.setTextSize(36);
         return new TaskListHolder(binding);
     }
 

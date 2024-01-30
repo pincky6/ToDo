@@ -8,11 +8,11 @@
     <EditText
         android:id="@+id/date_task_place"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/place_hint"
-        android:inputType="textMultiLine"
+        android:inputType="text|textMultiLine|textCapSentences"
         app:layout_constraintTop_toBottomOf="@+id/date_task_title"
         tools:layout_editor_absoluteX="8dp" />
 
@@ -60,20 +60,20 @@
     <EditText
         android:id="@+id/date_task_title"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/title_hint"
-        android:inputType="textMultiLine"
+        android:inputType="text|textMultiLine|textCapSentences"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <EditText
         android:id="@+id/date_task_describe"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="@string/describe_hint"
-        android:inputType="textMultiLine"
+        android:inputType="text|textMultiLine|textCapSentences"
         app:layout_constraintTop_toBottomOf="@+id/date_task_place"
         tools:layout_editor_absoluteX="8dp" />
 
