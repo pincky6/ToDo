@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.AbstractTaskHolder;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.EmptyHolder;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskHolderFactory;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskType;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
@@ -31,6 +32,9 @@ public class TaskAdapter extends AbstractTaskAdapter {
     }
     @Override
     public int getItemViewType(int position) {
+            if(taskList.size() == 0){
+                return TaskType.EMPTY_TASK.ordinal();
+            }
             if(taskList.get(position) instanceof Task){
                 return TaskType.TASK.ordinal();
             }
@@ -47,12 +51,13 @@ public class TaskAdapter extends AbstractTaskAdapter {
 
     @Override
     public void onBindViewHolder(@NonNull AbstractTaskHolder holder, int position) {
+        if(taskList.isEmpty()) return;
         holder.bind(taskList.get(position), listener, removeListener, setSuccsessListener);
     }
 
     @Override
     public int getItemCount() {
-        return taskList.size();
+        return taskList.size() > 0 ? taskList.size() : 1;
     }
 
     @Override

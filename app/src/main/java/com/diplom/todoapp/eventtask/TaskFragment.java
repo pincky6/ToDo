@@ -25,6 +25,7 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.filter.TaskFilter;
 import com.diplom.todoapp.eventtask.filter.TaskFilterFragmentDialog;
 import com.diplom.todoapp.firebase.FirebaseRepository;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -161,14 +162,20 @@ public class TaskFragment extends Fragment {
         });
         materialCalendarFragment.setOnMonthChangedListener((month, model) -> {
             TaskFilter filter = taskListFragment.getFilter();
-            if(model.getSelectedDayUnsafe() != null){
+            CalendarDay calendarDay = model.getSelectedDayUnsafe();
+            filter.setSelectedMonth(month);
+            if(calendarDay != null && calendarDay.getMonth() == month){
+                model.setSelectedDay(calendarDay);
+                filter.setSelectedDay(calendarDay);
+                taskListFragment.resetDayAdapter();
                 taskListFragment.updateUi();
                 return;
             }
             model.setSelectedDay(null);
             filter.setSelectedDay(null);
-            filter.setSelectedMonth(month);
             taskListFragment.resetMonthAdapter();
+            filter.setSelectedDay(calendarDay);
+            model.setSelectedDay(calendarDay);
             taskListFragment.updateUi();
         });
     }
