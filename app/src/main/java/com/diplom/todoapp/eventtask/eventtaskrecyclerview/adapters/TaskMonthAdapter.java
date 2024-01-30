@@ -5,8 +5,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
+import com.diplom.todoapp.databinding.ItemEmptyBinding;
 import com.diplom.todoapp.databinding.ItemListTasksBinding;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.AbstractTaskHolder;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.EmptyHolder;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskListHolder;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.listeners.RemoveListener;
@@ -45,21 +47,26 @@ public class TaskMonthAdapter extends AbstractTaskAdapter{
     }
     @NonNull
     @Override
-    public TaskListHolder onCreateViewHolder(@NonNull ViewGroup parent, int taskType) {
+    public AbstractTaskHolder onCreateViewHolder(@NonNull ViewGroup parent, int taskType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        if(taskList.size() == 0){
+            ItemEmptyBinding binding = ItemEmptyBinding.inflate(inflater, parent, false);
+            return new EmptyHolder(binding);
+        }
         ItemListTasksBinding binding = ItemListTasksBinding.inflate(inflater, parent, false);
         return new TaskListHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AbstractTaskHolder holder, int position) {
+        if(taskList.size() == 0) return;
         ((TaskListHolder)holder).bind(taskList.get(position).array, taskList.get(position).monthString,
                 new TaskDaysAdapter(taskList.get(position).array, listener, removeListener, setSuccsessListener));
     }
 
     @Override
     public int getItemCount() {
-        return taskList.size();
+        return taskList.size() > 0 ? taskList.size() : 1;
     }
 
     public void resetTaskList(ArrayList<AbstractTask> taskListDays){
