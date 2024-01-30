@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
 
 public class TaskDaysAdapter extends AbstractTaskAdapter {
     private ArrayList<ArrayList<AbstractTask>> taskList;
@@ -51,8 +52,21 @@ public class TaskDaysAdapter extends AbstractTaskAdapter {
 
     @Override
     public void onBindViewHolder(@NonNull AbstractTaskHolder holder, int position) {
-        if(taskList.size() == 0) return;
-        ((TaskListHolder)holder).bind(taskList.get(position),format.format(taskList.get(position).get(0).dateStart)
+        if (taskList.size() == 0) return;
+        String dateString = null;
+        Calendar calDate = Calendar.getInstance(), today = Calendar.getInstance();
+        calDate.setTime(taskList.get(position).get(0).dateStart);
+        int res = calDate.get(Calendar.DAY_OF_YEAR) - today.get(Calendar.DAY_OF_YEAR);
+        if (res == -1) {
+            dateString = "Yesterday";
+        } else if (res == 0) {
+            dateString = "Today";
+        }else if (res == 1){
+            dateString = "Tomorrow";
+        }else{
+            dateString = format.format(taskList.get(position).get(0).dateStart);
+        }
+        ((TaskListHolder)holder).bind(taskList.get(position), dateString
                 ,new TaskAdapter(taskList.get(position), listener, removeListener, setSuccsessListener));
     }
 

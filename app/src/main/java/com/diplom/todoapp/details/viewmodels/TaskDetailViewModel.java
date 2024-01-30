@@ -102,7 +102,8 @@ public class TaskDetailViewModel {
             throw new IOException();
         }
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        Time time = Time.valueOf(binding.taskEditTextTime.getText().toString());
+        String timeStr = binding.taskEditTextTime.getText().toString();
+        Time time = Time.valueOf(binding.taskEditTextTime.getText().toString() + ":00");
         String title = binding.taskTitle.getText().toString();
         String describe = binding.taskDescribe.getText().toString();
         boolean allDay = binding.allDayCheckBox.isChecked();
@@ -121,9 +122,11 @@ public class TaskDetailViewModel {
         catch (IllegalArgumentException e){
             throw new IllegalArgumentException("wrong date input");
         }
-        for(Date date: dates)
-        {
-            if(date.equals(dateStart)) throw new InputMismatchException("wrong date input: dates crossing");
+        if(allDay == false) {
+            for (Date date : dates) {
+                if (date.equals(dateStart))
+                    throw new InputMismatchException("wrong date input: dates crossing");
+            }
         }
         if (task == null)
             task = new Task("Task-" + firebaseRepository.generateKey(), title, describe, allDay,

@@ -15,6 +15,7 @@ import com.diplom.todoapp.eventtask.listeners.SetSuccsessListener;
 import com.diplom.todoapp.eventtask.listeners.TaskListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class TaskAdapter extends AbstractTaskAdapter {
     private ArrayList<AbstractTask> taskList;

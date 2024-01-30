@@ -95,8 +95,8 @@ public class DateTaskDetailViewModel {
                 calendar.add(Calendar.DAY_OF_YEAR, 1);
                 dateEnd = calendar.getTime();
             } else {
-                Time timeStart = Time.valueOf(binding.dateTaskEditTextTime.getText().toString());
-                Time timeEnd = Time.valueOf(binding.dateTaskEditTextTime2.getText().toString());
+                Time timeStart = Time.valueOf(binding.dateTaskEditTextTime.getText().toString() + ":00");
+                Time timeEnd = Time.valueOf(binding.dateTaskEditTextTime2.getText().toString() + ":00");
                 dateEnd = format.parse(binding.dateTaskEditTextDate2.getText().toString());
                 dateStart.setTime(dateStart.getTime() + timeStart.getTime());
                 dateEnd.setTime(dateEnd.getTime() + timeEnd.getTime());

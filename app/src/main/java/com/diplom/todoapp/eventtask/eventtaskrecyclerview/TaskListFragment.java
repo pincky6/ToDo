@@ -130,6 +130,13 @@ public class TaskListFragment extends Fragment {
     }
     private void resetAdapterList(ArrayList<AbstractTask> tasks){
         AbstractTaskAdapter taskAdapter = (AbstractTaskAdapter) Objects.requireNonNull(binding.recyclerView.getAdapter());
+        tasks.sort((o1, o2) -> {
+            int compareResult = o1.dateStart.compareTo(o2.dateStart);
+            if(o1.allDayFlag && o2.allDayFlag) return compareResult;
+            if(o1.allDayFlag && !o2.allDayFlag) return -1;
+            if(!o1.allDayFlag && o2.allDayFlag) return 1;
+            return compareResult;
+        });
         taskAdapter.resetTaskList(tasks);
         taskAdapter.notifyDataSetChanged();
     }
