@@ -12,7 +12,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/place_hint"
-        android:inputType="text"
+        android:inputType="textMultiLine"
         app:layout_constraintTop_toBottomOf="@+id/date_task_title"
         tools:layout_editor_absoluteX="8dp" />
 
@@ -64,7 +64,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/title_hint"
-        android:inputType="text"
+        android:inputType="textMultiLine"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <EditText
@@ -72,9 +72,8 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
-        android:ems="10"
         android:hint="@string/describe_hint"
-        android:inputType="text"
+        android:inputType="textMultiLine"
         app:layout_constraintTop_toBottomOf="@+id/date_task_place"
         tools:layout_editor_absoluteX="8dp" />
 

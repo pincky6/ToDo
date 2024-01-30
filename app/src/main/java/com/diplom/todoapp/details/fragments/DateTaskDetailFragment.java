@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.details.viewmodels.DateTaskDetailViewModel;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
 
@@ -49,6 +51,7 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
         initTimeInputs(binding.dateTaskEditTextTime,
                 binding.dateTaskEditTextTime2);
         initSaveButton();
+        initCheckBox();
         return binding.getRoot();
     }
     @Override
@@ -80,6 +83,22 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
             bundle.putSerializable(TASK_DETAIL_KEY, dateTaskDetailViewModel.getDateTask());
             getParentFragmentManager().setFragmentResult(TASK_DETAIL_KEY, bundle);
             findNavController(binding.getRoot()).popBackStack();
+        });
+    }
+
+    private void initCheckBox(){
+        binding.allDayCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(!isChecked){
+                binding.dateTaskEditTextTime.setVisibility(View.VISIBLE);
+                binding.dateTaskEditTextDate2.setVisibility(View.VISIBLE);
+                binding.dateTaskEditTextTime2.setVisibility(View.VISIBLE);
+                return;
+            }
+            binding.dateTaskEditTextTime.setVisibility(View.INVISIBLE);
+            binding.dateTaskEditTextTime.setText("00:00");
+            binding.dateTaskEditTextDate2.setVisibility(View.INVISIBLE);
+            binding.dateTaskEditTextTime2.setVisibility(View.INVISIBLE);
+            binding.dateTaskEditTextTime2.setText("00:00");
         });
     }
 }

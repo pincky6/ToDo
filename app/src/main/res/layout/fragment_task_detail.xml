@@ -28,7 +28,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/title_hint"
-        android:inputType="text"
+        android:inputType="textMultiLine"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <EditText
@@ -38,7 +38,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/describe_hint"
-        android:inputType="text"
+        android:inputType="textMultiLine"
         app:layout_constraintTop_toBottomOf="@+id/task_title" />
 
     <Button

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -57,6 +58,7 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
         initDateInputs(binding.taskEditTextDate);
         initTimeInputs(binding.taskEditTextTime);
         initSaveButton();
+        initCheckBox();
         return binding.getRoot();
     }
     @Override
@@ -92,6 +94,16 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
             bundle.putSerializable(TASK_DETAIL_KEY, taskDetailViewModel.getTask());
             getParentFragmentManager().setFragmentResult(TASK_DETAIL_KEY, bundle);
             findNavController(binding.getRoot()).popBackStack();
+        });
+    }
+    private void initCheckBox(){
+        binding.allDayCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){
+                binding.taskEditTextTime.setText("00:00");
+                binding.taskEditTextTime.setVisibility(View.INVISIBLE);
+            } else {
+                binding.taskEditTextTime.setVisibility(View.VISIBLE);
+            }
         });
     }
 }

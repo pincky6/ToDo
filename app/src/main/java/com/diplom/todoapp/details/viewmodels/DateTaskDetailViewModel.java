@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DateTaskDetailViewModel {
@@ -64,10 +65,15 @@ public class DateTaskDetailViewModel {
 
     public void setTask(@NonNull FragmentDateTaskDetailBinding binding) throws IOException {
         if(EditorsUtil.checkEditors(binding.dateTaskTitle, binding.dateTaskDescribe,
-                        binding.dateTaskPlace, binding.dateTaskEditTextDate,
-                        binding.dateTaskEditTextTime, binding.dateTaskEditTextDate2,
-                        binding.dateTaskEditTextTime2)){
+                        binding.dateTaskPlace, binding.dateTaskEditTextDate)){
             throw new IOException();
+        }
+        if(!binding.allDayCheckBox.isChecked()){
+            if(EditorsUtil.checkEditors(
+                    binding.dateTaskEditTextTime, binding.dateTaskEditTextDate2,
+                    binding.dateTaskEditTextTime2)){
+                throw new IOException();
+            }
         }
 
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
@@ -77,30 +83,39 @@ public class DateTaskDetailViewModel {
         boolean allDay = binding.allDayCheckBox.isChecked();
         Date dateStart = null;
         Date dateEnd = null;
-        Time timeStart = Time.valueOf(binding.dateTaskEditTextTime.getText().toString() + ":00");
-        Time timeEnd = Time.valueOf(binding.dateTaskEditTextTime2.getText().toString() + ":00");
         String priority = binding.dateTaskPriority.getSelectedItem().toString();
         String reminder = binding.dateTaskReminder.getSelectedItem().toString();
         String successFlag = "";
         try {
             dateStart = format.parse(binding.dateTaskEditTextDate.getText().toString());
-            dateEnd = format.parse(binding.dateTaskEditTextDate2.getText().toString());
-            assert dateStart != null;
-            assert dateEnd != null;
-            dateStart.setTime(dateStart.getTime() + timeStart.getTime());
-            dateEnd.setTime(dateEnd.getTime() + timeEnd.getTime());
             successFlag = SuccsessFlagUtil.getStringFlagFromDate(dateStart);
+            if(allDay == true) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(dateStart);
+                calendar.add(Calendar.DAY_OF_YEAR, 1);
+                dateEnd = calendar.getTime();
+            } else {
+                Time timeStart = Time.valueOf(binding.dateTaskEditTextTime.getText().toString());
+                Time timeEnd = Time.valueOf(binding.dateTaskEditTextTime2.getText().toString());
+                dateEnd = format.parse(binding.dateTaskEditTextDate2.getText().toString());
+                dateStart.setTime(dateStart.getTime() + timeStart.getTime());
+                dateEnd.setTime(dateEnd.getTime() + timeEnd.getTime());
+                if(dateEnd.before(dateStart)){
+                    throw new IllegalArgumentException();
+                }
+            }
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
         catch (IllegalArgumentException e){
             throw new IllegalArgumentException("wrong date input");
         }
-        if(dateTask == null)
+        if(dateTask == null) {
             dateTask = new DateTask("DateTask-" + firebaseRepository.generateKey(), place, title, describe, allDay,
                     dateStart, dateEnd, priority, reminder, successFlag);
-        else
+        } else {
             dateTask.setTask(dateTask.id, place, title, describe, allDay,
-                    dateStart, dateEnd, priority, reminder, successFlag);
+                    dateStart, dateEnd, priority, reminder, dateTask.succsessFlag);
+        }
     }
 }

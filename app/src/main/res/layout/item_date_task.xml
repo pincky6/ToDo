@@ -87,6 +87,13 @@
                 android:text="TextView" />
 
             <TextView
+                android:id="@+id/place"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textAlignment="textStart" />
+
+            <TextView
                 android:id="@+id/describe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -102,7 +102,7 @@ public class TaskDetailViewModel {
             throw new IOException();
         }
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        Time time = Time.valueOf(binding.taskEditTextTime.getText().toString() + ":00");
+        Time time = Time.valueOf(binding.taskEditTextTime.getText().toString());
         String title = binding.taskTitle.getText().toString();
         String describe = binding.taskDescribe.getText().toString();
         boolean allDay = binding.allDayCheckBox.isChecked();
