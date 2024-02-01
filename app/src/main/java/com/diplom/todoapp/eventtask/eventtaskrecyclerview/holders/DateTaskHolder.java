@@ -36,7 +36,7 @@ public class DateTaskHolder extends AbstractTaskHolder {
         binding.title.setText(dateTask.title);
         binding.date.setText(formatedDateStart[0] + "-" + formatedDateEnd[0]);
         if(dateTask.allDayFlag == true){
-            binding.dateStart.setText("All \nDay");
+            binding.dateStart.setText("All      \nDay");
             binding.dateEnd.setText("");
         } else {
             binding.dateStart.setText(formatedDateStart[1]);
