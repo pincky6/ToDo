@@ -14,6 +14,7 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.listeners.RemoveListener;
 import com.diplom.todoapp.eventtask.listeners.SetSuccsessListener;
 import com.diplom.todoapp.eventtask.listeners.TaskListener;
+import com.diplom.todoapp.utils.CalendarUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -78,21 +79,20 @@ public class TaskMonthAdapter extends AbstractTaskAdapter{
             taskList.clear();
         }
         int i = 0;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM");
         ArrayList<AbstractTask> tasks = (ArrayList<AbstractTask>) taskListDays.clone();
         Calendar oldCal = Calendar.getInstance();
         tasks.sort(Comparator.comparing((AbstractTask abstractTask) -> abstractTask.dateStart));
         String monthString = null;
         if(tasks.size() > 0) {
             oldCal.setTime(tasks.get(0).dateStart);
-            monthString = dateFormat.format(tasks.get(0).dateStart);
+            monthString = CalendarUtil.getMonthStringFromString(tasks.get(0).dateStart);
             taskList.add(new Pair(monthString, new ArrayList<>()));
         }
         for (AbstractTask task : tasks) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(task.dateStart);
             if(oldCal.get(Calendar.MONTH) != cal.get(Calendar.MONTH)){
-                monthString = dateFormat.format(task.dateStart);
+                monthString = CalendarUtil.getMonthStringFromString(task.dateStart);
                 taskList.add(new Pair(monthString, new ArrayList<>()));
                 i++;
             }
