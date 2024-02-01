@@ -36,6 +36,19 @@ public class SuccsessFlagUtil {
         }
         return SuccsessFlag.NOT_IN_PROGRESS;
     }
+    public static String getSuccsessStringFromString(@NonNull String flagString){
+        switch (flagString){
+            case "NOT_IN_PROGRESS":
+                return "Not In Progress";
+            case "IN_PROGRESS":
+                return "In Progress";
+            case "NOT_DONE":
+                return "Not Done";
+            case "DONE":
+                return "Done";
+        }
+        return "Not In Progress";
+    }
     public static SuccsessFlag getFlagFromDate(@NonNull Date date){
         Date todayDate = new Date();
         if(date.before(todayDate)) return SuccsessFlag.NOT_IN_PROGRESS;

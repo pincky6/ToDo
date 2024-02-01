@@ -48,8 +48,10 @@ public class DateTaskHolder extends AbstractTaskHolder {
 
         int color = PriorityUtil.getPriorityColor(PriorityUtil.getPriorityEnum(dateTask.priority));
         int succsessIndicatorColor = SuccsessFlagUtil.getColorFromSuccsessFlagString(dateTask.succsessFlag);
+        String succsessIndicatorText = SuccsessFlagUtil.getSuccsessStringFromString(dateTask.succsessFlag);
         binding.leftSide.setBackgroundColor(color);
         binding.succsessIndicator.setBackgroundColor(succsessIndicatorColor);
+        binding.succsessIndicator.setText(succsessIndicatorText);
         Log.d("DateTask", dateTask.id);
         binding.getRoot().setOnClickListener(v -> listener.taskNavigation(dateTask));
         binding.getRoot().setOnLongClickListener(v -> {

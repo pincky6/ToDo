@@ -35,8 +35,10 @@ public class TaskHolder extends AbstractTaskHolder {
 
         int color = PriorityUtil.getPriorityColor(PriorityUtil.getPriorityEnum(task.priority));
         int succsessIndicatorColor = SuccsessFlagUtil.getColorFromSuccsessFlagString(task.succsessFlag);
+        String succsessIndicatorText = SuccsessFlagUtil.getSuccsessStringFromString(task.succsessFlag);
         binding.leftSide.setBackgroundColor(color);
         binding.succsessIndicator.setBackgroundColor(succsessIndicatorColor);
+        binding.succsessIndicator.setText(succsessIndicatorText);
         binding.getRoot().setOnClickListener(v -> listener.taskNavigation(task));
         binding.getRoot().setOnLongClickListener(v -> {
             int position = getAdapterPosition();
