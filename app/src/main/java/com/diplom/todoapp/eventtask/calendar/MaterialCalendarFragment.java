@@ -76,8 +76,11 @@ public class MaterialCalendarFragment extends Fragment {
         FirebaseRepository firebase = FirebaseRepository.getInstance();
         ArrayList<AbstractTask> taskList = new ArrayList<>();
         firebase.readAllTasks(taskList, days -> {
+            if(binding == null) return;
             model.setTasksDecorators(days);
+            if(model != null && model.getTaskDayDecoratorList() != null)
             binding.calendar.addDecorators(model.getTaskDayDecoratorList());
+            if(model != null && model.getSelectedDaySafe() != null)
             binding.calendar.setSelectedDate(model.getSelectedDaySafe());
         });
     }

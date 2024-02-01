@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,9 +25,6 @@ import com.diplom.todoapp.eventtask.filter.TaskFilter;
 import com.diplom.todoapp.eventtask.filter.TaskFilterFragmentDialog;
 import com.diplom.todoapp.firebase.FirebaseRepository;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
-
-import java.util.Calendar;
-import java.util.Date;
 
 public class TaskFragment extends Fragment {
     private FragmentEventTaskBinding binding = null;
@@ -77,7 +73,9 @@ public class TaskFragment extends Fragment {
                 taskListFragment.showAllList();
             }
             else if(item.getItemId() == R.id.action_settings){
-                Toast.makeText(getContext(), "smthj", Toast.LENGTH_SHORT).show();
+                findNavController(getView()).navigate(
+                        TaskFragmentDirections.showSettingsFragment()
+                );
             }
             else if(item.getItemId() == R.id.action_filter){
                 findNavController(getView()).navigate(

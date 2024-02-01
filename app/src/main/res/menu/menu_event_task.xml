@@ -8,6 +8,7 @@
         android:icon="@drawable/baseline_filter_alt_24"
         app:showAsAction="always"
         android:title="@string/action_filter" />
+
     <item
         android:id="@+id/action_search_by_date"
         android:orderInCategory="100"

@@ -42,4 +42,8 @@
     <string name="title_event_task">Tasks</string>
     <string name="title_notes">Notes</string>
     <string name="empty_text">Empty</string>
+
+    <string name="settings_autodelete_task_text">Autodelete Task</string>
+    <string name="settings_tasks">Tasks Settings</string>
+    <string name="settings_common">Common Settings</string>
 </resources>

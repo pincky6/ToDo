@@ -9,9 +9,12 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.diplom.todoapp.settings.SettingsRepository;
+
 
 public class MainActivity extends AppCompatActivity {
     PermissionManager permissionManager;
+    SettingsRepository repository;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.SET_ALARM},
                     null);
         }
+//        repository = SettingsRepository.getInstance(this);
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

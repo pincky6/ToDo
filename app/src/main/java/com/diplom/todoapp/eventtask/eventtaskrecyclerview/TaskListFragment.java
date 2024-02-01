@@ -129,6 +129,7 @@ public class TaskListFragment extends Fragment {
         resetAdapterList(filter.filter(taskListViewModel.taskList));
     }
     private void resetAdapterList(ArrayList<AbstractTask> tasks){
+        if(binding == null)return;
         AbstractTaskAdapter taskAdapter = (AbstractTaskAdapter) Objects.requireNonNull(binding.recyclerView.getAdapter());
         tasks.sort((o1, o2) -> {
             int compareResult = o1.dateStart.compareTo(o2.dateStart);
