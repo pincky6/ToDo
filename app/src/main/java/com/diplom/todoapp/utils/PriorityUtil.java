@@ -2,6 +2,7 @@ package com.diplom.todoapp.utils;
 
 import android.graphics.Color;
 
+import com.diplom.todoapp.R;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Priority;
 
 public class PriorityUtil {
@@ -24,6 +25,17 @@ public class PriorityUtil {
                 return Color.YELLOW;
             case 16:
                 return Color.RED;
+        }
+        return 0;
+    }
+    public static int getPriorityBorderResource(Priority priority){
+        switch (priority.getPriority()){
+            case 4:
+                return R.drawable.border_green;
+            case 8:
+                return R.drawable.border_yellow;
+            case 16:
+                return R.drawable.border_red;
         }
         return 0;
     }

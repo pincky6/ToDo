@@ -1,6 +1,8 @@
 package com.diplom.todoapp.settings;
 
 import static androidx.navigation.ViewKt.findNavController;
+
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -44,7 +46,10 @@ public class SettingsFragment extends Fragment {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     settings.setThemeMode(1, getContext());
                 } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.getDefaultNightMode());
+                    int currentNightMode = getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                    AppCompatDelegate.setDefaultNightMode((currentNightMode != Configuration.UI_MODE_NIGHT_NO)
+                            ? AppCompatDelegate.MODE_NIGHT_YES :
+                            AppCompatDelegate.MODE_NIGHT_NO);
                     settings.setThemeMode(0, getContext());
                 }
             }

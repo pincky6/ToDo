@@ -4,6 +4,7 @@ import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 
+import com.diplom.todoapp.R;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.SuccsessFlag;
 
 import java.util.Calendar;
@@ -88,6 +89,21 @@ public class SuccsessFlagUtil {
                 return Color.GREEN;
             case NOT_DONE:
                 return Color.RED;
+        }
+        return Color.GRAY;
+    }
+
+    public static int getBackgroundResourceFromSuccsessFlagString(String succsessFlagString){
+        SuccsessFlag flag = getFlagFromString(succsessFlagString);
+        switch (flag){
+            case NOT_IN_PROGRESS:
+                return R.drawable.status_grey;
+            case IN_PROGRESS:
+                return R.drawable.status_yellow;
+            case DONE:
+                return R.drawable.status_green;
+            case NOT_DONE:
+                return R.drawable.status_red;
         }
         return Color.GRAY;
     }

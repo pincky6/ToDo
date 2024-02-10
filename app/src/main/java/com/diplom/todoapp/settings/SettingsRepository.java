@@ -1,7 +1,10 @@
 package com.diplom.todoapp.settings;
 
+import static android.content.res.Configuration.UI_MODE_NIGHT_MASK;
+
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -21,7 +24,10 @@ public class SettingsRepository {
         SharedPreferences sharedPreferences = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
         themeMode = sharedPreferences.getInt(THEME_KEY, 0);
         if(themeMode == 0){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.getDefaultNightMode());
+            int currentNightMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            AppCompatDelegate.setDefaultNightMode((currentNightMode != Configuration.UI_MODE_NIGHT_NO)
+                    ? AppCompatDelegate.MODE_NIGHT_YES :
+                    AppCompatDelegate.MODE_NIGHT_NO);
         } else if(themeMode == 1){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         } else {

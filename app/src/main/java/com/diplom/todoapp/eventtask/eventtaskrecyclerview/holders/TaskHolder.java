@@ -33,11 +33,11 @@ public class TaskHolder extends AbstractTaskHolder {
         binding.dateStart.setText((task.allDayFlag == true) ? "All      \nDay" : formatedDateStart[1]);
         binding.describe.setText(task.describe);
 
-        int color = PriorityUtil.getPriorityColor(PriorityUtil.getPriorityEnum(task.priority));
-        int succsessIndicatorColor = SuccsessFlagUtil.getColorFromSuccsessFlagString(task.succsessFlag);
+        int borderResource = PriorityUtil.getPriorityBorderResource(PriorityUtil.getPriorityEnum(task.priority));
+        int statusResource = SuccsessFlagUtil.getBackgroundResourceFromSuccsessFlagString(task.succsessFlag);
         String succsessIndicatorText = SuccsessFlagUtil.getSuccsessStringFromString(task.succsessFlag);
-        binding.leftSide.setBackgroundColor(color);
-        binding.succsessIndicator.setBackgroundColor(succsessIndicatorColor);
+        binding.leftSide.setBackgroundResource(borderResource);
+        binding.succsessIndicator.setBackgroundResource(statusResource);
         binding.succsessIndicator.setText(succsessIndicatorText);
         binding.getRoot().setOnClickListener(v -> listener.taskNavigation(task));
         binding.getRoot().setOnLongClickListener(v -> {
