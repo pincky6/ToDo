@@ -134,9 +134,6 @@ public class FirebaseRepository {
     public String generateKey(){
         return database.push().getKey();
     }
-    public void addTask(AbstractTask object){
-        database.child("tasks").child( object.id ).setValue(object);
-    }
     public void getTaskFromKey(String key, OnDataReceivedListener dataReceivedListener){
         database.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -168,27 +165,30 @@ public class FirebaseRepository {
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    if(snapshot.getKey() == null) return;
-                    String[] strs = snapshot.getKey().split("-");
-                    String key = strs[0];
-                    if(key.equals("Task")){
-                        Task task = snapshot.getValue(Task.class);
-                        task.id = snapshot.getKey();
-                        if(!task.succsessFlag.equals("DONE")) {
-                            task.succsessFlag = SuccsessFlagUtil.getStringFlagFromDate(task.dateStart);
-                            addTask(task);
+                for(DataSnapshot tasksSnapshot: dataSnapshot.getChildren()) {
+                    if (tasksSnapshot.getKey() == null) continue;
+                    if (!tasksSnapshot.getKey().equals("tasks")) continue;
+                    for (DataSnapshot snapshot : tasksSnapshot.getChildren()) {
+                        if (snapshot.getKey() == null) return;
+                        String[] strs = snapshot.getKey().split("-");
+                        String key = strs[0];
+                        if (key.equals("Task")) {
+                            Task task = snapshot.getValue(Task.class);
+                            task.id = snapshot.getKey();
+                            if (!task.succsessFlag.equals("DONE")) {
+                                task.succsessFlag = SuccsessFlagUtil.getStringFlagFromDate(task.dateStart);
+                                addTask(task);
+                            }
+                            taskList.add(task);
+                        } else if (key.equals("DateTask")) {
+                            DateTask dateTask = snapshot.getValue(DateTask.class);
+                            dateTask.id = snapshot.getKey();
+                            if (!dateTask.succsessFlag.equals("DONE")) {
+                                dateTask.succsessFlag = SuccsessFlagUtil.getStringFlagFromDate(dateTask.dateStart);
+                                addTask(dateTask);
+                            }
+                            taskList.add(dateTask);
                         }
-                        taskList.add(task);
-                    }
-                    else if(key.equals("DateTask")){
-                        DateTask dateTask = snapshot.getValue(DateTask.class);
-                        dateTask.id = snapshot.getKey();
-                        if(!dateTask.succsessFlag.equals("DONE")) {
-                            dateTask.succsessFlag = SuccsessFlagUtil.getStringFlagFromDate(dateTask.dateStart);
-                            addTask(dateTask);
-                        }
-                        taskList.add(dateTask);
                     }
                 }
                 if(initLambda != null)
@@ -210,6 +210,7 @@ public class FirebaseRepository {
                     if(tasksSnapshot.getKey() == null) continue;
                     if(!tasksSnapshot.getKey().equals("tasks")) continue;
                     for(DataSnapshot snapshot: tasksSnapshot.getChildren()) {
+                        if(snapshot.getKey() == null) return;
                         String[] strs = snapshot.getKey().split("-");
                         String key = strs[0];
                         if (key.equals("Task")) {
@@ -235,7 +236,10 @@ public class FirebaseRepository {
             }
         });
     }
+    public void addTask(AbstractTask object){
+        database.child("tasks").child( object.id ).setValue(object);
+    }
     public void removeTask(String id){
-        database.child(id).removeValue();
+        database.child("tasks").child(id).removeValue();
     }
 }
