@@ -1,5 +1,6 @@
 package com.diplom.todoapp.eventtask.calendar.decorator;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +60,7 @@ public class MaterialCalendarFragment extends Fragment {
         binding = FragmentMaterialCalendarViewBinding.inflate(inflater, container, false);
         initCalendar();
         initCalendarFragmentResults();
+        binding.calendar.setSelectionColor(Color.rgb(251,164,0));
         return binding.getRoot();
     }
 
