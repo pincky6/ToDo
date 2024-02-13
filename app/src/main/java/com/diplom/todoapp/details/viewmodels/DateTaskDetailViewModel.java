@@ -110,10 +110,10 @@ public class DateTaskDetailViewModel {
             throw new IllegalArgumentException("wrong date input");
         }
         if(dateTask == null) {
-            dateTask = new DateTask("DateTask-" + firebaseRepository.generateKey(), place, title, describe, allDay,
+            dateTask = new DateTask("DateTask-" + firebaseRepository.generateKey(), title, place, describe, allDay,
                     dateStart, dateEnd, priority, reminder, successFlag);
         } else {
-            dateTask.setTask(dateTask.id, place, title, describe, allDay,
+            dateTask.setTask(dateTask.id, title, place, describe, allDay,
                     dateStart, dateEnd, priority, reminder, dateTask.succsessFlag);
         }
     }

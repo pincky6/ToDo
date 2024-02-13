@@ -135,7 +135,7 @@ public class FirebaseRepository {
         return database.push().getKey();
     }
     public void getTaskFromKey(String key, OnDataReceivedListener dataReceivedListener){
-        database.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child("tasks").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 AbstractTask abstractTask;
@@ -217,12 +217,10 @@ public class FirebaseRepository {
                             Task task = snapshot.getValue(Task.class);
                             task.id = snapshot.getKey();
                             taskList.add(task);
-                            addTask(task);
                         } else if (key.equals("DateTask")) {
                             DateTask dateTask = snapshot.getValue(DateTask.class);
                             dateTask.id = snapshot.getKey();
                             taskList.add(dateTask);
-                            addTask(dateTask);
                         }
                     }
                 }
