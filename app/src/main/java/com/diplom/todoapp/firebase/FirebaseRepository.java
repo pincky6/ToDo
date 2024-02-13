@@ -135,7 +135,7 @@ public class FirebaseRepository {
         return database.push().getKey();
     }
     public void addTask(AbstractTask object){
-        database.child( object.id ).setValue(object);
+        database.child("tasks").child( object.id ).setValue(object);
     }
     public void getTaskFromKey(String key, OnDataReceivedListener dataReceivedListener){
         database.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -206,19 +206,23 @@ public class FirebaseRepository {
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    if(snapshot.getKey() == null) return;
-                    String[] strs = snapshot.getKey().split("-");
-                    String key = strs[0];
-                    if(key.equals("Task")){
-                        Task task = snapshot.getValue(Task.class);
-                        task.id = snapshot.getKey();
-                        taskList.add(task);
-                    }
-                    else if(key.equals("DateTask")){
-                        DateTask dateTask = snapshot.getValue(DateTask.class);
-                        dateTask.id = snapshot.getKey();
-                        taskList.add(dateTask);
+                for(DataSnapshot tasksSnapshot: dataSnapshot.getChildren()){
+                    if(tasksSnapshot.getKey() == null) continue;
+                    if(!tasksSnapshot.getKey().equals("tasks")) continue;
+                    for(DataSnapshot snapshot: tasksSnapshot.getChildren()) {
+                        String[] strs = snapshot.getKey().split("-");
+                        String key = strs[0];
+                        if (key.equals("Task")) {
+                            Task task = snapshot.getValue(Task.class);
+                            task.id = snapshot.getKey();
+                            taskList.add(task);
+                            addTask(task);
+                        } else if (key.equals("DateTask")) {
+                            DateTask dateTask = snapshot.getValue(DateTask.class);
+                            dateTask.id = snapshot.getKey();
+                            taskList.add(dateTask);
+                            addTask(dateTask);
+                        }
                     }
                 }
                 if(initLambda != null)
