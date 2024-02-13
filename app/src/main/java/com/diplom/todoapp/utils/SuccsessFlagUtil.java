@@ -97,14 +97,14 @@ public class SuccsessFlagUtil {
         SuccsessFlag flag = getFlagFromString(succsessFlagString);
         switch (flag){
             case NOT_IN_PROGRESS:
-                return R.drawable.status_grey;
+                return R.drawable.status_not_in_progress_border_color;
             case IN_PROGRESS:
-                return R.drawable.status_yellow;
+                return R.drawable.status_in_progress_border_color;
             case DONE:
-                return R.drawable.status_green;
+                return R.drawable.status_done_border_color;
             case NOT_DONE:
-                return R.drawable.status_red;
+                return R.drawable.status_not_done_border_color;
         }
-        return Color.GRAY;
+        return R.drawable.status_not_in_progress_border_color;
     }
 }

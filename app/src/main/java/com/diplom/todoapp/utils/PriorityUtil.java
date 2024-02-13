@@ -18,37 +18,38 @@ public class PriorityUtil {
         return Priority.LOW;
     }
     public static int getPriorityColor(Priority priority){
+
         switch (priority.getPriority()){
             case 4:
-                return Color.GREEN;
+                return Color.rgb(103, 174, 126);
             case 8:
-                return Color.YELLOW;
+                return Color.rgb(236, 211, 127);
             case 16:
-                return Color.RED;
+                return Color.rgb(221,66,46);
         }
         return 0;
     }
     public static int getPriorityBorderResource(Priority priority){
         switch (priority.getPriority()){
             case 4:
-                return R.drawable.border_green;
+                return R.drawable.border_low_priority;
             case 8:
-                return R.drawable.border_yellow;
+                return R.drawable.border_middle_priority;
             case 16:
-                return R.drawable.border_red;
+                return R.drawable.border_high_priority;
         }
         return 0;
     }
     public static int getPriorityColor(String priority){
         switch (priority){
             case "Low":
-                return Color.GREEN;
+                return R.attr.priority_low_color;
             case "Middle":
-                return Color.YELLOW;
+                return R.attr.priority_middle_color;
             case "High":
-                return Color.RED;
+                return R.attr.priority_high_color;
         }
-        return Color.GREEN;
+        return R.attr.priority_low_color;
     }
     public static int getPriorityIndex(Priority priority){
         switch (priority){
