@@ -10,5 +10,5 @@
         android:top="1dp" />
     <corners android:topLeftRadius="200dp"
         android:topRightRadius="200dp"/>
-    <solid android:color="#FFFF00"/>
+    <solid android:color="?attr/status_done_border_color"/>
 </shape>

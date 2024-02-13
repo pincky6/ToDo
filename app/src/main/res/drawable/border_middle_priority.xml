@@ -10,5 +10,5 @@
         android:top="1dp" />
     <corners android:topLeftRadius="200dp"
         android:bottomLeftRadius="200dp"/>
-    <solid android:color="#00FF00"/>
+    <solid android:color="?attr/priority_middle_color"/>
 </shape>
