@@ -97,12 +97,11 @@ public class TaskDetailViewModel {
     }
 
     public void setTask(@NonNull FragmentTaskDetailBinding binding) throws IOException {
-        if(EditorsUtil.checkEditors(binding.taskTitle, binding.taskDescribe,
+        if(EditorsUtil.checkEditors(binding.taskTitle,
                         binding.taskEditTextTime, binding.taskEditTextDate)){
             throw new IOException();
         }
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        String timeStr = binding.taskEditTextTime.getText().toString();
         Time time = Time.valueOf(binding.taskEditTextTime.getText().toString() + ":00");
         String title = binding.taskTitle.getText().toString();
         String describe = binding.taskDescribe.getText().toString();

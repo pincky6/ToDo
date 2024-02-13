@@ -28,29 +28,23 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
-         settings = SettingsRepository.getInstance(getContext());
-        String[] reminders = new String[]{"System Theme", "Light Theme", "Dark Theme"};
-        ArrayAdapter<String> remindAdapter =
+        settings = SettingsRepository.getInstance(getContext());
+        String[] themes = new String[]{"Light Theme", "Dark Theme"};
+        ArrayAdapter<String> themeAdapter =
                 new ArrayAdapter<>(getContext(),
                         androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-                        reminders);
-        binding.themeMode.setAdapter(remindAdapter);
+                        themes);
+        binding.themeMode.setAdapter(themeAdapter);
         binding.themeMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("SELECTED THEME", parent.getAdapter().getItem(position).toString());
-                if(parent.getAdapter().getItem(position).toString().equals("Dark Theme")){
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    settings.setThemeMode(2, getContext());
-                } else if(parent.getAdapter().getItem(position).toString().equals("Light Theme")){
+                if(parent.getAdapter().getItem(position).toString().equals("Light Theme")){
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    settings.setThemeMode(1, getContext());
-                } else {
-                    int currentNightMode = getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-                    AppCompatDelegate.setDefaultNightMode((currentNightMode != Configuration.UI_MODE_NIGHT_NO)
-                            ? AppCompatDelegate.MODE_NIGHT_YES :
-                            AppCompatDelegate.MODE_NIGHT_NO);
                     settings.setThemeMode(0, getContext());
+                } else if(parent.getAdapter().getItem(position).toString().equals("Dark Theme")){
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    settings.setThemeMode(1, getContext());
                 }
             }
 

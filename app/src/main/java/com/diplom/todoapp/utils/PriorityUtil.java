@@ -27,7 +27,7 @@ public class PriorityUtil {
             case 16:
                 return Color.rgb(221,66,46);
         }
-        return 0;
+        return Color.rgb(103, 174, 126);
     }
     public static int getPriorityBorderResource(Priority priority){
         switch (priority.getPriority()){
@@ -43,13 +43,13 @@ public class PriorityUtil {
     public static int getPriorityColor(String priority){
         switch (priority){
             case "Low":
-                return R.attr.priority_low_color;
+                return Color.rgb(103, 174, 126);
             case "Middle":
-                return R.attr.priority_middle_color;
+                return Color.rgb(236, 211, 127);
             case "High":
-                return R.attr.priority_high_color;
+                return Color.rgb(221,66,46);
         }
-        return R.attr.priority_low_color;
+        return Color.rgb(103, 174, 126);
     }
     public static int getPriorityIndex(Priority priority){
         switch (priority){

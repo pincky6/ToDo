@@ -29,6 +29,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:textColor="@color/black"
             android:layout_marginEnd="18dp"/>
     </LinearLayout>
 
@@ -46,16 +47,22 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center">
-    <TextView
-        android:id="@+id/dateStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-        <TextView
-            android:id="@+id/dateEnd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+            <TextView
+                android:id="@+id/dateStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+            <TextView
+               android:id="@+id/defis"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="-"
+               android:layout_gravity="center"/>
+            <TextView
+                android:id="@+id/dateEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
         </LinearLayout>
     <LinearLayout
         android:id="@+id/content"
@@ -67,7 +74,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/info">
-
         <View
             android:id="@+id/leftSide"
             android:layout_width="match_parent"

@@ -50,7 +50,7 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
         else {
             taskDetailViewModel = new TaskDetailViewModel(binding, id, dates);
         }
-        EditorsUtil.initTextWatchers(binding.taskTitle, binding.taskDescribe,
+        EditorsUtil.initTextWatchers(binding.taskTitle,
                         binding.taskEditTextDate, binding.taskEditTextTime);
         EditorsUtil.setConnectedTextWatchers(binding.taskEditTextDate, binding.taskEditTextTime);
         initSpinners(binding.taskReminder, binding.taskPriority);

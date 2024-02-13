@@ -24,11 +24,6 @@ public class SettingsRepository {
         SharedPreferences sharedPreferences = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
         themeMode = sharedPreferences.getInt(THEME_KEY, 0);
         if(themeMode == 0){
-            int currentNightMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-            AppCompatDelegate.setDefaultNightMode((currentNightMode != Configuration.UI_MODE_NIGHT_NO)
-                    ? AppCompatDelegate.MODE_NIGHT_YES :
-                    AppCompatDelegate.MODE_NIGHT_NO);
-        } else if(themeMode == 1){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -41,9 +36,6 @@ public class SettingsRepository {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(THEME_KEY, themeMode);
         editor.apply();
-    }
-    public int getThemeMode(){
-        return themeMode;
     }
     public void setAutodeleteTask(boolean autodeleteFlag, Context context){
         this.autodeleteFlag = autodeleteFlag;

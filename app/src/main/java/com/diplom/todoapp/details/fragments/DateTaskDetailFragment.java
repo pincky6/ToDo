@@ -40,8 +40,7 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
             String key = (String) args.get("dateTaskID");
             dateTaskDetailViewModel = new DateTaskDetailViewModel(binding, key);
         }
-        EditorsUtil.initTextWatchers(binding.dateTaskTitle, binding.dateTaskDescribe,
-                binding.dateTaskPlace, binding.dateTaskEditTextDate,
+        EditorsUtil.initTextWatchers(binding.dateTaskTitle, binding.dateTaskEditTextDate,
                 binding.dateTaskEditTextTime, binding.dateTaskEditTextDate2,
                 binding.dateTaskEditTextTime2);
         initSpinners(binding.dateTaskReminder, binding.dateTaskPriority);

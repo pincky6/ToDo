@@ -64,8 +64,7 @@ public class DateTaskDetailViewModel {
     }
 
     public void setTask(@NonNull FragmentDateTaskDetailBinding binding) throws IOException {
-        if(EditorsUtil.checkEditors(binding.dateTaskTitle, binding.dateTaskDescribe,
-                        binding.dateTaskPlace, binding.dateTaskEditTextDate)){
+        if(EditorsUtil.checkEditors(binding.dateTaskTitle, binding.dateTaskEditTextDate)){
             throw new IOException();
         }
         if(!binding.allDayCheckBox.isChecked()){
