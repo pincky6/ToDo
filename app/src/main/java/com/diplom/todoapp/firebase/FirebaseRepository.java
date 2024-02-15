@@ -4,6 +4,7 @@ package com.diplom.todoapp.firebase;
 import static androidx.navigation.ViewKt.findNavController;
 
 import android.content.SharedPreferences;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ public class FirebaseRepository {
 
     private FirebaseAuth auth;
     private DatabaseReference database;
+    private ArrayList<String> categories = new ArrayList<>();
     private FirebaseRepository(){
         auth = FirebaseAuth.getInstance();
     }
@@ -108,6 +110,11 @@ public class FirebaseRepository {
         auth.createUserWithEmailAndPassword(gmail, password).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 Toast.makeText(binding.getRoot().getContext(), "You register", Toast.LENGTH_SHORT).show();
+                String[] defaultCategories = {"Study", "Work", "Holiday"};
+                for(String category: defaultCategories){
+                    addCategory(category);
+                    categories.add(category);
+                }
                 findNavController(binding.getRoot()).popBackStack();
             }
             else {
@@ -167,6 +174,7 @@ public class FirebaseRepository {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot tasksSnapshot: dataSnapshot.getChildren()) {
                     if (tasksSnapshot.getKey() == null) continue;
+                    if(tasksSnapshot.getKey().equals("categories")) readAllCategories(tasksSnapshot);
                     if (!tasksSnapshot.getKey().equals("tasks")) continue;
                     for (DataSnapshot snapshot : tasksSnapshot.getChildren()) {
                         if (snapshot.getKey() == null) return;
@@ -208,6 +216,7 @@ public class FirebaseRepository {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot tasksSnapshot: dataSnapshot.getChildren()){
                     if(tasksSnapshot.getKey() == null) continue;
+                    if(tasksSnapshot.getKey().equals("categories")) readAllCategories(tasksSnapshot);
                     if(!tasksSnapshot.getKey().equals("tasks")) continue;
                     for(DataSnapshot snapshot: tasksSnapshot.getChildren()) {
                         if(snapshot.getKey() == null) return;
@@ -234,10 +243,30 @@ public class FirebaseRepository {
             }
         });
     }
+    public void readAllCategories(DataSnapshot snapshot){
+        for(DataSnapshot category: snapshot.getChildren()){
+            if(category.getKey() == null) return;
+            if(categories.contains(category.getKey())) continue;
+            categories.add((String) category.getValue());
+        }
+    }
     public void addTask(AbstractTask object){
         database.child("tasks").child( object.id ).setValue(object);
     }
     public void removeTask(String id){
         database.child("tasks").child(id).removeValue();
+    }
+    public ArrayList<String> getCategories(){
+        return categories;
+    }
+    public void addCategory(String category) {
+        if(categories.contains(category)) return;
+        categories.add(category);
+        database.child("categories").child(category).setValue(category);
+    }
+    public void removeCategory(String category) {
+        if(!categories.contains(category)) return;
+        categories.remove(category);
+        database.child("categories").child(category).removeValue();
     }
 }
