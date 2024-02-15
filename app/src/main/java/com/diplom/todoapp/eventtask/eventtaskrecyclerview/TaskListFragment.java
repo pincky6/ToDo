@@ -89,12 +89,21 @@ public class TaskListFragment extends Fragment {
     }
     private void initRecyclerView(){
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        resetDayAdapter();
-        if(!taskListViewModel.isEmpty()) return;
+        if(!taskListViewModel.isEmpty()){
+            taskListViewModel.taskList.clear();
+            taskListViewModel.loadFirebase(binding.recyclerView, tasks -> {
+                resetDayAdapter();
+                binding.recyclerView.getAdapter().notifyDataSetChanged();
+            });
+            return;
+        }
         taskListViewModel.loadFirebase(binding.recyclerView, tasks -> {
             CalendarDay day = CalendarUtil.getCalendarDay(new Date());
             filter.setSelectedDay(day);
-            resetAdapterList(filter.filter(tasks));
+            resetDayAdapter();
+            binding.recyclerView.getAdapter().notifyDataSetChanged();
+            resetAdapterList(filter.filter(taskListViewModel.taskList));
+            binding.recyclerView.getAdapter().notifyDataSetChanged();
         });
     }
     public void addTask(AbstractTask newTask){
@@ -213,7 +222,7 @@ public class TaskListFragment extends Fragment {
                 }));
     }
     public void resetDayAdapter(){
-        binding.recyclerView.setAdapter(new TaskAdapter(taskListViewModel.taskList,
+        binding.recyclerView.setAdapter(new TaskAdapter(filter.filter(taskListViewModel.taskList),
                 (AbstractTask task) ->
                 {
                     if (task.id.split("-")[0].equals("Task")) {

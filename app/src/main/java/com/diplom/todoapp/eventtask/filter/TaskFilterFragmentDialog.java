@@ -1,6 +1,7 @@
 package com.diplom.todoapp.eventtask.filter;
 
 import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.diplom.todoapp.R;
 import com.diplom.todoapp.databinding.FragmentEventFilterDialogBinding;
 
 public class TaskFilterFragmentDialog extends DialogFragment {
@@ -29,6 +31,7 @@ public class TaskFilterFragmentDialog extends DialogFragment {
         if(mask != null) {
             setCheckboxes(mask);
         }
+        getDialog().getWindow().setBackgroundDrawableResource(R.drawable.filter_background);
         return binding.getRoot();
     }
     @Override
