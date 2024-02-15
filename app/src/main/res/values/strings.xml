@@ -18,6 +18,8 @@
     <string name="describe_hint">Describe</string>
     <string name="all_day_check_box">All Day</string>
     <string name="priority">Priority</string>
+    <string name="category">Category</string>
+    <string name="add_new_category">Add New Category</string>
 
     <string name="gmail_hint">Gmail</string>
     <string name="password_hint">Password</string>
@@ -46,4 +48,7 @@
     <string name="settings_autodelete_task_text">Autodelete Task</string>
     <string name="settings_tasks">Tasks Settings</string>
     <string name="settings_common">Common Settings</string>
+
+    <string name="without_category_text">Without Category</string>
+    <string name="add_new_category_text">Add New Category</string>
 </resources>
