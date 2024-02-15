@@ -50,6 +50,7 @@ public class DateTaskHolder extends AbstractTaskHolder {
         }
         binding.place.setText(dateTask.place);
         binding.describe.setText(dateTask.describe);
+        binding.category.setText(dateTask.category);
 
 
         int borderResource = PriorityUtil.getPriorityBorderResource(PriorityUtil.getPriorityEnum(dateTask.priority));
