@@ -20,6 +20,11 @@ import androidx.fragment.app.Fragment;
 import com.diplom.todoapp.App;
 import com.diplom.todoapp.R;
 import com.diplom.todoapp.databinding.FragmentSettingsBinding;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.CategorySpinnerAdapter;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.DeletableCategorySpinnerAdapter;
+import com.diplom.todoapp.firebase.FirebaseRepository;
+
+import java.util.ArrayList;
 
 public class SettingsFragment extends Fragment {
     FragmentSettingsBinding binding;
@@ -29,6 +34,30 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         settings = SettingsRepository.getInstance(getContext());
+        initThemeModeSpinner();
+        initCategorySpinner();
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+    private void initCategorySpinner(){
+        FirebaseRepository firebaseRepository = FirebaseRepository.getInstance();
+        if(firebaseRepository == null) return;
+        ArrayList<String> categories = (ArrayList<String>) firebaseRepository.getCategories().clone();
+        categories.add(getResources().getString(R.string.without_category_text));
+        categories.add(getResources().getString(R.string.add_new_category_text));
+        binding.categoriesSpinner.setAdapter(new DeletableCategorySpinnerAdapter(getContext(), binding.categoriesSpinner,0, categories));
+    }
+    private void initThemeModeSpinner(){
         String[] themes = new String[]{"Light Theme", "Dark Theme"};
         ArrayAdapter<String> themeAdapter =
                 new ArrayAdapter<>(getContext(),
@@ -58,17 +87,5 @@ public class SettingsFragment extends Fragment {
         binding.toolbar.setNavigationOnClickListener(v -> {
             findNavController(getView()).popBackStack();
         });
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 }

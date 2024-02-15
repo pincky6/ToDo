@@ -6,18 +6,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.diplom.todoapp.R;
 import com.diplom.todoapp.databinding.FragmentDateTaskDetailBinding;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.CategorySpinnerAdapter;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.CategoryItemFactory;
 import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.details.viewmodels.DateTaskDetailViewModel;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
 
@@ -51,6 +54,7 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
                 binding.dateTaskEditTextTime2);
         initSaveButton();
         initCheckBox();
+        initCategorySpinner();
         return binding.getRoot();
     }
     @Override
@@ -99,5 +103,12 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
             binding.dateTaskEditTextTime2.setVisibility(View.INVISIBLE);
             binding.dateTaskEditTextTime2.setText("00:00");
         });
+    }
+
+    private void initCategorySpinner(){
+        ArrayList<String> categories = (ArrayList<String>) dateTaskDetailViewModel.getCategory().clone();
+        categories.add(getResources().getString(R.string.without_category_text));
+        categories.add(getResources().getString(R.string.add_new_category_text));
+        binding.categoriesSpinner.setAdapter(new CategorySpinnerAdapter(getContext(), binding.categoriesSpinner,0, categories));
     }
 }

@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -84,6 +85,7 @@ public class DateTaskDetailViewModel {
         Date dateEnd = null;
         String priority = binding.dateTaskPriority.getSelectedItem().toString();
         String reminder = binding.dateTaskReminder.getSelectedItem().toString();
+        String category = binding.categoriesSpinner.getSelectedItem().toString();
         String successFlag = "";
         try {
             dateStart = format.parse(binding.dateTaskEditTextDate.getText().toString());
@@ -111,10 +113,15 @@ public class DateTaskDetailViewModel {
         }
         if(dateTask == null) {
             dateTask = new DateTask("DateTask-" + firebaseRepository.generateKey(), title, place, describe, allDay,
-                    dateStart, dateEnd, priority, reminder, successFlag);
+                    dateStart, dateEnd, priority, reminder, successFlag, category);
         } else {
             dateTask.setTask(dateTask.id, title, place, describe, allDay,
-                    dateStart, dateEnd, priority, reminder, dateTask.succsessFlag);
+                    dateStart, dateEnd, priority, reminder, dateTask.succsessFlag, category);
         }
+    }
+
+    public ArrayList<String> getCategory(){
+        if(firebaseRepository == null) return new ArrayList<>();
+        return (ArrayList<String>)firebaseRepository.getCategories().clone();
     }
 }
