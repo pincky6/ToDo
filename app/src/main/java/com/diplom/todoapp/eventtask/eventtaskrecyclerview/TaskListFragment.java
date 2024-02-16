@@ -38,7 +38,7 @@ public class TaskListFragment extends Fragment {
     public static final String REQUEST_REMOVE_TASK = "REMOVE_TASK";
     private FragmentTaskListBinding binding = null;
     private  TaskListViewModel taskListViewModel = new TaskListViewModel();
-    private TaskFilter filter = new TaskFilter(31);
+    private TaskFilter filter = new TaskFilter(31, new ArrayList<>());
     private OnTaskListener onTaskListener = null;
     private OnResetTaskLisener onResetTaskLisener = null;
     public ArrayList<AbstractTask> getTaskList() {
@@ -49,6 +49,12 @@ public class TaskListFragment extends Fragment {
     }
     public void setFilterMask(int mask){
         filter.setMask(mask);
+    }
+    public ArrayList<String> getFilterCategories(){
+        return filter.getCategories();
+    }
+    public void setFilterCategories(ArrayList<String> categories){
+        filter.setCategories(categories);
     }
     public TaskFilter getFilter(){
         return filter;
@@ -102,7 +108,7 @@ public class TaskListFragment extends Fragment {
             filter.setSelectedDay(day);
             resetDayAdapter();
             binding.recyclerView.getAdapter().notifyDataSetChanged();
-            resetAdapterList(filter.filter(taskListViewModel.taskList));
+            resetAdapterList(filter.filter(tasks));
             binding.recyclerView.getAdapter().notifyDataSetChanged();
         });
     }
@@ -158,6 +164,7 @@ public class TaskListFragment extends Fragment {
         resetAdapterList(taskListViewModel.taskList);
     }
     public void resetAllListAdapter(){
+        if(binding.recyclerView == null) return;
         binding.recyclerView.setAdapter(new TaskMonthAdapter(taskListViewModel.taskList,
                 (AbstractTask task) ->
                 {
@@ -190,6 +197,7 @@ public class TaskListFragment extends Fragment {
                 }));
     }
     public void resetMonthAdapter(){
+        if(binding.recyclerView == null) return;
         binding.recyclerView.setAdapter(new TaskDaysAdapter(filter.filter(taskListViewModel.taskList),
                 (AbstractTask task) ->
                 {
@@ -222,6 +230,7 @@ public class TaskListFragment extends Fragment {
                 }));
     }
     public void resetDayAdapter(){
+        if(binding.recyclerView == null) return;
         binding.recyclerView.setAdapter(new TaskAdapter(filter.filter(taskListViewModel.taskList),
                 (AbstractTask task) ->
                 {

@@ -6,11 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.diplom.todoapp.databinding.ItemListTasksBinding;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.AbstractTaskAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
-import com.diplom.todoapp.eventtask.listeners.RemoveListener;
-import com.diplom.todoapp.eventtask.listeners.SetSuccsessListener;
+import com.diplom.todoapp.eventtask.listeners.OnRemoveListener;
+import com.diplom.todoapp.eventtask.listeners.OnSetSuccsessListener;
 import com.diplom.todoapp.eventtask.listeners.TaskListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class TaskListHolder extends AbstractTaskHolder {
@@ -27,7 +26,7 @@ public class TaskListHolder extends AbstractTaskHolder {
     }
 
     @Override
-    public void bind(AbstractTask abstractTask, TaskListener listener, RemoveListener removeListener, SetSuccsessListener setSuccsessListener) {
+    public void bind(AbstractTask abstractTask, TaskListener listener, OnRemoveListener removeListener, OnSetSuccsessListener onSetSuccsessListener) {
 
     }
 }

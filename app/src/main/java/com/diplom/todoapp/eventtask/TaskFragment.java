@@ -26,6 +26,8 @@ import com.diplom.todoapp.eventtask.filter.TaskFilterFragmentDialog;
 import com.diplom.todoapp.firebase.FirebaseRepository;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
+import java.util.ArrayList;
+
 public class TaskFragment extends Fragment {
     private FragmentEventTaskBinding binding = null;
     private FirebaseRepository firebase;
@@ -79,7 +81,8 @@ public class TaskFragment extends Fragment {
             }
             else if(item.getItemId() == R.id.action_filter){
                 findNavController(getView()).navigate(
-                        TaskFragmentDirections.showTaskFilterDialog(taskListFragment.getFilterMask())
+                        TaskFragmentDirections.showTaskFilterDialog(taskListFragment.getFilterMask(),
+                                taskListFragment.getFilterCategories())
                 );
             } else if (item.getItemId() == R.id.action_search_by_title){
                 findNavController(binding.getRoot()).navigate(
@@ -120,7 +123,9 @@ public class TaskFragment extends Fragment {
     private void initUpdateTaskListListener(){
         getParentFragmentManager().setFragmentResultListener(TaskFilterFragmentDialog.FILTER_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
             Integer mask = (Integer)result.get(requestKey);
+            ArrayList<String> categories = (ArrayList<String>)result.get(TaskFilterFragmentDialog.ARRAY_FILTER_KEY) ;
             taskListFragment.setFilterMask(mask);
+            taskListFragment.setFilterCategories(categories);
             taskListFragment.updateUi();
         });
         getParentFragmentManager().setFragmentResultListener(AbstractTaskDetailFragment.TASK_DETAIL_KEY, getViewLifecycleOwner(), (requestKey, result) -> {

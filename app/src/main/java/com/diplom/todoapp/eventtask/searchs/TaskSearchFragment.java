@@ -35,7 +35,7 @@ import java.util.Objects;
 public class TaskSearchFragment extends Fragment {
     FragmentTaskSearchBinding binding = null;
     SearchView searchView = null;
-    TaskFilter filter = new TaskFilter(31);
+    TaskFilter filter = new TaskFilter(31, new ArrayList<>());
     TaskListViewModel taskListViewModel = new TaskListViewModel();
     String searchedTitle = null;
     Boolean searchByDate = false;

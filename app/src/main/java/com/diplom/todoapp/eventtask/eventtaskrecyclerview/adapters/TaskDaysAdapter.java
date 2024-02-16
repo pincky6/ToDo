@@ -11,31 +11,30 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.AbstractTaskHo
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.EmptyHolder;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskListHolder;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
-import com.diplom.todoapp.eventtask.listeners.RemoveListener;
-import com.diplom.todoapp.eventtask.listeners.SetSuccsessListener;
+import com.diplom.todoapp.eventtask.listeners.OnRemoveListener;
+import com.diplom.todoapp.eventtask.listeners.OnSetSuccsessListener;
 import com.diplom.todoapp.eventtask.listeners.TaskListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
-import java.util.Date;
 
 public class TaskDaysAdapter extends AbstractTaskAdapter {
     private ArrayList<ArrayList<AbstractTask>> taskList;
     private final TaskListener listener;
-    private final RemoveListener removeListener;
-    private final SetSuccsessListener setSuccsessListener;
+    private final OnRemoveListener removeListener;
+    private final OnSetSuccsessListener onSetSuccsessListener;
     public SimpleDateFormat format = new SimpleDateFormat("dd MMMM");
     public TaskDaysAdapter(ArrayList<AbstractTask> taskList,
                        TaskListener listener,
-                       RemoveListener removeListener,
-                       SetSuccsessListener setSuccsessListener){
+                       OnRemoveListener removeListener,
+                       OnSetSuccsessListener onSetSuccsessListener){
         this.taskList = new ArrayList<>();
         resetTaskList(taskList);
         this.listener = listener;
         this.removeListener = removeListener;
-        this.setSuccsessListener = setSuccsessListener;
+        this.onSetSuccsessListener = onSetSuccsessListener;
     }
     @NonNull
     @Override
@@ -67,7 +66,7 @@ public class TaskDaysAdapter extends AbstractTaskAdapter {
             dateString = format.format(taskList.get(position).get(0).dateStart);
         }
         ((TaskListHolder)holder).bind(taskList.get(position), dateString
-                ,new TaskAdapter(taskList.get(position), listener, removeListener, setSuccsessListener));
+                ,new TaskAdapter(taskList.get(position), listener, removeListener, onSetSuccsessListener));
     }
 
     @Override

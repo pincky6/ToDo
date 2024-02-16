@@ -101,6 +101,9 @@
         <argument
             android:name="mask"
             app:argType="java.lang.Integer"/>
+        <argument
+            android:name="categories"
+            app:argType="java.util.ArrayList"/>
     </dialog>
     <dialog
         android:id="@+id/datePickerFragment"

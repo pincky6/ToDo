@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
-import com.diplom.todoapp.eventtask.listeners.SetSuccsessListener;
+import com.diplom.todoapp.eventtask.listeners.OnSetSuccsessListener;
 import com.diplom.todoapp.utils.PriorityUtil;
 import com.diplom.todoapp.databinding.ItemDateTaskBinding;
-import com.diplom.todoapp.eventtask.listeners.RemoveListener;
+import com.diplom.todoapp.eventtask.listeners.OnRemoveListener;
 import com.diplom.todoapp.eventtask.listeners.TaskListener;
 import com.diplom.todoapp.utils.SuccsessFlagUtil;
 
@@ -26,8 +26,8 @@ public class DateTaskHolder extends AbstractTaskHolder {
     @Override
     public void bind(AbstractTask abstractTask,
                      TaskListener listener,
-                     RemoveListener removeListener,
-                     SetSuccsessListener setSuccsessListener){
+                     OnRemoveListener removeListener,
+                     OnSetSuccsessListener onSetSuccsessListener){
         if(!(abstractTask instanceof DateTask)) throw new IllegalArgumentException("wrong type of argument in date task holder");
         DateTask dateTask = (DateTask) abstractTask;
         SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yy;hh:mm");
@@ -69,7 +69,7 @@ public class DateTaskHolder extends AbstractTaskHolder {
             AlertDialog.Builder builder = new AlertDialog.Builder(binding.getRoot().getContext());
             builder.setMessage("What do you want?")
                     .setNeutralButton("Cancel", ((dialog, which) ->{} ))
-                    .setPositiveButton("Set Task", (dialog, id) ->setSuccsessListener.set(abstractTask))
+                    .setPositiveButton("Set Task", (dialog, id) -> onSetSuccsessListener.set(abstractTask))
                     .setNegativeButton("Delete Task", (dialog, id) -> removeListener.remove(dateTask.id));
             AlertDialog dialog = builder.create();
             dialog.show();

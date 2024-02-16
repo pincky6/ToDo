@@ -5,31 +5,29 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.AbstractTaskHolder;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.EmptyHolder;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskHolderFactory;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskType;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
-import com.diplom.todoapp.eventtask.listeners.RemoveListener;
-import com.diplom.todoapp.eventtask.listeners.SetSuccsessListener;
+import com.diplom.todoapp.eventtask.listeners.OnRemoveListener;
+import com.diplom.todoapp.eventtask.listeners.OnSetSuccsessListener;
 import com.diplom.todoapp.eventtask.listeners.TaskListener;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class TaskAdapter extends AbstractTaskAdapter {
     private ArrayList<AbstractTask> taskList;
     private final TaskListener listener;
-    private final RemoveListener removeListener;
-    private final SetSuccsessListener setSuccsessListener;
+    private final OnRemoveListener removeListener;
+    private final OnSetSuccsessListener onSetSuccsessListener;
     public TaskAdapter(ArrayList<AbstractTask> taskList,
                        TaskListener listener,
-                       RemoveListener removeListener,
-                       SetSuccsessListener setSuccsessListener){
+                       OnRemoveListener removeListener,
+                       OnSetSuccsessListener onSetSuccsessListener){
         this.taskList = taskList;
         this.listener = listener;
         this.removeListener = removeListener;
-        this.setSuccsessListener = setSuccsessListener;
+        this.onSetSuccsessListener = onSetSuccsessListener;
     }
     @Override
     public int getItemViewType(int position) {
@@ -53,7 +51,7 @@ public class TaskAdapter extends AbstractTaskAdapter {
     @Override
     public void onBindViewHolder(@NonNull AbstractTaskHolder holder, int position) {
         if(taskList.isEmpty()) return;
-        holder.bind(taskList.get(position), listener, removeListener, setSuccsessListener);
+        holder.bind(taskList.get(position), listener, removeListener, onSetSuccsessListener);
     }
 
     @Override

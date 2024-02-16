@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.diplom.todoapp.R;
 
-public class CategoryItemFactory {
+public class SpinnerCategoryItemFactory {
     public static View produce_deletable(@NonNull ViewGroup parent, int position, int size){
         View view;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -17,7 +17,7 @@ public class CategoryItemFactory {
         } else if(position == size - 1){
             view = inflater.inflate(R.layout.spinner_add_new_category, parent, false);
         } else{
-            view = inflater.inflate(R.layout.spinner_category_item, parent, false);
+            view = inflater.inflate(R.layout.item_category, parent, false);
         }
         return view;
     }

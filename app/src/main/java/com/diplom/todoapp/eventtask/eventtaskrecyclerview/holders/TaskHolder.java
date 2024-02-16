@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
-import com.diplom.todoapp.eventtask.listeners.SetSuccsessListener;
+import com.diplom.todoapp.eventtask.listeners.OnSetSuccsessListener;
 import com.diplom.todoapp.utils.PriorityUtil;
 import com.diplom.todoapp.databinding.ItemTaskBinding;
-import com.diplom.todoapp.eventtask.listeners.RemoveListener;
+import com.diplom.todoapp.eventtask.listeners.OnRemoveListener;
 import com.diplom.todoapp.eventtask.listeners.TaskListener;
 import com.diplom.todoapp.utils.SuccsessFlagUtil;
 
@@ -23,7 +23,7 @@ public class TaskHolder extends AbstractTaskHolder {
         this.binding = binding;
     }
     @Override
-    public void bind(AbstractTask abstractTask, TaskListener listener, RemoveListener removeListener, SetSuccsessListener setSuccsessListener){
+    public void bind(AbstractTask abstractTask, TaskListener listener, OnRemoveListener removeListener, OnSetSuccsessListener onSetSuccsessListener){
         if(!(abstractTask instanceof Task)) throw new IllegalArgumentException("wrong type of argument in task holder");
         Task task = (Task) abstractTask;
         SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy;hh:mm");
@@ -48,7 +48,7 @@ public class TaskHolder extends AbstractTaskHolder {
             AlertDialog.Builder builder = new AlertDialog.Builder(binding.getRoot().getContext());
             builder.setMessage("What do you want?")
                     .setNeutralButton("Cancel", ((dialog, which) ->{} ))
-                    .setPositiveButton("Set Task", (dialog, id) ->setSuccsessListener.set(abstractTask))
+                    .setPositiveButton("Set Task", (dialog, id) -> onSetSuccsessListener.set(abstractTask))
                     .setNegativeButton("Delete Task", (dialog, id) -> removeListener.remove(abstractTask.id));
             AlertDialog dialog = builder.create();
             dialog.show();

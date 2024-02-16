@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -17,14 +16,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.diplom.todoapp.R;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.CategoryItemFactory;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.SpinnerCategoryItemFactory;
 import com.diplom.todoapp.firebase.FirebaseRepository;
-
-import org.w3c.dom.Text;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class CategorySpinnerAdapter extends ArrayAdapter<String> {
     protected LayoutInflater inflater;
@@ -133,16 +129,16 @@ public class CategorySpinnerAdapter extends ArrayAdapter<String> {
 
     private View getTypeOfView(@NonNull ViewGroup parent, View view, @NonNull String textViewContent, int position){
         if(view == null){
-            return CategoryItemFactory.produce(parent, position, categories.size());
+            return SpinnerCategoryItemFactory.produce(parent, position, categories.size());
         }
         ImageView imageView = view.findViewById(R.id.imageView);
         if((textViewContent.equals(getContext().getResources().getString(R.string.add_new_category_text)) ||
                 textViewContent.equals(getContext().getResources().getString(R.string.without_category_text)))
                 && imageView == null){
-            view = CategoryItemFactory.produce(parent, position, categories.size());
+            view = SpinnerCategoryItemFactory.produce(parent, position, categories.size());
         }else if((!textViewContent.equals(getContext().getResources().getString(R.string.add_new_category_text)) ||
                 !textViewContent.equals(getContext().getResources().getString(R.string.without_category_text))) && imageView != null) {
-            view = CategoryItemFactory.produce(parent, position, categories.size());
+            view = SpinnerCategoryItemFactory.produce(parent, position, categories.size());
         }
         return view;
     }

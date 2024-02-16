@@ -2,7 +2,10 @@ package com.diplom.todoapp.eventtask.filter;
 
 import androidx.annotation.NonNull;
 
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.AbstractTaskAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.utils.CalendarUtil;
 import com.diplom.todoapp.utils.PriorityUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -13,17 +16,25 @@ import java.util.stream.Collectors;
 
 public class TaskFilter {
     private int mask = 0;
+    private ArrayList<String> categories;
     private CalendarDay selectedDay = null;
     String selectedTitle = null;
     private int selectedMonth = CalendarUtil.getCalendarDay(new Date()).getMonth();
-    public TaskFilter(int mask){
+    public TaskFilter(int mask, ArrayList<String> categories){
         this.mask = mask;
+        this.categories = categories;
     }
     public int getMask(){
         return mask;
     }
     public void setMask(int mask){
         this.mask = mask;
+    }
+    public ArrayList<String> getCategories(){
+        return categories;
+    }
+    public void setCategories(ArrayList<String> categories){
+        this.categories = categories;
     }
     public CalendarDay getSelectedDay(){
         return selectedDay;
@@ -59,7 +70,8 @@ public class TaskFilter {
             }
             String type = task.id.split("-")[0];
             return getTypeRes(type) && getPriorityRes(task.priority) &&
-                    (CalendarUtil.getCalendarDay(task.dateStart).getMonth() == selectedMonth);
+                    (CalendarUtil.getCalendarDay(task.dateStart).getMonth() == selectedMonth) &&
+                    checkCategories(task);
         }).collect(Collectors.toList());
     }
     public ArrayList<AbstractTask> filterByTitle(@NonNull ArrayList<AbstractTask> list){
@@ -80,5 +92,11 @@ public class TaskFilter {
     }
     public boolean getPriorityRes(String priority){
         return (mask & PriorityUtil.getPriorityEnum(priority).getPriority()) != 0;
+    }
+    public boolean checkCategories(AbstractTask abstractTask){
+        if(categories.isEmpty()) return true;
+        if(abstractTask instanceof Task) return false;
+        DateTask dateTask = (DateTask) abstractTask;
+        return categories.contains(dateTask.category);
     }
 }

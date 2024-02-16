@@ -51,4 +51,6 @@
 
     <string name="without_category_text">Without Category</string>
     <string name="add_new_category_text">Add New Category</string>
+
+    <string name="filter_category_title">Categories</string>
 </resources>

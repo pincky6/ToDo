@@ -11,17 +11,14 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.AbstractTaskHo
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.EmptyHolder;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskListHolder;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
-import com.diplom.todoapp.eventtask.listeners.RemoveListener;
-import com.diplom.todoapp.eventtask.listeners.SetSuccsessListener;
+import com.diplom.todoapp.eventtask.listeners.OnRemoveListener;
+import com.diplom.todoapp.eventtask.listeners.OnSetSuccsessListener;
 import com.diplom.todoapp.eventtask.listeners.TaskListener;
 import com.diplom.todoapp.utils.CalendarUtil;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TaskMonthAdapter extends AbstractTaskAdapter{
     class Pair{
@@ -34,17 +31,17 @@ public class TaskMonthAdapter extends AbstractTaskAdapter{
     }
     private ArrayList<Pair> taskList;
     private final TaskListener listener;
-    private final RemoveListener removeListener;
-    private final SetSuccsessListener setSuccsessListener;
+    private final OnRemoveListener removeListener;
+    private final OnSetSuccsessListener onSetSuccsessListener;
     public TaskMonthAdapter(ArrayList<AbstractTask> taskList,
                             TaskListener listener,
-                            RemoveListener removeListener,
-                            SetSuccsessListener setSuccsessListener){
+                            OnRemoveListener removeListener,
+                            OnSetSuccsessListener onSetSuccsessListener){
         this.taskList = new ArrayList<>();
         resetTaskList(taskList);
         this.listener = listener;
         this.removeListener = removeListener;
-        this.setSuccsessListener = setSuccsessListener;
+        this.onSetSuccsessListener = onSetSuccsessListener;
     }
     @NonNull
     @Override
@@ -63,7 +60,7 @@ public class TaskMonthAdapter extends AbstractTaskAdapter{
     public void onBindViewHolder(@NonNull AbstractTaskHolder holder, int position) {
         if(taskList.size() == 0) return;
         ((TaskListHolder)holder).bind(taskList.get(position).array, taskList.get(position).monthString,
-                new TaskDaysAdapter(taskList.get(position).array, listener, removeListener, setSuccsessListener));
+                new TaskDaysAdapter(taskList.get(position).array, listener, removeListener, onSetSuccsessListener));
     }
 
     @Override

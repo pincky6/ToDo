@@ -2,13 +2,10 @@ package com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -17,18 +14,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.diplom.todoapp.R;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.CategoryItemFactory;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.SpinnerCategoryItemFactory;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.firebase.FirebaseRepository;
-import com.diplom.todoapp.firebase.InitExpression;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class DeletableCategorySpinnerAdapter extends CategorySpinnerAdapter{
     private static final int ITEM_WITHOUT_CATEGORY = 2;
@@ -131,7 +123,7 @@ public class DeletableCategorySpinnerAdapter extends CategorySpinnerAdapter{
 
     private View getTypeOfView(@NonNull ViewGroup parent, View view, @NonNull String textViewContent, int position){
         if(view == null){
-            return CategoryItemFactory.produce_deletable(parent, position, categories.size());
+            return SpinnerCategoryItemFactory.produce_deletable(parent, position, categories.size());
         }
         ImageButton imageButton = view.findViewById(R.id.deleteCategoryButton);
         ImageView imageView = view.findViewById(R.id.imageView);
@@ -139,19 +131,19 @@ public class DeletableCategorySpinnerAdapter extends CategorySpinnerAdapter{
         if((textViewContent.equals(getContext().getResources().getString(R.string.add_new_category_text)) ||
                 textViewContent.equals(getContext().getResources().getString(R.string.without_category_text)))
                         && imageButton != null){
-            view = CategoryItemFactory.produce_deletable(parent, position, categories.size());
+            view = SpinnerCategoryItemFactory.produce_deletable(parent, position, categories.size());
         }else if((!textViewContent.equals(getContext().getResources().getString(R.string.add_new_category_text)) ||
                 !textViewContent.equals(getContext().getResources().getString(R.string.without_category_text)))
                 && imageButton == null) {
-            view = CategoryItemFactory.produce_deletable(parent, position, categories.size());
+            view = SpinnerCategoryItemFactory.produce_deletable(parent, position, categories.size());
         } else if((textViewContent.equals(getContext().getResources().getString(R.string.add_new_category_text)) ||
                 textViewContent.equals(getContext().getResources().getString(R.string.without_category_text)))
                 && imageButton == null && imageView == null){
-            view = CategoryItemFactory.produce_deletable(parent, position, categories.size());
+            view = SpinnerCategoryItemFactory.produce_deletable(parent, position, categories.size());
         } else if((!textViewContent.equals(getContext().getResources().getString(R.string.add_new_category_text)) ||
                 !textViewContent.equals(getContext().getResources().getString(R.string.without_category_text)))
                 && imageButton == null && imageView != null){
-            view = CategoryItemFactory.produce_deletable(parent, position, categories.size());
+            view = SpinnerCategoryItemFactory.produce_deletable(parent, position, categories.size());
         }
         return view;
     }
