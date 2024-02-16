@@ -22,7 +22,6 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 
 import java.util.ArrayList;
-
 public class TaskFilterFragmentDialog extends DialogFragment {
     private FragmentEventFilterDialogBinding binding;
     private ArrayList<String> filterCategories = new ArrayList<>();
