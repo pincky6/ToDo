@@ -6,6 +6,7 @@
     <string name="action_update">Update</string>
     <string name="action_filter">Filter</string>
     <string name="search">Search</string>
+    <string name="check">Check</string>
     <string name="action_search_by_date">Search By Date</string>
     <string name="action_search_by_title">Search By Title</string>
 
@@ -16,6 +17,7 @@
     <string name="title_hint">Title</string>
     <string name="place_hint">Place</string>
     <string name="describe_hint">Describe</string>
+    <string name="subtasks_text">Subtasks</string>
     <string name="all_day_check_box">All Day</string>
     <string name="priority">Priority</string>
     <string name="category">Category</string>

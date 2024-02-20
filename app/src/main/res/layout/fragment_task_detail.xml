@@ -19,7 +19,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/popup_menu" />
+            app:menu="@menu/menu_detail" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -42,16 +42,6 @@
         android:hint="@string/describe_hint"
         android:inputType="textMultiLine"
         app:layout_constraintTop_toBottomOf="@+id/task_title" />
-
-    <Button
-        android:id="@+id/task_saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/save_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <CheckBox
         android:id="@+id/all_day_check_box"
