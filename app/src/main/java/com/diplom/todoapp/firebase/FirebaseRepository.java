@@ -201,6 +201,7 @@ public class FirebaseRepository {
                 }
                 if(initLambda != null)
                     initLambda.init(taskList);
+                if(recyclerView == null || recyclerView.getAdapter() == null) return;
                 recyclerView.getAdapter().notifyDataSetChanged();
             }
 
@@ -251,6 +252,7 @@ public class FirebaseRepository {
         }
     }
     public void addTask(AbstractTask object){
+        if(object.id.isEmpty()) database.child("tasks").child("id-null").setValue(object);
         database.child("tasks").child( object.id ).setValue(object);
     }
     public void removeTask(String id){
