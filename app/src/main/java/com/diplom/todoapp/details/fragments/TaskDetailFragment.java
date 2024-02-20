@@ -54,7 +54,7 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
         EditorsUtil.initTextWatchers(binding.taskTitle,
                         binding.taskEditTextDate, binding.taskEditTextTime);
         EditorsUtil.setConnectedTextWatchers(binding.taskEditTextDate, binding.taskEditTextTime);
-        initSpinners(binding.taskReminder, binding.taskPriority);
+        initSpinners(binding.taskReminder, binding.taskPriority, binding.taskRepeat);
         initToolbar(binding.toolbar, binding.getRoot());
         initDateInputs(binding.taskEditTextDate);
         initTimeInputs(binding.taskEditTextTime);

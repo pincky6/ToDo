@@ -49,7 +49,7 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
         EditorsUtil.initTextWatchers(binding.dateTaskTitle, binding.dateTaskEditTextDate,
                 binding.dateTaskEditTextTime, binding.dateTaskEditTextDate2,
                 binding.dateTaskEditTextTime2);
-        initSpinners(binding.dateTaskReminder, binding.dateTaskPriority);
+        initSpinners(binding.dateTaskReminder, binding.dateTaskPriority, binding.dateTaskRepeat);
         initToolbar(binding.toolbar, binding.getRoot());
         initDateInputs(binding.dateTaskEditTextDate,
                         binding.dateTaskEditTextDate2);

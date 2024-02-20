@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import androidx.fragment.app.Fragment;
 
 import com.diplom.todoapp.R;
+import com.diplom.todoapp.firebase.FirebaseRepository;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.text.SimpleDateFormat;
@@ -21,7 +22,7 @@ import java.util.Locale;
 
 public abstract class AbstractTaskDetailFragment extends Fragment {
     public static final String TASK_DETAIL_KEY = "TASK_DETAIL_KEY";
-    protected void initSpinners(Spinner taskReminder, Spinner taskPriority){
+    protected void initSpinners(Spinner taskReminder, Spinner taskPriority, Spinner taskRepeating){
 
         String[] reminders = new String[]{"Don\'t remind", "5 minutes before", "1 hour before", "1 day before" };
         ArrayAdapter<String> remindAdapter =
@@ -36,6 +37,12 @@ public abstract class AbstractTaskDetailFragment extends Fragment {
                         androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
                         priorities);
         taskPriority.setAdapter(prioritiyAdapter);
+        FirebaseRepository firebaseRepository = FirebaseRepository.getInstance();
+        ArrayAdapter<String> repeatingAdapter =
+                new ArrayAdapter<>(getContext(),
+                        androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                        firebaseRepository.getRepeats());
+        taskRepeating.setAdapter(repeatingAdapter);
     }
     protected void initToolbar(MaterialToolbar toolbar, View parentView){
         toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);

@@ -36,6 +36,12 @@ public class FirebaseRepository {
     private FirebaseAuth auth;
     private DatabaseReference database;
     private ArrayList<String> categories = new ArrayList<>();
+    private ArrayList<String> repeats = new ArrayList<>();
+
+    public ArrayList<String> getRepeats() {
+        return repeats;
+    }
+
     private FirebaseRepository(){
         auth = FirebaseAuth.getInstance();
     }
@@ -91,6 +97,7 @@ public class FirebaseRepository {
         auth.getCurrentUser().sendEmailVerification().addOnCompleteListener(task ->
                 auth.getCurrentUser().sendEmailVerification().addOnCompleteListener(task1 -> {
             if(task1.isSuccessful()){
+
                 findNavController(binding.getRoot()).navigate(
                         LoginFragmentDirections.showEventTaskFragment()
                 );
@@ -111,9 +118,14 @@ public class FirebaseRepository {
             if(task.isSuccessful()){
                 Toast.makeText(binding.getRoot().getContext(), "You register", Toast.LENGTH_SHORT).show();
                 String[] defaultCategories = {"Study", "Work", "Holiday"};
+                String[] defaultRepeats = {"Every year", "Every week", "Every Day"};
                 for(String category: defaultCategories){
                     addCategory(category);
                     categories.add(category);
+                }
+                for(String repeat: defaultRepeats){
+                    database.child("repeats").child(repeat).setValue(repeat);
+                    repeats.add(repeat);
                 }
                 findNavController(binding.getRoot()).popBackStack();
             }
@@ -172,9 +184,20 @@ public class FirebaseRepository {
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                String[] defaultCategories = {"Study", "Work", "Holiday"};
+//                String[] defaultRepeats = {"Every year", "Every week", "Every Day", "Dont Repeat"};
+//                for(String category: defaultCategories){
+//                    addCategory(category);
+//                    categories.add(category);
+//                }
+//                for(String repeat: defaultRepeats){
+//                    database.child("repeats").child(repeat).setValue(repeat);
+//                    repeats.add(repeat);
+//                }
                 for(DataSnapshot tasksSnapshot: dataSnapshot.getChildren()) {
                     if (tasksSnapshot.getKey() == null) continue;
                     if(tasksSnapshot.getKey().equals("categories")) readAllCategories(tasksSnapshot);
+                    if(tasksSnapshot.getKey().equals("repeats")) readAllRepeats(tasksSnapshot);
                     if (!tasksSnapshot.getKey().equals("tasks")) continue;
                     for (DataSnapshot snapshot : tasksSnapshot.getChildren()) {
                         if (snapshot.getKey() == null) return;
@@ -218,6 +241,7 @@ public class FirebaseRepository {
                 for(DataSnapshot tasksSnapshot: dataSnapshot.getChildren()){
                     if(tasksSnapshot.getKey() == null) continue;
                     if(tasksSnapshot.getKey().equals("categories")) readAllCategories(tasksSnapshot);
+                    if(tasksSnapshot.getKey().equals("repeats")) readAllRepeats(tasksSnapshot);
                     if(!tasksSnapshot.getKey().equals("tasks")) continue;
                     for(DataSnapshot snapshot: tasksSnapshot.getChildren()) {
                         if(snapshot.getKey() == null) return;
@@ -270,5 +294,12 @@ public class FirebaseRepository {
         if(!categories.contains(category)) return;
         categories.remove(category);
         database.child("categories").child(category).removeValue();
+    }
+    public void readAllRepeats(DataSnapshot snapshot){
+        for(DataSnapshot repeat: snapshot.getChildren()){
+            if(repeat.getKey() == null) return;
+            if(repeats.contains(repeat.getKey())) continue;
+            repeats.add((String) repeat.getValue());
+        }
     }
 }

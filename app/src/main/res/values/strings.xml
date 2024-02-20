@@ -21,6 +21,7 @@
     <string name="all_day_check_box">All Day</string>
     <string name="priority">Priority</string>
     <string name="category">Category</string>
+    <string name="repeat">Repeating</string>
     <string name="add_new_category">Add New Category</string>
 
     <string name="gmail_hint">Gmail</string>
