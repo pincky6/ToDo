@@ -111,6 +111,7 @@ public class TaskDetailViewModel {
         Date dateStart;
         String priority = binding.taskPriority.getSelectedItem().toString();
         String reminder = binding.taskReminder.getSelectedItem().toString();
+        String repeat = binding.taskRepeat.getSelectedItem().toString();
         String successFlag;
         try {
             dateStart = format.parse(binding.taskEditTextDate.getText().toString());
@@ -126,7 +127,7 @@ public class TaskDetailViewModel {
         catch (IllegalArgumentException e){
             throw new IllegalArgumentException("wrong date input");
         }
-        if(allDay == false) {
+        if(!allDay) {
             for (Date date : dates) {
                 if (date.equals(dateStart))
                     throw new InputMismatchException("wrong date input: dates crossing");
@@ -134,9 +135,9 @@ public class TaskDetailViewModel {
         }
         if (task == null)
             task = new Task("Task-" + firebaseRepository.generateKey(), title, describe, allDay,
-                    dateStart, priority, reminder, successFlag);
+                    dateStart, priority, reminder, successFlag, repeat);
         else
             task.setTask(task.id, title, describe, allDay,
-                    dateStart, priority, reminder, successFlag);
+                    dateStart, priority, reminder, successFlag, repeat);
     }
 }

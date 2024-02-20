@@ -12,7 +12,7 @@ public class DateTask extends AbstractTask{
     public ArrayList<Subtask> subtasks;
 
     public DateTask(){
-        super("", "", "", false, new Date(), "", "", "");
+        super("", "", "", false, new Date(), "", "", "", "");
         this.place = "";
         this.dateEnd = new Date();
         subtasks = new ArrayList<>();
@@ -21,10 +21,10 @@ public class DateTask extends AbstractTask{
     public  DateTask(@NonNull String id, @NonNull String title,@NonNull String place,
                      @NonNull String describe, boolean allDayFlag,
                      @NonNull Date dateStart, @NonNull Date dateEnd, @NonNull String priority, @NonNull String reminder,
-                     @NonNull String succsessFlag, @NonNull String category){
+                     @NonNull String succsessFlag, @NonNull String category, @NonNull String repeat){
         super(id, title, describe,
                 allDayFlag, dateStart,
-                priority, reminder, succsessFlag);
+                priority, reminder, succsessFlag, repeat);
         this.place = place;
         this.dateEnd = super.safeDateAfterInit(dateEnd, dateStart);
         this.category = category;
@@ -32,8 +32,8 @@ public class DateTask extends AbstractTask{
     public void setTask(@NonNull String id, @NonNull String title,@NonNull String place,
                   @NonNull String describe, boolean allDayFlag,
                   @NonNull Date dateStart, @NonNull Date dateEnd, @NonNull String priority, @NonNull String reminder,
-                        @NonNull String succsessFlag, @NonNull String category){
-        super.setTask(id, title, describe, allDayFlag, dateStart, priority, reminder, succsessFlag);
+                        @NonNull String succsessFlag, @NonNull String category, @NonNull String repeat){
+        super.setTask(id, title, describe, allDayFlag, dateStart, priority, reminder, succsessFlag, repeat);
         this.place = place;
         this.dateEnd = super.safeDateAfterInit(dateEnd, dateStart);
         this.category = category;

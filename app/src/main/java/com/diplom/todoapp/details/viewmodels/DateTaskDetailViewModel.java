@@ -94,6 +94,7 @@ public class DateTaskDetailViewModel {
         String priority = binding.dateTaskPriority.getSelectedItem().toString();
         String reminder = binding.dateTaskReminder.getSelectedItem().toString();
         String category = binding.categoriesSpinner.getSelectedItem().toString();
+        String repeat = binding.dateTaskRepeat.getSelectedItem().toString();
         String successFlag = "";
         try {
             dateStart = format.parse(binding.dateTaskEditTextDate.getText().toString());
@@ -127,10 +128,10 @@ public class DateTaskDetailViewModel {
         }
         if(dateTask == null) {
             dateTask = new DateTask("DateTask-" + firebaseRepository.generateKey(), title, place, describe, allDay,
-                    dateStart, dateEnd, priority, reminder, successFlag, category);
+                    dateStart, dateEnd, priority, reminder, successFlag, category, repeat);
         } else {
             dateTask.setTask(dateTask.id, title, place, describe, allDay,
-                    dateStart, dateEnd, priority, reminder, dateTask.succsessFlag, category);
+                    dateStart, dateEnd, priority, reminder, dateTask.succsessFlag, category, repeat);
         }
     }
 
