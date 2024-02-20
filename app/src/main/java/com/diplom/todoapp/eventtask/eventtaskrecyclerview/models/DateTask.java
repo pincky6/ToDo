@@ -2,17 +2,20 @@ package com.diplom.todoapp.eventtask.eventtaskrecyclerview.models;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class DateTask extends AbstractTask{
     public String place;
     public String category;
     public Date dateEnd;
+    public ArrayList<Subtask> subtasks;
 
     public DateTask(){
         super("", "", "", false, new Date(), "", "", "");
         this.place = "";
         this.dateEnd = new Date();
+        subtasks = new ArrayList<>();
     }
 
     public  DateTask(@NonNull String id, @NonNull String title,@NonNull String place,
