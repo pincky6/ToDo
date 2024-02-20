@@ -36,8 +36,8 @@ public class CategorySpinnerAdapter extends ArrayAdapter<String> {
     }
     @Override
     public int getItemViewType(int position){
-        if(position == categories.size() - 1) return ITEM_ADD_NEW_CATEGORY;
-        return ITEM_CATEGORY;
+        if(position != categories.size() - 1) return ITEM_CATEGORY;
+        return ITEM_ADD_NEW_CATEGORY;
     }
     @Override
     public long getItemId(int position) {

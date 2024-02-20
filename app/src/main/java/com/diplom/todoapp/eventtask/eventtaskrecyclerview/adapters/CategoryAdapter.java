@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.diplom.todoapp.databinding.ItemCheckableCategoryBinding;
+import com.diplom.todoapp.databinding.ItemCheckableBinding;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.CategoryHolder;
 import com.diplom.todoapp.eventtask.listeners.OnCategoryAddListener;
 import com.diplom.todoapp.eventtask.listeners.OnRemoveListener;
@@ -28,7 +28,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryHolder> {
     @Override
     public CategoryHolder onCreateViewHolder(@NonNull ViewGroup parent, int taskType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ItemCheckableCategoryBinding binding = ItemCheckableCategoryBinding.inflate(inflater, parent, false);
+        ItemCheckableBinding binding = ItemCheckableBinding.inflate(inflater, parent, false);
         return new CategoryHolder(binding);
     }
 
