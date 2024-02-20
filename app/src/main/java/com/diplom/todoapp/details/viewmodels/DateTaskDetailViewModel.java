@@ -12,10 +12,13 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 import com.diplom.todoapp.firebase.FirebaseRepository;
 import com.diplom.todoapp.utils.SuccsessFlagUtil;
 
+
 import java.io.IOException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,13 +26,17 @@ import java.util.Date;
 public class DateTaskDetailViewModel {
     FirebaseRepository firebaseRepository = FirebaseRepository.getInstance();
     private DateTask dateTask = null;
-    public DateTaskDetailViewModel(){}
+    public DateTaskDetailViewModel(){
+        dateTask = new DateTask();
+        dateTask.id = "DateTask-" + firebaseRepository.generateKey();
+    }
     public DateTaskDetailViewModel(FragmentDateTaskDetailBinding binding, String key){
         firebaseRepository.getTaskFromKey(key, new OnDataReceivedListener() {
             @Override
             public void onDataReceived(AbstractTask data) {
                 if(!(data instanceof DateTask)) return;
                 dateTask = (DateTask) data;
+                if(dateTask.subtasks == null) dateTask.subtasks = new ArrayList<>();
                 binding.dateTaskTitle.setText(dateTask.title);
                 binding.dateTaskPlace.setText(dateTask.place);
                 binding.dateTaskDescribe.setText(dateTask.describe);
@@ -77,6 +84,7 @@ public class DateTaskDetailViewModel {
         }
 
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         String title = binding.dateTaskTitle.getText().toString();
         String place = binding.dateTaskPlace.getText().toString();
         String describe = binding.dateTaskDescribe.getText().toString();
@@ -90,17 +98,23 @@ public class DateTaskDetailViewModel {
         try {
             dateStart = format.parse(binding.dateTaskEditTextDate.getText().toString());
             successFlag = SuccsessFlagUtil.getStringFlagFromDate(dateStart);
-            if(allDay == true) {
+            if(allDay) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(dateStart);
                 calendar.add(Calendar.DAY_OF_YEAR, 1);
                 dateEnd = calendar.getTime();
             } else {
-                Time timeStart = Time.valueOf(binding.dateTaskEditTextTime.getText().toString() + ":00");
-                Time timeEnd = Time.valueOf(binding.dateTaskEditTextTime2.getText().toString() + ":00");
+                Date timeStart = timeFormat.parse(binding.dateTaskEditTextTime.getText().toString());
+                Date timeEnd = timeFormat.parse(binding.dateTaskEditTextTime2.getText().toString());
+                Calendar calendarStart = Calendar.getInstance();
+                Calendar calendarEnd = Calendar.getInstance();
+                calendarStart.setTime(timeStart);
+                calendarEnd.setTime(timeEnd);
                 dateEnd = format.parse(binding.dateTaskEditTextDate2.getText().toString());
-                dateStart.setTime(dateStart.getTime() + timeStart.getTime());
-                dateEnd.setTime(dateEnd.getTime() + timeEnd.getTime());
+                dateStart.setTime(dateStart.getTime() + (calendarStart.get(Calendar.HOUR_OF_DAY) * 3600 +
+                        calendarStart.get(Calendar.MINUTE) * 60) * 1000L);
+                dateEnd.setTime(dateEnd.getTime() + (calendarEnd.get(Calendar.HOUR_OF_DAY) * 3600 +
+                        calendarEnd.get(Calendar.MINUTE) * 60) * 1000L);
                 if(dateEnd.before(dateStart)){
                     throw new IllegalArgumentException();
                 }

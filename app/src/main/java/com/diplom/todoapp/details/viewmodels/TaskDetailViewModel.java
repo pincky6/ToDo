@@ -19,6 +19,7 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.InputMismatchException;
 
@@ -82,7 +83,7 @@ public class TaskDetailViewModel {
         binding.taskTitle.setText(title);
         binding.taskDescribe.setText(describe);
         SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
-        SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
         try {
             String dateStart = formatDate.format(date);
             String timeStart = formatTime.format(date);
@@ -96,13 +97,14 @@ public class TaskDetailViewModel {
         binding.taskReminder.setSelection(selectReminder);
     }
 
-    public void setTask(@NonNull FragmentTaskDetailBinding binding) throws IOException {
+    public void setTask(@NonNull FragmentTaskDetailBinding binding) throws IOException, ParseException {
         if(EditorsUtil.checkEditors(binding.taskTitle,
                         binding.taskEditTextTime, binding.taskEditTextDate)){
             throw new IOException();
         }
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        Time time = Time.valueOf(binding.taskEditTextTime.getText().toString() + ":00");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        Date time = timeFormat.parse(binding.taskEditTextTime.getText().toString());
         String title = binding.taskTitle.getText().toString();
         String describe = binding.taskDescribe.getText().toString();
         boolean allDay = binding.allDayCheckBox.isChecked();
@@ -113,7 +115,10 @@ public class TaskDetailViewModel {
         try {
             dateStart = format.parse(binding.taskEditTextDate.getText().toString());
             assert dateStart != null;
-            dateStart.setTime(dateStart.getTime() + time.getTime());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(time);
+            dateStart.setTime(dateStart.getTime() + (calendar.get(Calendar.HOUR_OF_DAY) * 3600 +
+                    calendar.get(Calendar.MINUTE) * 60) * 1000L);
             successFlag = SuccsessFlagUtil.getStringFlagFromDate(dateStart);
         } catch (ParseException e) {
             throw new RuntimeException(e);

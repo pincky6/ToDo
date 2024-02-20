@@ -10,10 +10,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.R;
 import com.diplom.todoapp.databinding.FragmentDateTaskDetailBinding;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.CategorySpinnerAdapter;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.SubtasksAdapter;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Subtask;
 import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.details.viewmodels.DateTaskDetailViewModel;
 
@@ -24,6 +28,7 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
 
     private DateTaskDetailViewModel dateTaskDetailViewModel;
     public FragmentDateTaskDetailBinding binding = null;
+    private boolean show = false;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,13 +55,16 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
                         binding.dateTaskEditTextDate2);
         initTimeInputs(binding.dateTaskEditTextTime,
                 binding.dateTaskEditTextTime2);
-        initSaveButton();
+        initAppBarCheck();
         initCheckBox();
         initCategorySpinner();
         return binding.getRoot();
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        binding.subtasksRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        binding.subtasksRecyclerView.setAdapter(new SubtasksAdapter(null, true));
+        initShowSubtasksButton();
         super.onViewCreated(view, savedInstanceState);
     }
     @Override
@@ -64,27 +72,30 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
         super.onDestroyView();
         binding = null;
     }
-        private void initSaveButton(){
-        binding.dateTaskSaveButton.setOnClickListener(v -> {
-            try {
-                dateTaskDetailViewModel.setTask(binding);
-            }
-            catch (IllegalArgumentException e){
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                return;
-            }
-            catch (IOException e){
-                EditorsUtil.setErrorBackground(binding.dateTaskTitle, binding.dateTaskDescribe,
-                        binding.dateTaskPlace, binding.dateTaskEditTextDate,
-                        binding.dateTaskEditTextTime, binding.dateTaskEditTextDate2,
-                        binding.dateTaskEditTextTime2);
-                return;
-            }
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(TASK_DETAIL_KEY, dateTaskDetailViewModel.getDateTask());
-            getParentFragmentManager().setFragmentResult(TASK_DETAIL_KEY, bundle);
-            findNavController(binding.getRoot()).popBackStack();
-        });
+        private void initAppBarCheck(){
+            binding.toolbar.setOnMenuItemClickListener(item -> {
+                        if (item.getItemId() == R.id.app_bar_check) {
+                            try {
+                                dateTaskDetailViewModel.setTask(binding);
+                            }
+                            catch (IllegalArgumentException e){
+                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                return false;
+                            }
+                            catch (IOException e){
+                                EditorsUtil.setErrorBackground(binding.dateTaskTitle, binding.dateTaskDescribe,
+                                        binding.dateTaskPlace, binding.dateTaskEditTextDate,
+                                        binding.dateTaskEditTextTime, binding.dateTaskEditTextDate2,
+                                        binding.dateTaskEditTextTime2);
+                                return false;
+                            }
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(TASK_DETAIL_KEY, dateTaskDetailViewModel.getDateTask());
+                            getParentFragmentManager().setFragmentResult(TASK_DETAIL_KEY, bundle);
+                            findNavController(binding.getRoot()).popBackStack();
+                        }
+                        return false;
+                    });
     }
 
     private void initCheckBox(){
@@ -102,7 +113,24 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
             binding.dateTaskEditTextTime2.setText("00:00");
         });
     }
+    private void initShowSubtasksButton(){
+        binding.showSubtasksButton.setOnClickListener(v -> {
+            if(!show){
+                binding.showSubtasksButton.setImageResource(R.drawable.baseline_expand_more_24);
 
+                ((SubtasksAdapter)binding.subtasksRecyclerView.getAdapter()).setSubtasks(dateTaskDetailViewModel.getDateTask().subtasks);
+                binding.subtasksRecyclerView.getAdapter().notifyDataSetChanged();
+                binding.subtasksRecyclerView.setVisibility(View.VISIBLE);
+                show = true;
+            } else {
+                binding.showSubtasksButton.setImageResource(R.drawable.baseline_expand_less_24);
+                ((SubtasksAdapter)binding.subtasksRecyclerView.getAdapter()).setSubtasks(null);
+                binding.subtasksRecyclerView.setVisibility(View.INVISIBLE);
+                binding.subtasksRecyclerView.getAdapter().notifyDataSetChanged();
+                show = false;
+            }
+        });
+    }
     private void initCategorySpinner(){
         ArrayList<String> categories = (ArrayList<String>) dateTaskDetailViewModel.getCategory().clone();
         categories.add(getResources().getString(R.string.without_category_text));

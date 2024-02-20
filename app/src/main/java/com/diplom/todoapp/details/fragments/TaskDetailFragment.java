@@ -21,6 +21,7 @@ import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.details.viewmodels.TaskDetailViewModel;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,7 +58,7 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
         initToolbar(binding.toolbar, binding.getRoot());
         initDateInputs(binding.taskEditTextDate);
         initTimeInputs(binding.taskEditTextTime);
-        initSaveButton();
+        initAppBarCheck();
         initCheckBox();
         return binding.getRoot();
     }
@@ -70,31 +71,36 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
         super.onDestroyView();
         binding = null;
     }
-        private void initSaveButton(){
-        binding.taskSaveButton.setOnClickListener(v -> {
-            try {
-                taskDetailViewModel.setTask(binding);
-            }
-            catch (IllegalArgumentException e){
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                EditorsUtil.setErrorBackground(binding.taskEditTextDate, binding.taskEditTextTime);
-                return;
-            }
-            catch (IOException e){
-                EditorsUtil.setErrorBackground(binding.taskTitle, binding.taskDescribe,
-                                    binding.taskEditTextDate, binding.taskEditTextTime);
-                return;
-            }
-            catch (InputMismatchException e){
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                EditorsUtil.setErrorState(binding.taskEditTextDate, binding.taskEditTextTime);
-                return;
-            }
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(TASK_DETAIL_KEY, taskDetailViewModel.getTask());
-            getParentFragmentManager().setFragmentResult(TASK_DETAIL_KEY, bundle);
-            findNavController(binding.getRoot()).popBackStack();
-        });
+        private void initAppBarCheck(){
+            binding.toolbar.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.app_bar_check) {
+                    try {
+                        taskDetailViewModel.setTask(binding);
+                    }
+                    catch (IllegalArgumentException e){
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        EditorsUtil.setErrorBackground(binding.taskEditTextDate, binding.taskEditTextTime);
+                        return false;
+                    }
+                    catch (IOException e){
+                        EditorsUtil.setErrorBackground(binding.taskTitle, binding.taskDescribe,
+                                binding.taskEditTextDate, binding.taskEditTextTime);
+                        return false;
+                    }
+                    catch (InputMismatchException e){
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        EditorsUtil.setErrorState(binding.taskEditTextDate, binding.taskEditTextTime);
+                        return false;
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(TASK_DETAIL_KEY, taskDetailViewModel.getTask());
+                    getParentFragmentManager().setFragmentResult(TASK_DETAIL_KEY, bundle);
+                    findNavController(binding.getRoot()).popBackStack();
+                }
+                return false;
+            });
     }
     private void initCheckBox(){
         binding.allDayCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {

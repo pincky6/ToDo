@@ -2,6 +2,7 @@ package com.diplom.todoapp.eventtask.eventtaskrecyclerview;
 
 import static androidx.navigation.ViewKt.findNavController;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.diplom.todoapp.databinding.FragmentTaskListBinding;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.AbstractTaskAdapter;
@@ -24,6 +27,7 @@ import com.diplom.todoapp.eventtask.TaskFragmentDirections;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.listeners.OnTaskListener;
 import com.diplom.todoapp.eventtask.listeners.OnResetTaskLisener;
+import com.diplom.todoapp.firebase.FirebaseRepository;
 import com.diplom.todoapp.utils.CalendarUtil;
 import com.diplom.todoapp.utils.NotificationsUtil;
 import com.diplom.todoapp.utils.SuccsessFlagUtil;
@@ -99,6 +103,7 @@ public class TaskListFragment extends Fragment {
             taskListViewModel.taskList.clear();
             taskListViewModel.loadFirebase(binding.recyclerView, tasks -> {
                 resetDayAdapter();
+                if(binding == null || binding.recyclerView == null) return;
                 binding.recyclerView.getAdapter().notifyDataSetChanged();
             });
             return;
@@ -106,6 +111,7 @@ public class TaskListFragment extends Fragment {
         taskListViewModel.loadFirebase(binding.recyclerView, tasks -> {
             CalendarDay day = CalendarUtil.getCalendarDay(new Date());
             filter.setSelectedDay(day);
+            if(binding == null || binding.recyclerView == null) return;
             resetDayAdapter();
             binding.recyclerView.getAdapter().notifyDataSetChanged();
             resetAdapterList(filter.filter(tasks));
@@ -230,6 +236,7 @@ public class TaskListFragment extends Fragment {
                 }));
     }
     public void resetDayAdapter(){
+        if(binding == null) return;
         if(binding.recyclerView == null) return;
         binding.recyclerView.setAdapter(new TaskAdapter(filter.filter(taskListViewModel.taskList),
                 (AbstractTask task) ->
