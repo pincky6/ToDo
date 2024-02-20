@@ -13,9 +13,9 @@ public class SpinnerCategoryItemFactory {
         View view;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         if(position == size - 2){
-            view = inflater.inflate(R.layout.spinner_default_item, parent, false);
+            view = inflater.inflate(R.layout.item_default, parent, false);
         } else if(position == size - 1){
-            view = inflater.inflate(R.layout.spinner_add_new_category, parent, false);
+            view = inflater.inflate(R.layout.item_add_new_items, parent, false);
         } else{
             view = inflater.inflate(R.layout.item_category, parent, false);
         }
@@ -25,9 +25,9 @@ public class SpinnerCategoryItemFactory {
         View view;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         if(position == size - 1){
-            view = inflater.inflate(R.layout.spinner_add_new_category, parent, false);
+            view = inflater.inflate(R.layout.item_add_new_items, parent, false);
         } else {
-            view = inflater.inflate(R.layout.spinner_default_item, parent, false);
+            view = inflater.inflate(R.layout.item_default, parent, false);
         }
         return view;
     }

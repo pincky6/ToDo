@@ -26,7 +26,7 @@ public class TaskHolder extends AbstractTaskHolder {
     public void bind(AbstractTask abstractTask, TaskListener listener, OnRemoveListener removeListener, OnSetSuccsessListener onSetSuccsessListener){
         if(!(abstractTask instanceof Task)) throw new IllegalArgumentException("wrong type of argument in task holder");
         Task task = (Task) abstractTask;
-        SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy;hh:mm");
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy;HH:mm");
         String[] formatedDateStart = formatDate.format(task.dateStart).split(";");
         binding.title.setText(task.title);
         binding.date.setText(formatedDateStart[0]);
