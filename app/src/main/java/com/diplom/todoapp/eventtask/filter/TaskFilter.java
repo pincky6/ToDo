@@ -11,6 +11,7 @@ import com.diplom.todoapp.utils.PriorityUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -60,18 +61,18 @@ public class TaskFilter {
             return list;
         }
         return (ArrayList<AbstractTask>) list.stream().filter(task -> {
-            if(selectedDay != null && !CalendarUtil
-                    .compareCalendarDays(selectedDay, CalendarUtil.getCalendarDay(task.dateStart))){
+            if(selectedDay != null && (!checkRepeat(task) && !CalendarUtil
+                    .compareCalendarDays(selectedDay, CalendarUtil.getCalendarDay(task.dateStart)))){
                 return false;
             }
             if(selectedDay != null && mask == 0 &&
-                    CalendarUtil.compareCalendarDays(selectedDay, CalendarUtil.getCalendarDay(task.dateStart))){
+                    (checkRepeat(task) || CalendarUtil.compareCalendarDays(selectedDay, CalendarUtil.getCalendarDay(task.dateStart)))){
                 return true;
             }
             String type = task.id.split("-")[0];
             return getTypeRes(type) && getPriorityRes(task.priority) &&
-                    (CalendarUtil.getCalendarDay(task.dateStart).getMonth() == selectedMonth) &&
-                    checkCategories(task);
+                    ((checkRepeat(task)||
+                            CalendarUtil.getCalendarDay(task.dateStart).getMonth() == selectedMonth) );
         }).collect(Collectors.toList());
     }
     public ArrayList<AbstractTask> filterByTitle(@NonNull ArrayList<AbstractTask> list){
@@ -98,5 +99,30 @@ public class TaskFilter {
         if(abstractTask instanceof Task) return false;
         DateTask dateTask = (DateTask) abstractTask;
         return categories.contains(dateTask.category);
+    }
+    public boolean checkRepeat(AbstractTask abstractTask){
+        if(abstractTask.repeat.equals("Don\'t Repeat") || abstractTask.repeat.isEmpty()){
+            if(selectedDay != null) {
+                Calendar selected = CalendarUtil.getCalendar(CalendarUtil.getDate(selectedDay));
+                Calendar date = CalendarUtil.getCalendar(abstractTask.dateStart);
+                return selected.equals(date);
+            }
+            return true;
+        }
+        if(abstractTask.repeat.equals("Every Day")){
+            return true;
+        }
+        if(abstractTask.repeat.equals("Every week")){
+            if(selectedDay == null) return true;
+            Calendar selected = CalendarUtil.getCalendar(CalendarUtil.getDate(selectedDay));
+            Calendar date = CalendarUtil.getCalendar(abstractTask.dateStart);
+            return (date.get(Calendar.DAY_OF_WEEK) == selected.get(Calendar.DAY_OF_WEEK));
+        }
+        if(abstractTask.repeat.equals("Every year")){
+            Calendar selected = CalendarUtil.getCalendar(CalendarUtil.getDate(selectedDay));
+            Calendar date = CalendarUtil.getCalendar(abstractTask.dateStart);
+            return (date.get(Calendar.DAY_OF_YEAR) == selected.get(Calendar.DAY_OF_YEAR));
+        }
+        return true;
     }
 }

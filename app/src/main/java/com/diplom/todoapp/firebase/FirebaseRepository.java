@@ -118,7 +118,7 @@ public class FirebaseRepository {
             if(task.isSuccessful()){
                 Toast.makeText(binding.getRoot().getContext(), "You register", Toast.LENGTH_SHORT).show();
                 String[] defaultCategories = {"Study", "Work", "Holiday"};
-                String[] defaultRepeats = {"Every year", "Every week", "Every Day"};
+                String[] defaultRepeats = {"Don\'t Repeat", "Every Day", "Every Week", "Every Year"};
                 for(String category: defaultCategories){
                     addCategory(category);
                     categories.add(category);

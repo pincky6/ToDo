@@ -84,7 +84,6 @@ public class MaterialCalendarViewModel extends ViewModel {
         return selectedDay;
     }
     public void setTasksDecorators(ArrayList<AbstractTask> tasks){
-
         for(AbstractTask task: tasks) {
             ArrayList<Integer> prioritiesColor = new ArrayList<>();
             CalendarDay day = CalendarUtil.getCalendarDay(task.dateStart);
@@ -103,6 +102,11 @@ public class MaterialCalendarViewModel extends ViewModel {
         for(Map.Entry<CalendarDay, ArrayList<Integer>> entry: dayTaskCalendarColors.entrySet()){
             decorators.addDecorator(new TaskDayDecorator(entry.getKey(),
                     convertToHashSetColors(entry.getValue())));
+        }
+    }
+    private void setRepeatedDays(AbstractTask task){
+        if(task.repeat.equals("Every day")){
+
         }
     }
 }
