@@ -2,6 +2,9 @@ package com.diplom.todoapp.details.viewmodels;
 
 import androidx.annotation.NonNull;
 
+import com.diplom.todoapp.databinding.FragmentTaskDetailBinding;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Priority;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Reminders;
 import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.utils.PriorityUtil;
 import com.diplom.todoapp.utils.ReminderUtil;
@@ -22,13 +25,33 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.InputMismatchException;
 
 public class DateTaskDetailViewModel {
     FirebaseRepository firebaseRepository = FirebaseRepository.getInstance();
     private DateTask dateTask = null;
+    public ArrayList<Date> dates;
     public DateTaskDetailViewModel(){
         dateTask = new DateTask();
         dateTask.id = "DateTask-" + firebaseRepository.generateKey();
+    }
+    public DateTaskDetailViewModel(FragmentDateTaskDetailBinding binding, ArrayList<Date> dates,
+                               Date selectedDate)
+    {
+        this.dates = dates;
+        dateTask = new DateTask();
+        dateTask.id = "DateTask-" + firebaseRepository.generateKey();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(selectedDate);
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        initDetailFragment(
+                binding, "", "", "",
+                selectedDate, calendar.getTime(),
+                false,
+                PriorityUtil.getPriorityIndex(PriorityUtil.getPriorityEnum(String.valueOf(Priority.LOW))),
+                ReminderUtil.getReminderIndex(ReminderUtil.getReminderEnum(Reminders.DONT_REMIND.name())),
+                firebaseRepository.getCategories().indexOf("Don\'t Repeat")
+        );
     }
     public DateTaskDetailViewModel(FragmentDateTaskDetailBinding binding, String key){
         firebaseRepository.getTaskFromKey(key, new OnDataReceivedListener() {
@@ -36,29 +59,36 @@ public class DateTaskDetailViewModel {
             public void onDataReceived(AbstractTask data) {
                 if(!(data instanceof DateTask)) return;
                 dateTask = (DateTask) data;
-                if(dateTask.subtasks == null) dateTask.subtasks = new ArrayList<>();
-                binding.dateTaskTitle.setText(dateTask.title);
-                binding.dateTaskPlace.setText(dateTask.place);
-                binding.dateTaskDescribe.setText(dateTask.describe);
-                SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
-                SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
-                try {
-                    String dateStart = formatDate.format(dateTask.dateStart);
-                    String dateEnd = formatDate.format(dateTask.dateEnd);
-                    String timeStart = formatTime.format(dateTask.dateStart);
-                    String timeEnd = formatTime.format(dateTask.dateEnd);
-
-                    binding.dateTaskEditTextDate.setText(dateStart);
-                    binding.dateTaskEditTextDate2.setText(dateEnd);
-                    binding.dateTaskEditTextTime.setText(timeStart);
-                    binding.dateTaskEditTextTime2.setText(timeEnd);
-
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-                binding.allDayCheckBox.setChecked(dateTask.allDayFlag);
-                binding.dateTaskPriority.setSelection(PriorityUtil.getPriorityIndex(PriorityUtil.getPriorityEnum(dateTask.priority)));
-                binding.dateTaskReminder.setSelection(ReminderUtil.getReminderIndex(ReminderUtil.getReminderEnum(dateTask.reminder)));
+                initDetailFragment(
+                                   binding, dateTask.title, dateTask.place, dateTask.describe,
+                                   dateTask.dateStart, dateTask.dateEnd,
+                                   dateTask.allDayFlag,
+                                   PriorityUtil.getPriorityIndex(PriorityUtil.getPriorityEnum(dateTask.priority)),
+                                   ReminderUtil.getReminderIndex(ReminderUtil.getReminderEnum(dateTask.reminder)),
+                                   firebaseRepository.getCategories().indexOf(dateTask.repeat)
+                                   );
+//                if(dateTask.subtasks == null) dateTask.subtasks = new ArrayList<>();
+//                binding.dateTaskTitle.setText(dateTask.title);
+//                binding.dateTaskPlace.setText(dateTask.place);
+//                binding.dateTaskDescribe.setText(dateTask.describe);
+//                SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
+//                SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
+//                try {
+//                    String dateStart = formatDate.format(dateTask.dateStart);
+//                    String dateEnd = formatDate.format(dateTask.dateEnd);
+//                    String timeStart = formatTime.format(dateTask.dateStart);
+//                    String timeEnd = formatTime.format(dateTask.dateEnd);
+//
+//                    binding.dateTaskEditTextDate.setText(dateStart);
+//                    binding.dateTaskEditTextDate2.setText(dateEnd);
+//                    binding.dateTaskEditTextTime.setText(timeStart);
+//                    binding.dateTaskEditTextTime2.setText(timeEnd);
+//                } catch (Exception e) {
+//                    throw new RuntimeException(e);
+//                }
+//                binding.allDayCheckBox.setChecked(dateTask.allDayFlag);
+//                binding.dateTaskPriority.setSelection(PriorityUtil.getPriorityIndex(PriorityUtil.getPriorityEnum(dateTask.priority)));
+//                binding.dateTaskReminder.setSelection(ReminderUtil.getReminderIndex(ReminderUtil.getReminderEnum(dateTask.reminder)));
             }
 
             @Override
@@ -67,6 +97,35 @@ public class DateTaskDetailViewModel {
             }
         });
     }
+
+    private void initDetailFragment(FragmentDateTaskDetailBinding binding, String title, String place, String describe,
+                                    Date dateStart, Date dateEnd,
+                                    boolean allDayFlag, int selectPriority, int selectReminder, int selectRepeat)
+    {
+        if(dateTask != null && dateTask.subtasks == null) dateTask.subtasks = new ArrayList<>();
+        binding.dateTaskTitle.setText(title);
+        binding.dateTaskPlace.setText(place);
+        binding.dateTaskDescribe.setText(describe);
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
+        try {
+            String dateStartStr = formatDate.format(dateStart);
+            String dateEndStr = formatDate.format(dateEnd);
+            String timeStart = formatTime.format(dateStart);
+            String timeEnd = formatTime.format(dateEnd);
+
+            binding.dateTaskEditTextDate.setText(dateStartStr);
+            binding.dateTaskEditTextDate2.setText(dateEndStr);
+            binding.dateTaskEditTextTime.setText(timeStart);
+            binding.dateTaskEditTextTime2.setText(timeEnd);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        binding.allDayCheckBox.setChecked(allDayFlag);
+        binding.dateTaskPriority.setSelection(selectPriority);
+        binding.dateTaskReminder.setSelection(selectReminder);
+    }
+
     public DateTask getDateTask(){
         return dateTask;
     }
@@ -125,6 +184,12 @@ public class DateTaskDetailViewModel {
         }
         catch (IllegalArgumentException e){
             throw new IllegalArgumentException("wrong date input");
+        }
+        if(!allDay) {
+            for(int i = 0; i < dates.size(); i += 2){
+                if (dates.get(i).after(dateStart) && dates.get(i + 1).before(dateEnd))
+                    throw new InputMismatchException("wrong date input: dates crossing");
+            }
         }
         if(dateTask == null) {
             dateTask = new DateTask("DateTask-" + firebaseRepository.generateKey(), title, place, describe, allDay,

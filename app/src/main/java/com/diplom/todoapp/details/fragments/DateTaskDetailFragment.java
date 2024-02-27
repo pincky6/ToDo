@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.R;
 import com.diplom.todoapp.databinding.FragmentDateTaskDetailBinding;
+import com.diplom.todoapp.details.viewmodels.TaskDetailViewModel;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.CategorySpinnerAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.SubtasksAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
@@ -22,7 +23,11 @@ import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.details.viewmodels.DateTaskDetailViewModel;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.InputMismatchException;
 
 public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
 
@@ -39,8 +44,18 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
         binding = FragmentDateTaskDetailBinding.inflate(inflater, container, false);
         Bundle args = getArguments();
         String dateTaskId = (String)args.get("dateTaskID");
+        ArrayList<Date> dates = (ArrayList<Date>) args.get("taskDates");
+        Date day = ((Date) args.get("selectedDate"));
         if(dateTaskId == null || dateTaskId.isEmpty()) {
-            dateTaskDetailViewModel = new DateTaskDetailViewModel();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(day);
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+            binding.dateTaskEditTextDate.setText(format.format(day));
+            binding.dateTaskEditTextTime.setText("00:00");
+            binding.dateTaskEditTextDate2.setText(format.format(calendar.getTime()));
+            binding.dateTaskEditTextTime2.setText("00:00");
+            dateTaskDetailViewModel = new DateTaskDetailViewModel(binding, dates, day);
         }
         else {
             String key = (String) args.get("dateTaskID");
@@ -89,6 +104,12 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
                                         binding.dateTaskEditTextTime2);
                                 return false;
                             }
+                            catch (InputMismatchException e){
+                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                EditorsUtil.setErrorState(binding.dateTaskEditTextDate, binding.dateTaskEditTextTime,
+                                                          binding.dateTaskEditTextDate2, binding.dateTaskEditTextTime2);
+                                return false;
+                            }
                             Bundle bundle = new Bundle();
                             bundle.putSerializable(TASK_DETAIL_KEY, dateTaskDetailViewModel.getDateTask());
                             getParentFragmentManager().setFragmentResult(TASK_DETAIL_KEY, bundle);
@@ -117,7 +138,6 @@ public class DateTaskDetailFragment extends AbstractTaskDetailFragment {
         binding.showSubtasksButton.setOnClickListener(v -> {
             if(!show){
                 binding.showSubtasksButton.setImageResource(R.drawable.baseline_expand_more_24);
-
                 ((SubtasksAdapter)binding.subtasksRecyclerView.getAdapter()).setSubtasks(dateTaskDetailViewModel.getDateTask().subtasks);
                 binding.subtasksRecyclerView.getAdapter().notifyDataSetChanged();
                 binding.subtasksRecyclerView.setVisibility(View.VISIBLE);
