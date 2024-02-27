@@ -53,6 +53,12 @@
         <argument
             android:name="dateTaskID"
             app:argType="java.lang.String" />
+        <argument
+            android:name="taskDates"
+            app:argType="java.util.ArrayList"/>
+        <argument
+            android:name="selectedDate"
+            app:argType="java.util.Date"/>
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
