@@ -105,12 +105,15 @@ public class TaskFragment extends Fragment {
                     findNavController(binding.getRoot()).navigate(
                             TaskFragmentDirections.showTaskDetailFragment("",
                                                                           taskListFragment.getTaskDate(),
-                                                                          materialCalendarFragment.getSelectedCalendarDay())
-                    );
+                                                                          materialCalendarFragment.getSelectedCalendarDay()
+                                                                         )
+                                                                  );
                     return true;
                 } else if (id == R.id.add_new_event) {
                     findNavController(binding.getRoot()).navigate(
-                            TaskFragmentDirections.showDateTaskDetailFragment("")
+                            TaskFragmentDirections.showDateTaskDetailFragment("",
+                                                                                        taskListFragment.getDateTaskDate(),
+                                                                                        materialCalendarFragment.getSelectedCalendarDay())
                     );
                     return true;
                 }
