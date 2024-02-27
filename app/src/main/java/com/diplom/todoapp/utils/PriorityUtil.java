@@ -1,11 +1,15 @@
 package com.diplom.todoapp.utils;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import com.diplom.todoapp.R;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Priority;
 
 public class PriorityUtil {
+    private static final int LOW_COLOR =  Color.rgb(103, 174, 126);
+    private static final int MIDDLE_COLOR = Color.rgb(236, 211, 127);
+    private static final int HIGH_COLOR = Color.rgb(221,66,46);
     public static Priority getPriorityEnum(String priority){
         switch (priority){
             case "Low":
@@ -41,15 +45,34 @@ public class PriorityUtil {
         return 0;
     }
     public static int getPriorityColor(String priority){
+//        Log.d("LOW_TAG", String.valueOf(Color.rgb(103, 174, 126)));
+//        Log.d("MIDDLE_TAG", String.valueOf(Color.rgb(236, 211, 127)));
+//        Log.d("HIGH_TAG", String.valueOf(Color.rgb(221,66,46)));
         switch (priority){
             case "Low":
-                return Color.rgb(103, 174, 126);
+                return LOW_COLOR;
             case "Middle":
-                return Color.rgb(236, 211, 127);
+                return MIDDLE_COLOR;
             case "High":
-                return Color.rgb(221,66,46);
+                return HIGH_COLOR;
         }
-        return Color.rgb(103, 174, 126);
+        return LOW_COLOR;
+    }
+
+    public static int getPriorityIndex(int color){
+//        Log.d("LOW_TAG", String.valueOf(Color.rgb(103, 174, 126)));
+//        Log.d("MIDDLE_TAG", String.valueOf(Color.rgb(236, 211, 127)));
+//        Log.d("HIGH_TAG", String.valueOf(Color.rgb(221,66,46)));
+//        int low = Color.rgb(103, 174, 126);
+//        int middle = Color.rgb(236, 211, 127);
+//        int high = Color.rgb(221,66,46);
+        if(color == LOW_COLOR) {
+            return 0;
+        }
+        else if(color == MIDDLE_COLOR) {
+            return 1;
+        }
+        return 2;
     }
     public static int getPriorityIndex(Priority priority){
         switch (priority){
