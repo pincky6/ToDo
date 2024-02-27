@@ -54,6 +54,11 @@ public class CalendarUtil {
         calendar.setTimeInMillis(date.getTime());
         return calendar;
     }
+    public static Calendar getCalendar(@NonNull CalendarDay date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getDate(date).getTime());
+        return calendar;
+    }
     public static Date getDate(@NonNull CalendarDay date){
         Calendar calendar = Calendar.getInstance();
         calendar.set(date.getYear(), date.getMonth() - 1, date.getDay());
