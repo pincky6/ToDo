@@ -20,6 +20,7 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.AbstractTaskA
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.TaskAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.TaskDaysAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.TaskMonthAdapter;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.SuccsessFlag;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.eventtask.filter.TaskFilter;
@@ -67,6 +68,17 @@ public class TaskListFragment extends Fragment {
         ArrayList<Date> tasks = new ArrayList<>();
         for(AbstractTask abstractTask: taskListViewModel.taskList){
             if(abstractTask instanceof Task) tasks.add(abstractTask.dateStart);
+        }
+        return tasks;
+    }
+    public ArrayList<Date> getDateTaskDate(){
+        ArrayList<Date> tasks = new ArrayList<>();
+        for(AbstractTask abstractTask: taskListViewModel.taskList){
+            if(abstractTask instanceof DateTask) {
+                DateTask task = (DateTask)abstractTask;
+                tasks.add(task.dateStart);
+                tasks.add(task.dateEnd);
+            }
         }
         return tasks;
     }
@@ -180,7 +192,7 @@ public class TaskListFragment extends Fragment {
                         );
                     } else {
                         findNavController(binding.getRoot()).navigate(
-                                TaskFragmentDirections.showDateTaskDetailFragment(task.id)
+                                TaskFragmentDirections.showDateTaskDetailFragment(task.id, getDateTaskDate(), task.dateStart)
                         );
                     }
                 },
@@ -213,7 +225,7 @@ public class TaskListFragment extends Fragment {
                         );
                     } else {
                         findNavController(binding.getRoot()).navigate(
-                                TaskFragmentDirections.showDateTaskDetailFragment(task.id)
+                                TaskFragmentDirections.showDateTaskDetailFragment(task.id, getDateTaskDate(), task.dateStart)
                         );
                     }
                 },
@@ -247,7 +259,7 @@ public class TaskListFragment extends Fragment {
                         );
                     } else {
                         findNavController(binding.getRoot()).navigate(
-                                TaskFragmentDirections.showDateTaskDetailFragment(task.id)
+                                TaskFragmentDirections.showDateTaskDetailFragment(task.id, getDateTaskDate(), task.dateStart)
                         );
                     }
                 },
