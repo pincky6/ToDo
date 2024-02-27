@@ -7,23 +7,17 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade;
 
 import java.util.HashSet;
 
-public class TaskDayDecorator implements DayViewDecorator {
+public class TaskDayDecorator extends AbstractDecorator {
 
     private final CalendarDay day;
-    private HashSet<Integer> colors;
     public TaskDayDecorator(CalendarDay day, HashSet<Integer> colors) {
+        super(colors);
         this.day = day;
-        this.colors = colors;
     }
     public CalendarDay getDay(){
         return day;
     }
-    public HashSet<Integer> getColors(){
-        return colors;
-    }
-    public void setColors(HashSet<Integer> colors){
-        this.colors = colors;
-    }
+
     @Override
     public boolean shouldDecorate(CalendarDay day) {
         return this.day.getDay() == day.getDay() &&

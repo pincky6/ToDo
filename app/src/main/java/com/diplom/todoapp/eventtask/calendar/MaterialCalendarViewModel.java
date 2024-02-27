@@ -1,10 +1,14 @@
 package com.diplom.todoapp.eventtask.calendar;
 
 import androidx.lifecycle.ViewModel;
+
+import com.diplom.todoapp.eventtask.calendar.decorator.AbstractDecorator;
 import com.diplom.todoapp.eventtask.calendar.decorator.Decorators;
 import com.diplom.todoapp.eventtask.calendar.decorator.MaterialCalendarFragment;
+import com.diplom.todoapp.eventtask.calendar.decorator.RepeatDecorator;
 import com.diplom.todoapp.eventtask.calendar.decorator.TaskDayDecorator;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
+import com.diplom.todoapp.firebase.FirebaseRepository;
 import com.diplom.todoapp.utils.CalendarUtil;
 import com.diplom.todoapp.utils.PriorityUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -64,7 +68,7 @@ public class MaterialCalendarViewModel extends ViewModel {
     public void put(CalendarDay day, ArrayList<Integer> colors){
         dayTaskCalendarColors.put(day, colors);
     }
-    public ArrayList<TaskDayDecorator> getTaskDayDecoratorList(){
+    public ArrayList<AbstractDecorator> getTaskDayDecoratorList(){
         return decorators.getDecorators();
     }
     public Decorators getDecorators(){
@@ -103,9 +107,17 @@ public class MaterialCalendarViewModel extends ViewModel {
             decorators.addDecorator(new TaskDayDecorator(entry.getKey(),
                     convertToHashSetColors(entry.getValue())));
         }
-    }
-    private void setRepeatedDays(AbstractTask task){
-        if(task.repeat.equals("Every day")){
+        FirebaseRepository firebaseRepository = FirebaseRepository.getInstance();
+        if(firebaseRepository == null)
+            return;
+        ArrayList<String> repeats = firebaseRepository.getRepeats();
+        for(AbstractTask task: tasks)
+        {
+            if(repeats.contains(task.repeat)) {
+                ArrayList<Integer> prioritiesColor = new ArrayList<>();
+                prioritiesColor.add(PriorityUtil.getPriorityColor(PriorityUtil.getPriorityEnum(task.priority)));
+                decorators.addDecorator(new RepeatDecorator(task, convertToHashSetColors(prioritiesColor)));
+            }
 
         }
     }
