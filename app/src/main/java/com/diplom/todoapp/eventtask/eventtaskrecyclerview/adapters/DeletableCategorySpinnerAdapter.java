@@ -17,7 +17,7 @@ import com.diplom.todoapp.R;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.SpinnerCategoryItemFactory;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Holiday;
 import com.diplom.todoapp.firebase.FirebaseRepository;
 
 import java.util.ArrayList;
@@ -87,7 +87,7 @@ public class DeletableCategorySpinnerAdapter extends CategorySpinnerAdapter{
             ArrayList<AbstractTask> abstractTasks = new ArrayList<>();
             firebaseRepository.readAllTasks(abstractTasks, null);
             abstractTasks.stream().filter(abstractTask -> {
-                if(abstractTask instanceof Task) return false;
+                if(abstractTask instanceof Holiday) return false;
                 DateTask dateTask = (DateTask) abstractTask;
                 return dateTask.category.equals(deleteCategory);
             });
@@ -104,7 +104,7 @@ public class DeletableCategorySpinnerAdapter extends CategorySpinnerAdapter{
             firebaseRepository.readAllTasks(abstractTasks, tasks -> {
             abstractTasks.forEach(abstractTask -> {
                     if(abstractTask == null) return;
-                    if(abstractTask instanceof Task) return;
+                    if(abstractTask instanceof Holiday) return;
                     DateTask dateTask = (DateTask) abstractTask;
                     if(dateTask.category == null) return;
                     if(dateTask.category.equals(category)){

@@ -22,7 +22,7 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskListViewModel;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.SuccsessFlag;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Holiday;
 import com.diplom.todoapp.eventtask.filter.TaskFilter;
 import com.diplom.todoapp.utils.CalendarUtil;
 import com.diplom.todoapp.utils.SuccsessFlagUtil;
@@ -43,7 +43,7 @@ public class TaskSearchFragment extends Fragment {
     public ArrayList<Date> getTaskDate(){
         ArrayList<Date> tasks = new ArrayList<>();
         for(AbstractTask abstractTask: taskListViewModel.taskList){
-            if(abstractTask instanceof Task) tasks.add(abstractTask.dateStart);
+            if(abstractTask instanceof Holiday) tasks.add(abstractTask.dateStart);
         }
         return tasks;
     }

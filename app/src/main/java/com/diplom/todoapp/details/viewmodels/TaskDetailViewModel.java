@@ -10,26 +10,24 @@ import com.diplom.todoapp.utils.ReminderUtil;
 import com.diplom.todoapp.databinding.FragmentTaskDetailBinding;
 import com.diplom.todoapp.firebase.OnDataReceivedListener;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Holiday;
 import com.diplom.todoapp.firebase.FirebaseRepository;
 import com.diplom.todoapp.utils.SuccsessFlagUtil;
 
 import java.io.IOException;
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.InputMismatchException;
 
 public class TaskDetailViewModel {
     FirebaseRepository firebaseRepository = FirebaseRepository.getInstance();
-    private Task task = null;
+    private Holiday holiday = null;
     private Date selectedDate;
     public ArrayList<Date> dates;
-    public Task getTask(){
-        return task;
+    public Holiday getTask(){
+        return holiday;
     }
 
     public TaskDetailViewModel(){}
@@ -37,7 +35,7 @@ public class TaskDetailViewModel {
                                Date selectedDate)
     {
         this.dates = dates;
-        if(task != null && task.category == null) task.category = new String("Without Category");
+        if(holiday != null && holiday.category == null) holiday.category = new String("Without Category");
         initDetailFragment(
                             binding, "", "", selectedDate,
                             false,
@@ -52,15 +50,15 @@ public class TaskDetailViewModel {
         firebaseRepository.getTaskFromKey(key, new OnDataReceivedListener() {
             @Override
             public void onDataReceived(AbstractTask data) {
-                if(!(data instanceof Task)) return;
-                task = (Task) data;
-                if(task.category == null) task.category = new String("Without Category");
+                if(!(data instanceof Holiday)) return;
+                holiday = (Holiday) data;
+                if(holiday.category == null) holiday.category = new String("Without Category");
                 initDetailFragment(
-                                   binding, task.title, task.describe, task.dateStart,
-                                   task.allDayFlag,
-                                   PriorityUtil.getPriorityIndex(PriorityUtil.getPriorityEnum(task.priority)),
-                                   ReminderUtil.getReminderIndex(ReminderUtil.getReminderEnum(task.reminder)),
-                                   firebaseRepository.getCategories().indexOf(task.category)
+                                   binding, holiday.title, holiday.describe, holiday.dateStart,
+                                   holiday.allDayFlag,
+                                   PriorityUtil.getPriorityIndex(PriorityUtil.getPriorityEnum(holiday.priority)),
+                                   ReminderUtil.getReminderIndex(ReminderUtil.getReminderEnum(holiday.reminder)),
+                                   firebaseRepository.getCategories().indexOf(holiday.category)
                                   );
 //                binding.taskTitle.setText(task.title);
 //                binding.taskDescribe.setText(task.describe);
@@ -142,11 +140,11 @@ public class TaskDetailViewModel {
 //                    throw new InputMismatchException("wrong date input: dates crossing");
 //            }
         }
-        if (task == null)
-            task = new Task("Task-" + firebaseRepository.generateKey(), title, describe, allDay,
+        if (holiday == null)
+            holiday = new Holiday("Task-" + firebaseRepository.generateKey(), title, describe, allDay,
                     dateStart, priority, reminder, successFlag, repeat, category);
         else
-            task.setTask(task.id, title, describe, allDay,
+            holiday.setTask(holiday.id, title, describe, allDay,
                     dateStart, priority, reminder, successFlag, repeat, category);
     }
     public ArrayList<String> getCategory(){

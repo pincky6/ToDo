@@ -2,7 +2,6 @@ package com.diplom.todoapp.eventtask.eventtaskrecyclerview;
 
 import static androidx.navigation.ViewKt.findNavController;
 
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.diplom.todoapp.databinding.FragmentTaskListBinding;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.AbstractTaskAdapter;
@@ -22,13 +19,12 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.TaskDaysAdapt
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.TaskMonthAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.SuccsessFlag;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Holiday;
 import com.diplom.todoapp.eventtask.filter.TaskFilter;
 import com.diplom.todoapp.eventtask.TaskFragmentDirections;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.listeners.OnTaskListener;
 import com.diplom.todoapp.eventtask.listeners.OnResetTaskLisener;
-import com.diplom.todoapp.firebase.FirebaseRepository;
 import com.diplom.todoapp.utils.CalendarUtil;
 import com.diplom.todoapp.utils.NotificationsUtil;
 import com.diplom.todoapp.utils.SuccsessFlagUtil;
@@ -67,7 +63,7 @@ public class TaskListFragment extends Fragment {
     public ArrayList<Date> getTaskDate(){
         ArrayList<Date> tasks = new ArrayList<>();
         for(AbstractTask abstractTask: taskListViewModel.taskList){
-            if(abstractTask instanceof Task) tasks.add(abstractTask.dateStart);
+            if(abstractTask instanceof Holiday) tasks.add(abstractTask.dateStart);
         }
         return tasks;
     }

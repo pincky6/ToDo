@@ -9,7 +9,7 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskHolder;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskHolderFactory;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskType;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Holiday;
 import com.diplom.todoapp.eventtask.listeners.OnRemoveListener;
 import com.diplom.todoapp.eventtask.listeners.OnSetSuccsessListener;
 import com.diplom.todoapp.eventtask.listeners.TaskListener;
@@ -41,7 +41,7 @@ public class TaskAdapter extends AbstractTaskAdapter {
             if(taskList.size() == 0){
                 return TaskType.EMPTY_TASK.ordinal();
             }
-            if(taskList.get(position) instanceof Task){
+            if(taskList.get(position) instanceof Holiday){
                 return TaskType.TASK.ordinal();
             }
             else {

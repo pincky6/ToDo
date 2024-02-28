@@ -3,8 +3,6 @@ package com.diplom.todoapp.firebase;
 
 import static androidx.navigation.ViewKt.findNavController;
 
-import android.content.SharedPreferences;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,12 +14,11 @@ import com.diplom.todoapp.databinding.FragmentRegisterBinding;
 import com.diplom.todoapp.databinding.FragmentResetPasswordBinding;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Holiday;
 import com.diplom.todoapp.login.LoginFragmentDirections;
 
 import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.utils.SuccsessFlagUtil;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -161,7 +158,7 @@ public class FirebaseRepository {
                 String dataType = key.split("-")[0];
                 if(dataType.equals("Task")) {
                     abstractTask =
-                            snapshot.getValue(Task.class);
+                            snapshot.getValue(Holiday.class);
                 }
                 else
                 {
@@ -204,13 +201,13 @@ public class FirebaseRepository {
                         String[] strs = snapshot.getKey().split("-");
                         String key = strs[0];
                         if (key.equals("Task")) {
-                            Task task = snapshot.getValue(Task.class);
-                            task.id = snapshot.getKey();
-                            if (!task.succsessFlag.equals("DONE")) {
-                                task.succsessFlag = SuccsessFlagUtil.getStringFlagFromDate(task.dateStart);
-                                addTask(task);
+                            Holiday holiday = snapshot.getValue(Holiday.class);
+                            holiday.id = snapshot.getKey();
+                            if (!holiday.succsessFlag.equals("DONE")) {
+                                holiday.succsessFlag = SuccsessFlagUtil.getStringFlagFromDate(holiday.dateStart);
+                                addTask(holiday);
                             }
-                            taskList.add(task);
+                            taskList.add(holiday);
                         } else if (key.equals("DateTask")) {
                             DateTask dateTask = snapshot.getValue(DateTask.class);
                             dateTask.id = snapshot.getKey();
@@ -248,9 +245,9 @@ public class FirebaseRepository {
                         String[] strs = snapshot.getKey().split("-");
                         String key = strs[0];
                         if (key.equals("Task")) {
-                            Task task = snapshot.getValue(Task.class);
-                            task.id = snapshot.getKey();
-                            taskList.add(task);
+                            Holiday holiday = snapshot.getValue(Holiday.class);
+                            holiday.id = snapshot.getKey();
+                            taskList.add(holiday);
                         } else if (key.equals("DateTask")) {
                             DateTask dateTask = snapshot.getValue(DateTask.class);
                             dateTask.id = snapshot.getKey();

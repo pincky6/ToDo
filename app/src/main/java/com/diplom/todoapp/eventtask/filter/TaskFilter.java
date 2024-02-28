@@ -2,10 +2,9 @@ package com.diplom.todoapp.eventtask.filter;
 
 import androidx.annotation.NonNull;
 
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.AbstractTaskAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Holiday;
 import com.diplom.todoapp.utils.CalendarUtil;
 import com.diplom.todoapp.utils.PriorityUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -96,7 +95,7 @@ public class TaskFilter {
     }
     public boolean checkCategories(AbstractTask abstractTask){
         if(categories.isEmpty()) return true;
-        if(abstractTask instanceof Task) return false;
+        if(abstractTask instanceof Holiday) return false;
         DateTask dateTask = (DateTask) abstractTask;
         return categories.contains(dateTask.category);
     }
