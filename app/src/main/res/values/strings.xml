@@ -10,8 +10,8 @@
     <string name="action_search_by_date">Search By Date</string>
     <string name="action_search_by_title">Search By Title</string>
 
-    <string name="add_new_task">Add New Task</string>
-    <string name="add_new_event">Add New Event</string>
+    <string name="add_new_task">Add New Holiday</string>
+    <string name="add_new_event">Add New Task</string>
     <string name="save_button">Save</string>
 
     <string name="title_hint">Title</string>
