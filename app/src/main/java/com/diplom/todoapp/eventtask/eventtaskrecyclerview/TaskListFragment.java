@@ -183,7 +183,7 @@ public class TaskListFragment extends Fragment {
     }
     public void resetAllListAdapter(){
         if(binding.recyclerView == null) return;
-        binding.recyclerView.setAdapter(new TaskMonthAdapter(taskListViewModel.taskList,
+        binding.recyclerView.setAdapter(new TaskMonthAdapter(taskListViewModel.taskList, filter.getSelectedDay(),
                 (AbstractTask task) ->
                 {
                     if (task.id.split("-")[0].equals("Task")) {
@@ -216,7 +216,7 @@ public class TaskListFragment extends Fragment {
     }
     public void resetMonthAdapter(){
         if(binding.recyclerView == null) return;
-        binding.recyclerView.setAdapter(new TaskDaysAdapter(filter.filter(taskListViewModel.taskList),
+        binding.recyclerView.setAdapter(new TaskDaysAdapter(filter.filter(taskListViewModel.taskList), filter.getSelectedDay(),
                 (AbstractTask task) ->
                 {
                     if (task.id.split("-")[0].equals("Task")) {
@@ -250,7 +250,7 @@ public class TaskListFragment extends Fragment {
     public void resetDayAdapter(){
         if(binding == null) return;
         if(binding.recyclerView == null) return;
-        binding.recyclerView.setAdapter(new TaskAdapter(filter.filter(taskListViewModel.taskList),
+        binding.recyclerView.setAdapter(new TaskAdapter(filter.filter(taskListViewModel.taskList), filter.getSelectedDay(),
                 (AbstractTask task) ->
                 {
                     if (task.id.split("-")[0].equals("Task")) {

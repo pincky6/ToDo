@@ -43,15 +43,15 @@
         android:inputType="textMultiLine"
         app:layout_constraintTop_toBottomOf="@+id/task_title" />
 
-    <CheckBox
-        android:id="@+id/all_day_check_box"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/all_day_check_box"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/task_describe" />
+<!--    <CheckBox-->
+<!--        android:id="@+id/all_day_check_box"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:text="@string/all_day_check_box"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/task_describe" />-->
 
     <Spinner
         android:id="@+id/task_reminder"
@@ -75,6 +75,7 @@
         android:id="@+id/task_priority"
         android:layout_width="254dp"
         android:layout_height="22dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -90,22 +91,44 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/category"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Spinner
+        android:id="@+id/categories_spinner"
+        android:layout_width="217dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/task_priority" />
+    <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/repeat"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
+        android:text="@string/repeat"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
     <Spinner
         android:id="@+id/task_repeat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/task_priority"/>
+        app:layout_constraintTop_toBottomOf="@+id/categories_spinner" />
+
+
+
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/task_edit_text_date"
         android:layout_width="187dp"
@@ -117,7 +140,7 @@
         app:layout_constraintEnd_toStartOf="@+id/task_edit_text_time"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/all_day_check_box" />
+        app:layout_constraintTop_toBottomOf="@+id/task_describe" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/task_edit_text_time"
@@ -130,5 +153,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.676"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/all_day_check_box" />
+        app:layout_constraintTop_toBottomOf="@+id/task_describe" />
 </androidx.constraintlayout.widget.ConstraintLayout>

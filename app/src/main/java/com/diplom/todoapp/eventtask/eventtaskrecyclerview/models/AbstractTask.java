@@ -20,9 +20,10 @@ public abstract class AbstractTask implements Serializable{
     public String reminder;
     public String succsessFlag;
     public String repeat;
+    public String category;
     public  AbstractTask(@NonNull String id, @NonNull String title, @NonNull String describe,
                         boolean allDayFlag, @NonNull Date dateStart, @NonNull Priority priority, @NonNull Reminders reminder,
-                         @NonNull SuccsessFlag succsessFlag, @NonNull String repeat){
+                         @NonNull SuccsessFlag succsessFlag, @NonNull String repeat, @NonNull String category){
         this.id = id;
         this.title = title;
         this.describe = describe;
@@ -32,10 +33,11 @@ public abstract class AbstractTask implements Serializable{
         this.reminder = reminder.name();
         this.succsessFlag = SuccsessFlagUtil.getStringFromFlag(succsessFlag);
         this.repeat = repeat;
+        this.category = category;
     }
     public  AbstractTask(@NonNull String id,  @NonNull String title, @NonNull String describe,
                          boolean allDayFlag, @NonNull Date dateStart, @NonNull String priority, @NonNull String reminder,
-                         @NonNull String succsessFlag, @NonNull String repeat){
+                         @NonNull String succsessFlag, @NonNull String repeat, @NonNull String category){
         this.id = id;
         this.title = title;
         this.describe = describe;
@@ -45,10 +47,11 @@ public abstract class AbstractTask implements Serializable{
         this.reminder = reminder;
         this.succsessFlag = succsessFlag;
         this.repeat = repeat;
+        this.category = category;
     }
     public void setTask(@NonNull String id, @NonNull String title, @NonNull String describe,
                         boolean allDayFlag, @NonNull Date dateStart,  @NonNull String priority, @NonNull String reminder,
-                        @NonNull String succsessFlag, @NonNull String repeat){
+                        @NonNull String succsessFlag, @NonNull String repeat, @NonNull String category){
         this.id = id;
         this.title = title;
         this.describe = describe;
@@ -58,6 +61,7 @@ public abstract class AbstractTask implements Serializable{
         this.reminder = reminder;
         this.succsessFlag = succsessFlag;
         this.repeat = repeat;
+        this.category = category;
     }
     protected Date safeDateAfterInit(Date initDate, Date stateDate){
         if(stateDate.compareTo(initDate) <= 0){

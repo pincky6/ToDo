@@ -60,6 +60,7 @@ public class CalendarUtil {
         return calendar;
     }
     public static Date getDate(@NonNull CalendarDay date){
+        if(date == null) return new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.set(date.getYear(), date.getMonth() - 1, date.getDay());
         Date res = new Date();

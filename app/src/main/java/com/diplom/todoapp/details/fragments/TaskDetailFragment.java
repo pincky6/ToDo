@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.diplom.todoapp.R;
 import com.diplom.todoapp.databinding.FragmentTaskDetailBinding;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.CategorySpinnerAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Task;
 import com.diplom.todoapp.utils.EditorsUtil;
@@ -59,7 +60,8 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
         initDateInputs(binding.taskEditTextDate);
         initTimeInputs(binding.taskEditTextTime);
         initAppBarCheck();
-        initCheckBox();
+       // initCheckBox();
+        initCategorySpinner();
         return binding.getRoot();
     }
     @Override
@@ -102,14 +104,20 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
                 return false;
             });
     }
-    private void initCheckBox(){
-        binding.allDayCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked){
-                binding.taskEditTextTime.setText("00:00");
-                binding.taskEditTextTime.setVisibility(View.INVISIBLE);
-            } else {
-                binding.taskEditTextTime.setVisibility(View.VISIBLE);
-            }
-        });
+//    private void initCheckBox(){
+//        binding.allDayCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+//            if(isChecked){
+//                binding.taskEditTextTime.setText("00:00");
+//                binding.taskEditTextTime.setVisibility(View.INVISIBLE);
+//            } else {
+//                binding.taskEditTextTime.setVisibility(View.VISIBLE);
+//            }
+//        });
+//    }
+    private void initCategorySpinner(){
+        ArrayList<String> categories = (ArrayList<String>) taskDetailViewModel.getCategory().clone();
+        categories.add(getResources().getString(R.string.without_category_text));
+        categories.add(getResources().getString(R.string.add_new_category_text));
+        binding.categoriesSpinner.setAdapter(new CategorySpinnerAdapter(getContext(), binding.categoriesSpinner,0, categories));
     }
 }

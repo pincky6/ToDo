@@ -127,7 +127,7 @@ public class TaskSearchFragment extends Fragment {
     }
     private void initAdapter(ArrayList<AbstractTask> list){
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerView.setAdapter(new TaskAdapter(list,
+        binding.recyclerView.setAdapter(new TaskAdapter(list, filter.getSelectedDay(),
                 (AbstractTask task) -> {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTimeInMillis(0);

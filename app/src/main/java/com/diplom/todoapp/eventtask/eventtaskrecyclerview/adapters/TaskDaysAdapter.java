@@ -14,6 +14,7 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.listeners.OnRemoveListener;
 import com.diplom.todoapp.eventtask.listeners.OnSetSuccsessListener;
 import com.diplom.todoapp.eventtask.listeners.TaskListener;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,15 +23,18 @@ import java.util.Comparator;
 
 public class TaskDaysAdapter extends AbstractTaskAdapter {
     private ArrayList<ArrayList<AbstractTask>> taskList;
+    private CalendarDay day;
     private final TaskListener listener;
     private final OnRemoveListener removeListener;
     private final OnSetSuccsessListener onSetSuccsessListener;
     public SimpleDateFormat format = new SimpleDateFormat("dd MMMM");
     public TaskDaysAdapter(ArrayList<AbstractTask> taskList,
-                       TaskListener listener,
-                       OnRemoveListener removeListener,
-                       OnSetSuccsessListener onSetSuccsessListener){
+                           CalendarDay day,
+                           TaskListener listener,
+                           OnRemoveListener removeListener,
+                           OnSetSuccsessListener onSetSuccsessListener){
         this.taskList = new ArrayList<>();
+        this.day = day;
         resetTaskList(taskList);
         this.listener = listener;
         this.removeListener = removeListener;
@@ -66,7 +70,7 @@ public class TaskDaysAdapter extends AbstractTaskAdapter {
             dateString = format.format(taskList.get(position).get(0).dateStart);
         }
         ((TaskListHolder)holder).bind(taskList.get(position), dateString
-                ,new TaskAdapter(taskList.get(position), listener, removeListener, onSetSuccsessListener));
+                ,new TaskAdapter(taskList.get(position), day, listener, removeListener, onSetSuccsessListener));
     }
 
     @Override

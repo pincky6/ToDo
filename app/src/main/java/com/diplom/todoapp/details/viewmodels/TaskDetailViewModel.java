@@ -37,10 +37,14 @@ public class TaskDetailViewModel {
                                Date selectedDate)
     {
         this.dates = dates;
-        initDetailFragment(binding, "", "", selectedDate,
-                false,
-                PriorityUtil.getPriorityIndex(PriorityUtil.getPriorityEnum(String.valueOf(Priority.LOW))),
-                ReminderUtil.getReminderIndex(ReminderUtil.getReminderEnum(Reminders.DONT_REMIND.name())));
+        if(task != null && task.category == null) task.category = new String("Without Category");
+        initDetailFragment(
+                            binding, "", "", selectedDate,
+                            false,
+                            PriorityUtil.getPriorityIndex(PriorityUtil.getPriorityEnum(String.valueOf(Priority.LOW))),
+                            ReminderUtil.getReminderIndex(ReminderUtil.getReminderEnum(Reminders.DONT_REMIND.name())),
+                            0
+                          );
     }
     public TaskDetailViewModel(FragmentTaskDetailBinding binding, String key,
                                ArrayList<Date> dates) {
@@ -50,10 +54,14 @@ public class TaskDetailViewModel {
             public void onDataReceived(AbstractTask data) {
                 if(!(data instanceof Task)) return;
                 task = (Task) data;
-                initDetailFragment(binding, task.title, task.describe, task.dateStart,
+                if(task.category == null) task.category = new String("Without Category");
+                initDetailFragment(
+                                   binding, task.title, task.describe, task.dateStart,
                                    task.allDayFlag,
                                    PriorityUtil.getPriorityIndex(PriorityUtil.getPriorityEnum(task.priority)),
-                                   ReminderUtil.getReminderIndex(ReminderUtil.getReminderEnum(task.reminder)));
+                                   ReminderUtil.getReminderIndex(ReminderUtil.getReminderEnum(task.reminder)),
+                                   firebaseRepository.getCategories().indexOf(task.category)
+                                  );
 //                binding.taskTitle.setText(task.title);
 //                binding.taskDescribe.setText(task.describe);
 //                SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
@@ -78,7 +86,7 @@ public class TaskDetailViewModel {
     }
 
     private void initDetailFragment(FragmentTaskDetailBinding binding, String title, String describe, Date date,
-                                    boolean allDayFlag, int selectPriority, int selectReminder)
+                                    boolean allDayFlag, int selectPriority, int selectReminder, int selectCategory)
     {
         binding.taskTitle.setText(title);
         binding.taskDescribe.setText(describe);
@@ -92,7 +100,7 @@ public class TaskDetailViewModel {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        binding.allDayCheckBox.setChecked(allDayFlag);
+//        binding.allDayCheckBox.setChecked(allDayFlag);
         binding.taskPriority.setSelection(selectPriority);
         binding.taskReminder.setSelection(selectReminder);
     }
@@ -107,11 +115,12 @@ public class TaskDetailViewModel {
         Date time = timeFormat.parse(binding.taskEditTextTime.getText().toString());
         String title = binding.taskTitle.getText().toString();
         String describe = binding.taskDescribe.getText().toString();
-        boolean allDay = binding.allDayCheckBox.isChecked();
+        boolean allDay = true;
         Date dateStart;
         String priority = binding.taskPriority.getSelectedItem().toString();
         String reminder = binding.taskReminder.getSelectedItem().toString();
         String repeat = binding.taskRepeat.getSelectedItem().toString();
+        String category = binding.categoriesSpinner.getSelectedItem().toString();
         String successFlag;
         try {
             dateStart = format.parse(binding.taskEditTextDate.getText().toString());
@@ -128,16 +137,20 @@ public class TaskDetailViewModel {
             throw new IllegalArgumentException("wrong date input");
         }
         if(!allDay) {
-            for (Date date : dates) {
-                if (date.equals(dateStart))
-                    throw new InputMismatchException("wrong date input: dates crossing");
-            }
+//            for (Date date : dates) {
+//                if (date.equals(dateStart))
+//                    throw new InputMismatchException("wrong date input: dates crossing");
+//            }
         }
         if (task == null)
             task = new Task("Task-" + firebaseRepository.generateKey(), title, describe, allDay,
-                    dateStart, priority, reminder, successFlag, repeat);
+                    dateStart, priority, reminder, successFlag, repeat, category);
         else
             task.setTask(task.id, title, describe, allDay,
-                    dateStart, priority, reminder, successFlag, repeat);
+                    dateStart, priority, reminder, successFlag, repeat, category);
+    }
+    public ArrayList<String> getCategory(){
+        if(firebaseRepository == null) return new ArrayList<>();
+        return (ArrayList<String>)firebaseRepository.getCategories().clone();
     }
 }

@@ -15,10 +15,12 @@ import com.diplom.todoapp.eventtask.listeners.OnRemoveListener;
 import com.diplom.todoapp.eventtask.listeners.OnSetSuccsessListener;
 import com.diplom.todoapp.eventtask.listeners.TaskListener;
 import com.diplom.todoapp.utils.CalendarUtil;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
 
 public class TaskMonthAdapter extends AbstractTaskAdapter{
     class Pair{
@@ -30,14 +32,17 @@ public class TaskMonthAdapter extends AbstractTaskAdapter{
         public ArrayList<AbstractTask> array;
     }
     private ArrayList<Pair> taskList;
+    private CalendarDay day;
     private final TaskListener listener;
     private final OnRemoveListener removeListener;
     private final OnSetSuccsessListener onSetSuccsessListener;
     public TaskMonthAdapter(ArrayList<AbstractTask> taskList,
+                            CalendarDay day,
                             TaskListener listener,
                             OnRemoveListener removeListener,
                             OnSetSuccsessListener onSetSuccsessListener){
         this.taskList = new ArrayList<>();
+        this.day = day;
         resetTaskList(taskList);
         this.listener = listener;
         this.removeListener = removeListener;
@@ -60,7 +65,7 @@ public class TaskMonthAdapter extends AbstractTaskAdapter{
     public void onBindViewHolder(@NonNull AbstractTaskHolder holder, int position) {
         if(taskList.size() == 0) return;
         ((TaskListHolder)holder).bind(taskList.get(position).array, taskList.get(position).monthString,
-                new TaskDaysAdapter(taskList.get(position).array, listener, removeListener, onSetSuccsessListener));
+                new TaskDaysAdapter(taskList.get(position).array, day, listener, removeListener, onSetSuccsessListener));
     }
 
     @Override
