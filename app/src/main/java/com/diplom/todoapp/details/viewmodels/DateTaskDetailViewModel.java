@@ -187,7 +187,8 @@ public class DateTaskDetailViewModel {
         }
         if(!allDay) {
             for(int i = 0; i < dates.size(); i += 2){
-                if (dates.get(i).after(dateStart) && dates.get(i + 1).before(dateEnd))
+                if (dates.get(i).after(dateStart) && dates.get(i + 1).before(dateEnd) ||
+                        (dateStart.after(dates.get(i)) && dateEnd.before(dates.get(i + 1))))
                     throw new InputMismatchException("wrong date input: dates crossing");
             }
         }
