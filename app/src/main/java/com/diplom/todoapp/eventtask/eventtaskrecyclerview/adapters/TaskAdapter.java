@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.AbstractTaskHolder;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskHolder;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskHolderFactory;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.TaskType;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.holders.HolderType;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Holiday;
 import com.diplom.todoapp.eventtask.listeners.OnRemoveListener;
@@ -39,13 +39,13 @@ public class TaskAdapter extends AbstractTaskAdapter {
     @Override
     public int getItemViewType(int position) {
             if(taskList.size() == 0){
-                return TaskType.EMPTY_TASK.ordinal();
+                return HolderType.EMPTY_TASK.ordinal();
             }
             if(taskList.get(position) instanceof Holiday){
-                return TaskType.TASK.ordinal();
+                return HolderType.TASK.ordinal();
             }
             else {
-                return TaskType.DATE_TASK.ordinal();
+                return HolderType.DATE_TASK.ordinal();
             }
     }
 
