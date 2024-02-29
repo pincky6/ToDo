@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.databinding.FragmentTaskListBinding;
+import com.diplom.todoapp.eventtask.TaskFragmentDirections;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.AbstractTaskAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.TaskAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.TaskDaysAdapter;
@@ -21,7 +22,6 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.SuccsessFlag;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Holiday;
 import com.diplom.todoapp.eventtask.filter.TaskFilter;
-import com.diplom.todoapp.eventtask.TaskFragmentDirections;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.listeners.OnTaskListener;
 import com.diplom.todoapp.eventtask.listeners.OnResetTaskLisener;

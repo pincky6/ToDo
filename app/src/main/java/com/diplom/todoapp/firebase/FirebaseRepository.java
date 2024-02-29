@@ -15,8 +15,8 @@ import com.diplom.todoapp.databinding.FragmentResetPasswordBinding;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Holiday;
-import com.diplom.todoapp.login.LoginFragmentDirections;
 
+import com.diplom.todoapp.login.*;
 import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.utils.SuccsessFlagUtil;
 import com.google.firebase.auth.FirebaseAuth;
@@ -74,7 +74,8 @@ public class FirebaseRepository {
                 else {
                     initDatabase();
                     findNavController(binding.getRoot()).navigate(
-                            LoginFragmentDirections.showEventTaskFragment()
+                            LoginFragmentDirections.showBottomFragment()
+//                            LoginFragmentDirections.showEventTaskFragment()
                     );
                 }
             }
@@ -96,7 +97,7 @@ public class FirebaseRepository {
             if(task1.isSuccessful()){
 
                 findNavController(binding.getRoot()).navigate(
-                        LoginFragmentDirections.showEventTaskFragment()
+                        LoginFragmentDirections.showBottomFragment()
                 );
             }
             else {

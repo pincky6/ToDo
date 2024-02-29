@@ -2,6 +2,7 @@ package com.diplom.todoapp.eventtask;
 
 import static androidx.navigation.ViewKt.findNavController;
 
+import com.diplom.todoapp.BottomFragment;
 import com.diplom.todoapp.R;
 
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.filter.TaskFilter;
 import com.diplom.todoapp.eventtask.filter.TaskFilterFragmentDialog;
 import com.diplom.todoapp.firebase.FirebaseRepository;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 public class TaskFragment extends Fragment {
     private FragmentEventTaskBinding binding = null;
     private FirebaseRepository firebase;
+    private BottomNavigationView bottomNavigationView = null;
     private TaskListFragment taskListFragment = null;
     private MaterialCalendarFragment materialCalendarFragment = null;
 
@@ -54,6 +57,9 @@ public class TaskFragment extends Fragment {
         taskListFragment = (TaskListFragment) getChildFragmentManager().findFragmentById(R.id.taskListFragment);
         materialCalendarFragment = (MaterialCalendarFragment)
                 getChildFragmentManager().findFragmentById(R.id.calendarFragment);
+        if(bottomNavigationView != null){
+            bottomNavigationView.setVisibility(View.VISIBLE);
+        }
         initTaskListFragmentListeners();
         initMaterialCalendarFragment();
     }
@@ -75,20 +81,24 @@ public class TaskFragment extends Fragment {
                 taskListFragment.showAllList();
             }
             else if(item.getItemId() == R.id.action_settings){
+                bottomNavigationView.setVisibility(View.GONE);
                 findNavController(getView()).navigate(
                         TaskFragmentDirections.showSettingsFragment()
                 );
             }
             else if(item.getItemId() == R.id.action_filter){
+                bottomNavigationView.setVisibility(View.GONE);
                 findNavController(getView()).navigate(
                         TaskFragmentDirections.showTaskFilterDialog(taskListFragment.getFilterMask(),
                                 taskListFragment.getFilterCategories())
                 );
             } else if (item.getItemId() == R.id.action_search_by_title){
+                bottomNavigationView.setVisibility(View.GONE);
                 findNavController(binding.getRoot()).navigate(
                         TaskFragmentDirections.showSearchFragment(false)
                 );
             } else if (item.getItemId() == R.id.action_search_by_date){
+                bottomNavigationView.setVisibility(View.GONE);
                 findNavController(binding.getRoot()).navigate(
                         TaskFragmentDirections.showSearchFragment(true)
                 );
@@ -102,6 +112,7 @@ public class TaskFragment extends Fragment {
             popupMenu.setOnMenuItemClickListener(item -> {
                 int id = item.getItemId();
                 if(id == R.id.add_new_task) {
+                    bottomNavigationView.setVisibility(View.GONE);
                     findNavController(binding.getRoot()).navigate(
                             TaskFragmentDirections.showTaskDetailFragment("",
                                                                           taskListFragment.getTaskDate(),
@@ -110,6 +121,7 @@ public class TaskFragment extends Fragment {
                                                                   );
                     return true;
                 } else if (id == R.id.add_new_event) {
+                    bottomNavigationView.setVisibility(View.GONE);
                     findNavController(binding.getRoot()).navigate(
                             TaskFragmentDirections.showDateTaskDetailFragment("",
                                                                                         taskListFragment.getDateTaskDate(),
@@ -184,5 +196,8 @@ public class TaskFragment extends Fragment {
             model.setSelectedDay(calendarDay);
             taskListFragment.updateUi();
         });
+    }
+    public void setBottomNavigationView(BottomNavigationView bottomNavigationView){
+        this.bottomNavigationView = bottomNavigationView;
     }
 }

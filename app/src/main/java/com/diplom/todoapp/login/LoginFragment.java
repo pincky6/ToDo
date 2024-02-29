@@ -36,7 +36,7 @@ public class LoginFragment extends Fragment {
         if(firebase.checkUserExist() && firebase.isVerified()){
             firebase.initDatabase();
             findNavController(getView()).navigate(
-                    LoginFragmentDirections.showEventTaskFragment()
+                    LoginFragmentDirections.showBottomFragment()
             );
         }
     }
