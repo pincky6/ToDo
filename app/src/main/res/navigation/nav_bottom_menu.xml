@@ -9,6 +9,7 @@
         android:id="@+id/navigation_notes"
         android:name="com.diplom.todoapp.notes.NotesFragment"
         tools:layout="@layout/fragment_notes"
-        android:label="NotesFragment" />
+        android:label="NotesFragment">
+    </fragment>
     <include app:graph="@navigation/navigation_events" />
 </navigation>

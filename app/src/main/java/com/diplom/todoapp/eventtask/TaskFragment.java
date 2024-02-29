@@ -2,7 +2,6 @@ package com.diplom.todoapp.eventtask;
 
 import static androidx.navigation.ViewKt.findNavController;
 
-import com.diplom.todoapp.BottomFragment;
 import com.diplom.todoapp.R;
 
 import android.os.Bundle;
@@ -108,7 +107,7 @@ public class TaskFragment extends Fragment {
         });
         binding.fab.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(getContext(), v);
-            popupMenu.inflate(R.menu.popup_menu);
+            popupMenu.inflate(R.menu.popup_menu_events);
             popupMenu.setOnMenuItemClickListener(item -> {
                 int id = item.getItemId();
                 if(id == R.id.add_new_task) {
