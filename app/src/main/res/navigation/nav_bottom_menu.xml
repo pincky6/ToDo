@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_bottom_menu"
+    app:startDestination="@id/navigation_events">
+
+    <fragment
+        android:id="@+id/navigation_notes"
+        android:name="com.diplom.todoapp.notes.NotesFragment"
+        tools:layout="@layout/fragment_notes"
+        android:label="NotesFragment" />
+    <include app:graph="@navigation/navigation_events" />
+</navigation>

@@ -56,4 +56,8 @@
     <string name="add_new_category_text">Add New Category</string>
 
     <string name="filter_category_title">Categories</string>
+
+    <string name="bottom_events">Events</string>
+    <string name="bottom_notes">Notes</string>
+    <string name="bottom_settings">Settings</string>
 </resources>
