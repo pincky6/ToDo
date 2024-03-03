@@ -11,13 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.diplom.todoapp.settings.SettingsFragment;
+import com.diplom.todoapp.settings.SettingsRepository;
 import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.databinding.FragmentLoginBinding;
 import com.diplom.todoapp.firebase.FirebaseRepository;
 
+import java.util.Set;
+
 public class LoginFragment extends Fragment {
     private FirebaseRepository firebase = null;
     FragmentLoginBinding binding = null;
+    SettingsRepository repository;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,10 +32,11 @@ public class LoginFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        EditorsUtil.initTextWatchers(binding.emailTextEdit, binding.passwordEditText);
         if(firebase.checkUserExist() && firebase.isVerified()){
             firebase.initDatabase();
             findNavController(getView()).navigate(
-                    LoginFragmentDirections.showEventTaskFragment()
+                    LoginFragmentDirections.showBottomFragment()
             );
         }
     }
@@ -39,6 +45,7 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
+        repository = SettingsRepository.getInstance(getContext());
         EditorsUtil.initTextWatchers(binding.emailTextEdit, binding.passwordEditText);
         initButtons();
         return binding.getRoot();
@@ -66,6 +73,9 @@ public class LoginFragment extends Fragment {
         });
         binding.signUpButton.setOnClickListener(v -> findNavController(binding.getRoot()).navigate(
                 LoginFragmentDirections.showRegisterFragment()
+        ));
+        binding.resetButton.setOnClickListener(v -> findNavController(binding.getRoot()).navigate(
+                LoginFragmentDirections.showRessetPassword()
         ));
     }
 }

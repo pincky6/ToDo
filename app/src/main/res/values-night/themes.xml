@@ -1,7 +1,34 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.ToDoApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="item_task_color">#242424</item>
+        <item name="background_color">#000000</item>
+        <item name="background_action_bar_color">#242424</item>
+        <item name="fab_button_color">#FBA400</item>
+
+        <item name="priority_low_color">#67AE7E</item>
+        <item name="priority_middle_color">#DB8653</item>
+        <item name="priority_high_color">#DD422E</item>
+
+        <item name="not_in_progress_color">#D2CBBF</item>
+        <item name="in_progress_color">#ECD37F</item>
+        <item name="not_done_color">#DD422E</item>
+        <item name="status_done_border_color">#67AE7E</item>
+    </style>
+
+    <style name="Base.Theme.Dark" parent="Theme.AppCompat.DayNight">
+        <item name="item_task_color">#000000</item>
+        <item name="background_color">#000000</item>
+        <item name="background_action_bar_color">#242424</item>
+        <item name="fab_button_color">#FBA400</item>
+
+        <item name="priority_low_color">#67AE7E</item>
+        <item name="priority_middle_color">#DB8653</item>
+        <item name="priority_high_color">#DD422E</item>
+
+        <item name="not_in_progress_color">#D2CBBF</item>
+        <item name="in_progress_color">#ECD37F</item>
+        <item name="not_done_color">#DD422E</item>
+        <item name="status_done_border_color">#67AE7E</item>
     </style>
 </resources>

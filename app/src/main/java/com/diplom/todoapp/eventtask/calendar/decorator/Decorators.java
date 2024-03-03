@@ -5,31 +5,34 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import java.util.ArrayList;
 
 public class Decorators {
-    private ArrayList<TaskDayDecorator> decorators = new ArrayList<>();
-    public ArrayList<TaskDayDecorator> getDecorators(){
+    private ArrayList<AbstractDecorator> decorators = new ArrayList<>();
+    public ArrayList<AbstractDecorator> getDecorators(){
         return decorators;
     }
-    public TaskDayDecorator getLast(){
+    public AbstractDecorator getLast(){
         return decorators.get(decorators.size() - 1);
     }
-    public TaskDayDecorator getDecorator(int index){
+    public AbstractDecorator getDecorator(int index){
         return decorators.get(index);
     }
-    public void addDecorator(TaskDayDecorator decorator){
+    public void addDecorator(AbstractDecorator decorator){
         decorators.add(decorator);
     }
-    public void removeDecorator(TaskDayDecorator decorator){
+    public void removeDecorator(AbstractDecorator decorator){
         decorators.remove(decorator);
     }
 
     public TaskDayDecorator search(CalendarDay day){
         TaskDayDecorator searchedDecorator = null;
-        for(TaskDayDecorator decorator: decorators){
-            if(decorator.getDay().getDay() == day.getDay() &&
-                    decorator.getDay().getMonth() == day.getMonth() &&
-                    decorator.getDay().getYear() == day.getYear()){
-                searchedDecorator = decorator;
-                break;
+        for(AbstractDecorator decorator: decorators){
+            if(decorator instanceof TaskDayDecorator) {
+                TaskDayDecorator dayDecorator = (TaskDayDecorator) decorator;
+                if (dayDecorator.getDay().getDay() == day.getDay() &&
+                        dayDecorator.getDay().getMonth() == day.getMonth() &&
+                        dayDecorator.getDay().getYear() == day.getYear()) {
+                    searchedDecorator = dayDecorator;
+                    break;
+                }
             }
         }
         return searchedDecorator;

@@ -1,10 +1,15 @@
 package com.diplom.todoapp.utils;
 
 import android.graphics.Color;
+import android.util.Log;
 
+import com.diplom.todoapp.R;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Priority;
 
 public class PriorityUtil {
+    private static final int LOW_COLOR =  Color.rgb(103, 174, 126);
+    private static final int MIDDLE_COLOR = Color.rgb(236, 211, 127);
+    private static final int HIGH_COLOR = Color.rgb(221,66,46);
     public static Priority getPriorityEnum(String priority){
         switch (priority){
             case "Low":
@@ -17,26 +22,57 @@ public class PriorityUtil {
         return Priority.LOW;
     }
     public static int getPriorityColor(Priority priority){
+
         switch (priority.getPriority()){
             case 4:
-                return Color.GREEN;
+                return Color.rgb(103, 174, 126);
             case 8:
-                return Color.YELLOW;
+                return Color.rgb(236, 211, 127);
             case 16:
-                return Color.RED;
+                return Color.rgb(221,66,46);
+        }
+        return Color.rgb(103, 174, 126);
+    }
+    public static int getPriorityBorderResource(Priority priority){
+        switch (priority.getPriority()){
+            case 4:
+                return R.drawable.border_low_priority;
+            case 8:
+                return R.drawable.border_middle_priority;
+            case 16:
+                return R.drawable.border_high_priority;
         }
         return 0;
     }
     public static int getPriorityColor(String priority){
+//        Log.d("LOW_TAG", String.valueOf(Color.rgb(103, 174, 126)));
+//        Log.d("MIDDLE_TAG", String.valueOf(Color.rgb(236, 211, 127)));
+//        Log.d("HIGH_TAG", String.valueOf(Color.rgb(221,66,46)));
         switch (priority){
             case "Low":
-                return Color.GREEN;
+                return LOW_COLOR;
             case "Middle":
-                return Color.YELLOW;
+                return MIDDLE_COLOR;
             case "High":
-                return Color.RED;
+                return HIGH_COLOR;
         }
-        return Color.GREEN;
+        return LOW_COLOR;
+    }
+
+    public static int getPriorityIndex(int color){
+//        Log.d("LOW_TAG", String.valueOf(Color.rgb(103, 174, 126)));
+//        Log.d("MIDDLE_TAG", String.valueOf(Color.rgb(236, 211, 127)));
+//        Log.d("HIGH_TAG", String.valueOf(Color.rgb(221,66,46)));
+//        int low = Color.rgb(103, 174, 126);
+//        int middle = Color.rgb(236, 211, 127);
+//        int high = Color.rgb(221,66,46);
+        if(color == LOW_COLOR) {
+            return 0;
+        }
+        else if(color == MIDDLE_COLOR) {
+            return 1;
+        }
+        return 2;
     }
     public static int getPriorityIndex(Priority priority){
         switch (priority){

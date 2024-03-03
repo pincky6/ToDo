@@ -1,5 +1,6 @@
 package com.diplom.todoapp.eventtask.calendar.decorator;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,8 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
@@ -29,18 +32,35 @@ public class MaterialCalendarFragment extends Fragment {
     private MaterialCalendarViewModel model = null;
     private OnDayChangedListener dayChangedListener = null;
     private OnMonthChangedListener monthChangedListener = null;
+    public Date getSelectedCalendarDay(){
+        CalendarDay day = binding.calendar.getSelectedDate();
+        if(day == null) return new Date();
+        return CalendarUtil.getDate(binding.calendar.getSelectedDate());
+    }
+    public void setSelectedDay(CalendarDay day){
+        model.setSelectedDay(day);
+        binding.calendar.setSelectedDate(day);
+    }
     public void setOnDayChangedListener(OnDayChangedListener dayChangedListener){
         this.dayChangedListener = dayChangedListener;
     }
     public void setOnMonthChangedListener(OnMonthChangedListener monthChangedListener){
         this.monthChangedListener = monthChangedListener;
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        model = new MaterialCalendarViewModel();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMaterialCalendarViewBinding.inflate(inflater, container, false);
         initCalendar();
         initCalendarFragmentResults();
+        binding.calendar.setSelectionColor(Color.rgb(251,164,0));
         return binding.getRoot();
     }
 
@@ -58,21 +78,29 @@ public class MaterialCalendarFragment extends Fragment {
         FirebaseRepository firebase = FirebaseRepository.getInstance();
         ArrayList<AbstractTask> taskList = new ArrayList<>();
         firebase.readAllTasks(taskList, days -> {
-            model = new MaterialCalendarViewModel(days);
+            if(binding == null) return;
+            if(model == null) return;
+            model.setTasksDecorators(days);
+            if(model != null && model.getTaskDayDecoratorList() != null)
             binding.calendar.addDecorators(model.getTaskDayDecoratorList());
+            if(model != null && model.getSelectedDaySafe() != null)
+            binding.calendar.setSelectedDate(model.getSelectedDaySafe());
         });
     }
     private void initCalendarFragmentResults(){
         binding.calendar.setOnMonthChangedListener((MaterialCalendarView widget, CalendarDay date) ->{
             if(monthChangedListener != null) {
-                monthChangedListener.listen(date.getMonth());
+                monthChangedListener.listen(date.getMonth(), model);
             }
         });
         binding.calendar.setOnDateChangedListener((widget, date, selected) -> {
             if(dayChangedListener != null){
-                dayChangedListener.listen(date);
+                dayChangedListener.listen(date, model);
             }
         });
+    }
+    public CalendarDay getSelectedDate(){
+        return binding.calendar.getSelectedDate();
     }
     public void unselectDate(){
         binding.calendar.setSelectedDate((CalendarDay) null);

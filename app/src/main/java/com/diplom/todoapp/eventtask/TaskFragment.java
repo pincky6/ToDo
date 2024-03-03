@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,13 +17,17 @@ import androidx.fragment.app.Fragment;
 
 
 import com.diplom.todoapp.databinding.FragmentEventTaskBinding;
-import com.diplom.todoapp.details.fragments.AbstractTaskDetailFragment;
+import com.diplom.todoapp.eventtask.details.fragments.AbstractTaskDetailFragment;
 import com.diplom.todoapp.eventtask.calendar.decorator.MaterialCalendarFragment;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskListFragment;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
 import com.diplom.todoapp.eventtask.filter.TaskFilter;
 import com.diplom.todoapp.eventtask.filter.TaskFilterFragmentDialog;
 import com.diplom.todoapp.firebase.FirebaseRepository;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+
+import java.util.ArrayList;
 
 public class TaskFragment extends Fragment {
     private FragmentEventTaskBinding binding = null;
@@ -73,17 +76,24 @@ public class TaskFragment extends Fragment {
                 taskListFragment.showAllList();
             }
             else if(item.getItemId() == R.id.action_settings){
-                Toast.makeText(getContext(), "smthj", Toast.LENGTH_SHORT).show();
+//                bottomNavigationView.setVisibility(View.GONE);
+                findNavController(getView()).navigate(
+                        TaskFragmentDirections.showSettingsFragment()
+                );
             }
             else if(item.getItemId() == R.id.action_filter){
+//                bottomNavigationView.setVisibility(View.GONE);
                 findNavController(getView()).navigate(
-                        TaskFragmentDirections.showTaskFilterDialog(taskListFragment.getFilterMask())
+                        TaskFragmentDirections.showTaskFilterDialog(taskListFragment.getFilterMask(),
+                                taskListFragment.getFilterCategories())
                 );
             } else if (item.getItemId() == R.id.action_search_by_title){
+//                bottomNavigationView.setVisibility(View.GONE);
                 findNavController(binding.getRoot()).navigate(
                         TaskFragmentDirections.showSearchFragment(false)
                 );
             } else if (item.getItemId() == R.id.action_search_by_date){
+//                bottomNavigationView.setVisibility(View.GONE);
                 findNavController(binding.getRoot()).navigate(
                         TaskFragmentDirections.showSearchFragment(true)
                 );
@@ -93,17 +103,24 @@ public class TaskFragment extends Fragment {
         });
         binding.fab.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(getContext(), v);
-            popupMenu.inflate(R.menu.popup_menu);
+            popupMenu.inflate(R.menu.popup_menu_events);
             popupMenu.setOnMenuItemClickListener(item -> {
                 int id = item.getItemId();
-                if(id == R.id.add_new_task){
+                if(id == R.id.add_new_task) {
+//                    bottomNavigationView.setVisibility(View.GONE);
                     findNavController(binding.getRoot()).navigate(
-                            TaskFragmentDirections.showTaskDetailFragment("")
-                    );
+                            TaskFragmentDirections.showTaskDetailFragment("",
+                                                                          taskListFragment.getTaskDate(),
+                                                                          materialCalendarFragment.getSelectedCalendarDay()
+                                                                         )
+                                                                  );
                     return true;
                 } else if (id == R.id.add_new_event) {
+//                    bottomNavigationView.setVisibility(View.GONE);
                     findNavController(binding.getRoot()).navigate(
-                            TaskFragmentDirections.showDateTaskDetailFragment("")
+                            TaskFragmentDirections.showDateTaskDetailFragment("",
+                                                                                        taskListFragment.getDateTaskDate(),
+                                                                                        materialCalendarFragment.getSelectedCalendarDay())
                     );
                     return true;
                 }
@@ -116,7 +133,9 @@ public class TaskFragment extends Fragment {
     private void initUpdateTaskListListener(){
         getParentFragmentManager().setFragmentResultListener(TaskFilterFragmentDialog.FILTER_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
             Integer mask = (Integer)result.get(requestKey);
+            ArrayList<String> categories = (ArrayList<String>)result.get(TaskFilterFragmentDialog.ARRAY_FILTER_KEY) ;
             taskListFragment.setFilterMask(mask);
+            taskListFragment.setFilterCategories(categories);
             taskListFragment.updateUi();
         });
         getParentFragmentManager().setFragmentResultListener(AbstractTaskDetailFragment.TASK_DETAIL_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
@@ -139,15 +158,37 @@ public class TaskFragment extends Fragment {
         });
     }
     private void initMaterialCalendarFragment(){
-        materialCalendarFragment.setOnDayChangedListener(day -> {
+        materialCalendarFragment.setOnDayChangedListener((day, model) -> {
             TaskFilter filter = taskListFragment.getFilter();
-            filter.setSelectedDay(day);
             filter.setSelectedMonth(day.getMonth());
+            if(day.equals(model.getSelectedDayUnsafe())){
+                model.setSelectedDay(null);
+                filter.setSelectedDay(null);
+                materialCalendarFragment.unselectDate();
+                taskListFragment.resetMonthAdapter();
+            } else {
+                model.setSelectedDay(day);
+                filter.setSelectedDay(day);
+                taskListFragment.resetDayAdapter();
+            }
             taskListFragment.updateUi();
         });
-        materialCalendarFragment.setOnMonthChangedListener((month) -> {
+        materialCalendarFragment.setOnMonthChangedListener((month, model) -> {
             TaskFilter filter = taskListFragment.getFilter();
+            CalendarDay calendarDay = model.getSelectedDayUnsafe();
             filter.setSelectedMonth(month);
+            if(calendarDay != null && calendarDay.getMonth() == month){
+                model.setSelectedDay(calendarDay);
+                filter.setSelectedDay(calendarDay);
+                taskListFragment.resetDayAdapter();
+                taskListFragment.updateUi();
+                return;
+            }
+            model.setSelectedDay(null);
+            filter.setSelectedDay(null);
+            taskListFragment.resetMonthAdapter();
+            filter.setSelectedDay(calendarDay);
+            model.setSelectedDay(calendarDay);
             taskListFragment.updateUi();
         });
     }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="customAttrs">
+        <attr name="item_task_color" format="reference|color" />
+        <attr name="background_color" format="reference|color"/>
+        <attr name="background_action_bar_color" format="reference|color"/>
+        <attr name="fab_button_color" format="reference|color"/>
+
+        <attr name="priority_low_color" format="reference|color"/>
+        <attr name="priority_middle_color" format="reference|color"/>
+        <attr name="priority_high_color" format="reference|color"/>
+
+        <attr name="not_in_progress_color" format="reference|color"/>
+        <attr name="in_progress_color" format="reference|color"/>
+        <attr name="not_done_color" format="reference|color"/>
+        <attr name="status_done_border_color" format="reference|color"/>
+    </declare-styleable>
+</resources>

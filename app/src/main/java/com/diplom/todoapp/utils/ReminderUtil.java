@@ -7,6 +7,8 @@ public class ReminderUtil {
         switch (reminder){
             case "1 day before":
                 return Reminders.DAY_1_BEFORE;
+            case "1 hour before":
+                return Reminders.HOUR_1_BEFORE;
             case "5 minutes before":
                 return Reminders.MINUTES_5_BEFORE;
             case "Dont\'t remind":
@@ -18,10 +20,12 @@ public class ReminderUtil {
         switch (reminder){
             case DAY_1_BEFORE:
                 return 0;
-            case MINUTES_5_BEFORE:
+            case HOUR_1_BEFORE:
                 return 1;
-            case DONT_REMIND:
+            case MINUTES_5_BEFORE:
                 return 2;
+            case DONT_REMIND:
+                return 3;
         }
         return 1;
     }

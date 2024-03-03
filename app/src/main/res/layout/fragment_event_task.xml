@@ -5,36 +5,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?attr/background_action_bar_color">
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?attr/background_action_bar_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/background_action_bar_color"
         android:fitsSystemWindows="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/menu_event_task"
-            app:layout_scrollFlags="enterAlways|scroll"/>
+            app:layout_scrollFlags="enterAlways|scroll"
+            app:menu="@menu/menu_event_task" />
+
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/calendarFragment"
+            android:name="com.diplom.todoapp.eventtask.calendar.decorator.MaterialCalendarFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.diplom.todoapp.eventtask.calendar.decorator.MaterialCalendarFragment"
-            app:layout_scrollFlags="enterAlways|scroll"/>
+            android:background="?attr/background_action_bar_color"
+            app:layout_scrollFlags="enterAlways|scroll" />
     </com.google.android.material.appbar.AppBarLayout>
+
+
+
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/taskListFragment"
             android:name="com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskListFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:background="?attr/background_color"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,14 +56,15 @@
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="64dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/baseline_add_24"
+            android:backgroundTint="?attr/fab_button_color"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

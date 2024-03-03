@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.text.style.LineBackgroundSpan;
 import androidx.annotation.NonNull;
 
+import com.diplom.todoapp.utils.PriorityUtil;
+
 import java.util.HashSet;
 
 public class MultipleDotSpan implements LineBackgroundSpan {
@@ -37,13 +39,12 @@ public class MultipleDotSpan implements LineBackgroundSpan {
             int start, int end, int lineNum
     ) {
         if(colors.isEmpty()) return;
-        int leftMost = (colors.size() - 1) * -10;
         for (Integer color: colors) {
+            int leftMost = 2 * -10 + 20 * PriorityUtil.getPriorityIndex(color);
             int oldColor = paint.getColor();
             paint.setColor(color);
             canvas.drawCircle((left + right) / 2 - leftMost, bottom + radius, radius, paint);
             paint.setColor(oldColor);
-            leftMost = leftMost + 20;
         }
     }
 }

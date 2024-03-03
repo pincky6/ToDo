@@ -15,27 +15,49 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.R;
-import com.diplom.todoapp.details.fragments.AbstractTaskDetailFragment;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskAdapter;
+import com.diplom.todoapp.databinding.FragmentTaskSearchBinding;
+import com.diplom.todoapp.eventtask.details.fragments.AbstractTaskDetailFragment;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.TaskAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskListViewModel;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.SuccsessFlag;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Holiday;
 import com.diplom.todoapp.eventtask.filter.TaskFilter;
-import com.diplom.todoapp.searchs.TaskSearchFragmentDirections;
 import com.diplom.todoapp.utils.CalendarUtil;
+import com.diplom.todoapp.utils.SuccsessFlagUtil;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
 public class TaskSearchFragment extends Fragment {
     FragmentTaskSearchBinding binding = null;
     SearchView searchView = null;
-    TaskFilter filter = new TaskFilter(31);
+    TaskFilter filter = new TaskFilter(31, new ArrayList<>());
     TaskListViewModel taskListViewModel = new TaskListViewModel();
     String searchedTitle = null;
     Boolean searchByDate = false;
-
+    public ArrayList<Date> getTaskDate(){
+        ArrayList<Date> tasks = new ArrayList<>();
+        for(AbstractTask abstractTask: taskListViewModel.taskList){
+            if(abstractTask instanceof Holiday) tasks.add(abstractTask.dateStart);
+        }
+        return tasks;
+    }
+    public ArrayList<Date> getDateTaskDate(){
+        ArrayList<Date> tasks = new ArrayList<>();
+        for(AbstractTask abstractTask: taskListViewModel.taskList){
+            if(abstractTask instanceof DateTask) {
+                DateTask task = (DateTask)abstractTask;
+                tasks.add(task.dateStart);
+                tasks.add(task.dateEnd);
+            }
+        }
+        return tasks;
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,21 +127,29 @@ public class TaskSearchFragment extends Fragment {
     }
     private void initAdapter(ArrayList<AbstractTask> list){
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerView.setAdapter(new TaskAdapter(list,
+        binding.recyclerView.setAdapter(new TaskAdapter(list, filter.getSelectedDay(),
                 (AbstractTask task) -> {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(0);
                     if (task.id.split("-")[0].equals("Task")) {
                         findNavController(binding.getRoot()).navigate(
-                                TaskSearchFragmentDirections.showTaskDetailFromSearch(task.id)
+                                TaskSearchFragmentDirections.showTaskDetailFromSearch(task.id, getTaskDate(), task.dateStart)
                         );
                     } else {
                         findNavController(binding.getRoot()).navigate(
-                                TaskSearchFragmentDirections.showDateTaskDetailFromSearch(task.id)
+                                TaskSearchFragmentDirections.showDateTaskDetailFromSearch(task.id, getDateTaskDate(), task.dateStart)
                         );
                     }
                 },
                 id -> {
                     AbstractTask task = taskListViewModel.getFromId(id);
                     removeTask(task);
+                    binding.recyclerView.getAdapter().notifyDataSetChanged();
+                },
+                abstractTask ->
+                {
+                    abstractTask.succsessFlag = SuccsessFlagUtil.getStringFromFlag(SuccsessFlag.DONE);
+                    taskListViewModel.updateTask(abstractTask);
                     binding.recyclerView.getAdapter().notifyDataSetChanged();
                 }));
         getParentFragmentManager().setFragmentResultListener(AbstractTaskDetailFragment.TASK_DETAIL_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
