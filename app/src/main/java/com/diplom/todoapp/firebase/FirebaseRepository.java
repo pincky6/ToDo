@@ -17,6 +17,7 @@ import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Holiday;
 
 import com.diplom.todoapp.login.*;
+import com.diplom.todoapp.notes.models.Note;
 import com.diplom.todoapp.utils.EditorsUtil;
 import com.diplom.todoapp.utils.SuccsessFlagUtil;
 import com.google.firebase.auth.FirebaseAuth;
@@ -299,5 +300,90 @@ public class FirebaseRepository {
             if(repeats.contains(repeat.getKey())) continue;
             repeats.add((String) repeat.getValue());
         }
+    }
+    public void addNote(Note object){
+        if(object.id.isEmpty()) database.child("notes").child("id-null").setValue(object);
+        database.child("notes").child( object.id ).setValue(object);
+    }
+    public void removeNote(String id){
+        database.child("notes").child(id).removeValue();
+    }
+    public void readAllNotes(ArrayList<Note> noteList, InitExpression initLambda){
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot tasksSnapshot: dataSnapshot.getChildren()){
+                    if(tasksSnapshot.getKey() == null) continue;
+                    if(tasksSnapshot.getKey().equals("categories")) readAllCategories(tasksSnapshot);
+                    if(tasksSnapshot.getKey().equals("repeats")) readAllRepeats(tasksSnapshot);
+                    if(!tasksSnapshot.getKey().equals("notes")) continue;
+                    for(DataSnapshot snapshot: tasksSnapshot.getChildren()) {
+                        if(snapshot.getKey() == null) return;
+                        String[] strs = snapshot.getKey().split("-");
+                        String key = strs[0];
+                        Note note = snapshot.getValue(Note.class);
+                        note.id = snapshot.getKey();
+                        noteList.add(note);
+                    }
+                }
+//                if(initLambda != null)
+//                    initLambda.init(takList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void readAllNotes(ArrayList<Note> noteList, RecyclerView recyclerView, InitNoteExpression initLambda){
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot tasksSnapshot: dataSnapshot.getChildren()) {
+                    if (tasksSnapshot.getKey() == null) continue;
+                    if(tasksSnapshot.getKey().equals("categories")) readAllCategories(tasksSnapshot);
+                    if(tasksSnapshot.getKey().equals("repeats")) readAllRepeats(tasksSnapshot);
+                    if (!tasksSnapshot.getKey().equals("notes")) continue;
+                    for (DataSnapshot snapshot : tasksSnapshot.getChildren()) {
+                        if(snapshot.getKey() == null) return;
+                        String[] strs = snapshot.getKey().split("-");
+                        String key = strs[0];
+                        Note note = snapshot.getValue(Note.class);
+                        note.id = snapshot.getKey();
+                        noteList.add(note);
+                    }
+                }
+                if(initLambda != null)
+                    initLambda.init(noteList);
+                if(recyclerView == null || recyclerView.getAdapter() == null) return;
+                recyclerView.getAdapter().notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void getNoteFromKey(String key, OnDataReceivedListener dataReceivedListener){
+        database.child("notes").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Note note;
+                note = snapshot.getValue(Note.class);
+
+                if (note != null) {
+                    dataReceivedListener.onDataReceived(note);
+                } else {
+                    dataReceivedListener.onError(new IllegalArgumentException("Database Error"));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

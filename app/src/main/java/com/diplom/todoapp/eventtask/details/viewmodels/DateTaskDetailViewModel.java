@@ -1,4 +1,4 @@
-package com.diplom.todoapp.details.viewmodels;
+package com.diplom.todoapp.eventtask.details.viewmodels;
 
 import androidx.annotation.NonNull;
 
@@ -56,7 +56,7 @@ public class DateTaskDetailViewModel {
     public DateTaskDetailViewModel(FragmentDateTaskDetailBinding binding, String key){
         firebaseRepository.getTaskFromKey(key, new OnDataReceivedListener() {
             @Override
-            public void onDataReceived(AbstractTask data) {
+            public void onDataReceived(Object data) {
                 if(!(data instanceof DateTask)) return;
                 dateTask = (DateTask) data;
                 initDetailFragment(
@@ -203,6 +203,6 @@ public class DateTaskDetailViewModel {
 
     public ArrayList<String> getCategory(){
         if(firebaseRepository == null) return new ArrayList<>();
-        return (ArrayList<String>)firebaseRepository.getCategories().clone();
+        return firebaseRepository.getCategories();
     }
 }

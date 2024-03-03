@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Note implements Serializable {
+    public String id;
     public String title;
     public ArrayList<NoteElement> elements;
     public Date createDate;
@@ -20,7 +21,8 @@ public class Note implements Serializable {
         secure = false;
         category = "Without Category";
     }
-    public Note(String title, ArrayList<NoteElement> elements, Date createDate, String category, boolean secure){
+    public Note(String id, String title, ArrayList<NoteElement> elements, Date createDate, String category, boolean secure){
+        this.id = id;
         this.title = title;
         this.elements = elements;
         this.createDate = createDate;

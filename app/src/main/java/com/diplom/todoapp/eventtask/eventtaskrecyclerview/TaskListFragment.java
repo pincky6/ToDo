@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.diplom.todoapp.databinding.FragmentTaskListBinding;
+import com.diplom.todoapp.databinding.FragmentListBinding;
 import com.diplom.todoapp.eventtask.TaskFragmentDirections;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.AbstractTaskAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.TaskAdapter;
@@ -37,7 +37,7 @@ import java.util.Objects;
 public class TaskListFragment extends Fragment {
     public static final String REQUEST_ADD_TASK = "ADD_TASK";
     public static final String REQUEST_REMOVE_TASK = "REMOVE_TASK";
-    private FragmentTaskListBinding binding = null;
+    private FragmentListBinding binding = null;
     private  TaskListViewModel taskListViewModel = new TaskListViewModel();
     private TaskFilter filter = new TaskFilter(31, new ArrayList<>());
     private OnTaskListener onTaskListener = null;
@@ -84,7 +84,7 @@ public class TaskListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentTaskListBinding.inflate(inflater, container, false);
+        binding = FragmentListBinding.inflate(inflater, container, false);
         initRecyclerView();
         return binding.getRoot();
     }

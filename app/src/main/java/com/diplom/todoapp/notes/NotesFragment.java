@@ -15,14 +15,17 @@ import androidx.fragment.app.Fragment;
 import com.diplom.todoapp.R;
 import com.diplom.todoapp.databinding.FragmentNotesBinding;
 import com.diplom.todoapp.eventtask.TaskFragmentDirections;
+import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskListFragment;
+import com.diplom.todoapp.eventtask.filter.TaskFilterFragmentDialog;
+import com.diplom.todoapp.notes.details.NoteDetailFragment;
+import com.diplom.todoapp.notes.models.Note;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
 public class NotesFragment extends Fragment {
-    private BottomNavigationView bottomNavigationView;
     private FragmentNotesBinding binding;
-    public void setBottomNavigationView(BottomNavigationView bottomNavigationView){
-        this.bottomNavigationView = bottomNavigationView;
-    }
+    private  NotesListFragment notesListFragment;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -33,10 +36,12 @@ public class NotesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(bottomNavigationView != null){
-            bottomNavigationView.setVisibility(View.VISIBLE);
-        }
+        notesListFragment = (NotesListFragment) getChildFragmentManager().findFragmentById(R.id.noteListFragment);
         initFabButton();
+        getParentFragmentManager().setFragmentResultListener(NoteDetailFragment.NOTE_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
+            Note note = (Note)result.get(NoteDetailFragment.NOTE_KEY) ;
+            notesListFragment.addNote(note);
+        });
     }
 
     @Override
@@ -45,9 +50,15 @@ public class NotesFragment extends Fragment {
     }
     public void initFabButton(){
         binding.fabNotes.setOnClickListener(v -> {
-            if(bottomNavigationView != null) {
-                bottomNavigationView.setVisibility(View.GONE);
-            }
+            findNavController(getView()).navigate(
+                    NotesFragmentDirections.showNoteDetail("")
+            );
         });
+    }
+    public void showFabButton(){
+        binding.fabNotes.setVisibility(View.VISIBLE);
+    }
+    public void hideFabButton(){
+        binding.fabNotes.setVisibility(View.GONE);
     }
 }

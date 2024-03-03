@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/taskDetailFragment"
-        android:name="com.diplom.todoapp.details.fragments.TaskDetailFragment"
+        android:name="com.diplom.todoapp.eventtask.details.fragments.HolidayDetailFragment"
         android:label="TaskDetailFragment"
         tools:layout="@layout/fragment_task_detail">
         <argument
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/dateTaskDetailFragment"
-        android:name="com.diplom.todoapp.details.fragments.DateTaskDetailFragment"
+        android:name="com.diplom.todoapp.eventtask.details.fragments.DateTaskDetailFragment"
         android:label="DateTaskDetailFragment"
         tools:layout="@layout/fragment_date_task_detail">
 

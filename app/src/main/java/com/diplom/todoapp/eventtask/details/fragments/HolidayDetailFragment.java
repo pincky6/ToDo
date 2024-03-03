@@ -1,4 +1,4 @@
-package com.diplom.todoapp.details.fragments;
+package com.diplom.todoapp.eventtask.details.fragments;
 
 import static androidx.navigation.ViewKt.findNavController;
 
@@ -13,9 +13,9 @@ import androidx.annotation.Nullable;
 
 import com.diplom.todoapp.R;
 import com.diplom.todoapp.databinding.FragmentTaskDetailBinding;
+import com.diplom.todoapp.eventtask.details.viewmodels.HolidayDetailViewModel;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.CategorySpinnerAdapter;
 import com.diplom.todoapp.utils.EditorsUtil;
-import com.diplom.todoapp.details.viewmodels.TaskDetailViewModel;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.InputMismatchException;
 
-public class TaskDetailFragment extends AbstractTaskDetailFragment {
-    private TaskDetailViewModel taskDetailViewModel;
+public class HolidayDetailFragment extends AbstractTaskDetailFragment {
+    private HolidayDetailViewModel taskDetailViewModel;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,10 +42,10 @@ public class TaskDetailFragment extends AbstractTaskDetailFragment {
         if((id == null && day.getTime() != 0)|| id.isEmpty()) {
             SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
             binding.taskEditTextDate.setText(format.format(day));
-            taskDetailViewModel = new TaskDetailViewModel(binding, dates, day);
+            taskDetailViewModel = new HolidayDetailViewModel(binding, dates, day);
         }
         else {
-            taskDetailViewModel = new TaskDetailViewModel(binding, id, dates);
+            taskDetailViewModel = new HolidayDetailViewModel(binding, id, dates);
         }
         EditorsUtil.initTextWatchers(binding.taskTitle,
                         binding.taskEditTextDate, binding.taskEditTextTime);

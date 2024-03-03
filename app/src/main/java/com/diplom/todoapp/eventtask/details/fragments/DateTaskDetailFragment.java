@@ -1,4 +1,4 @@
-package com.diplom.todoapp.details.fragments;
+package com.diplom.todoapp.eventtask.details.fragments;
 
 import static androidx.navigation.ViewKt.findNavController;
 
@@ -14,13 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.R;
 import com.diplom.todoapp.databinding.FragmentDateTaskDetailBinding;
-import com.diplom.todoapp.details.viewmodels.TaskDetailViewModel;
+import com.diplom.todoapp.eventtask.details.viewmodels.DateTaskDetailViewModel;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.CategorySpinnerAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.SubtasksAdapter;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.DateTask;
-import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.Subtask;
 import com.diplom.todoapp.utils.EditorsUtil;
-import com.diplom.todoapp.details.viewmodels.DateTaskDetailViewModel;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;

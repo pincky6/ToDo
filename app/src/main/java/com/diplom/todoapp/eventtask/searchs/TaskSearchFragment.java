@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diplom.todoapp.R;
 import com.diplom.todoapp.databinding.FragmentTaskSearchBinding;
-import com.diplom.todoapp.details.fragments.AbstractTaskDetailFragment;
+import com.diplom.todoapp.eventtask.details.fragments.AbstractTaskDetailFragment;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.adapters.TaskAdapter;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.TaskListViewModel;
 import com.diplom.todoapp.eventtask.eventtaskrecyclerview.models.AbstractTask;

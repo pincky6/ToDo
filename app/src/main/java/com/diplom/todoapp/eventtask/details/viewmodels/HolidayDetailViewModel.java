@@ -1,4 +1,4 @@
-package com.diplom.todoapp.details.viewmodels;
+package com.diplom.todoapp.eventtask.details.viewmodels;
 
 import androidx.annotation.NonNull;
 
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class TaskDetailViewModel {
+public class HolidayDetailViewModel {
     FirebaseRepository firebaseRepository = FirebaseRepository.getInstance();
     private Holiday holiday = null;
     private Date selectedDate;
@@ -30,9 +30,9 @@ public class TaskDetailViewModel {
         return holiday;
     }
 
-    public TaskDetailViewModel(){}
-    public TaskDetailViewModel(FragmentTaskDetailBinding binding, ArrayList<Date> dates,
-                               Date selectedDate)
+    public HolidayDetailViewModel(){}
+    public HolidayDetailViewModel(FragmentTaskDetailBinding binding, ArrayList<Date> dates,
+                                  Date selectedDate)
     {
         this.dates = dates;
         if(holiday != null && holiday.category == null) holiday.category = new String("Without Category");
@@ -44,12 +44,12 @@ public class TaskDetailViewModel {
                             0
                           );
     }
-    public TaskDetailViewModel(FragmentTaskDetailBinding binding, String key,
-                               ArrayList<Date> dates) {
+    public HolidayDetailViewModel(FragmentTaskDetailBinding binding, String key,
+                                  ArrayList<Date> dates) {
         this.dates = dates;
         firebaseRepository.getTaskFromKey(key, new OnDataReceivedListener() {
             @Override
-            public void onDataReceived(AbstractTask data) {
+            public void onDataReceived(Object data) {
                 if(!(data instanceof Holiday)) return;
                 holiday = (Holiday) data;
                 if(holiday.category == null) holiday.category = new String("Without Category");
@@ -149,6 +149,6 @@ public class TaskDetailViewModel {
     }
     public ArrayList<String> getCategory(){
         if(firebaseRepository == null) return new ArrayList<>();
-        return (ArrayList<String>)firebaseRepository.getCategories().clone();
+        return firebaseRepository.getCategories();
     }
 }
